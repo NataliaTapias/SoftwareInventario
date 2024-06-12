@@ -12,11 +12,13 @@ return [
     | as required, but they're a perfect start for most applications.
     |
     */
-
-    'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
+'providers' => [
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Usuario::class,
     ],
+],
+
 
     /*
     |--------------------------------------------------------------------------
