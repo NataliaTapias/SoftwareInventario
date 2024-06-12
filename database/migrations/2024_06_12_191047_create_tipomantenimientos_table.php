@@ -8,15 +8,15 @@ class CreateTipoMantenimientosTable extends Migration
 {
     public function up()
     {
-        Schema::create('tipomantenimientos', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('nombre', 45);
+        Schema::create('TipoMantenimientos', function (Blueprint $table) {
+            $table->increments('idTipoMantenimiento');
+            $table->string('nombre', 80);
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('tipomantenimientos');
+        Schema::dropIfExists('TipoMantenimientos');
     }
 };
