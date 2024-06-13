@@ -8,8 +8,8 @@ class CreateEstadosTable extends Migration
 {
     public function up()
     {
-        Schema::create('estados', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('Estados', function (Blueprint $table) {
+            $table->increments('id_estado');
             $table->string('nombre', 45);
             $table->string('tipo', 45);
             $table->timestamps();
@@ -18,7 +18,7 @@ class CreateEstadosTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('estados');
+        Schema::dropIfExists('Estados');
     }
 };
 

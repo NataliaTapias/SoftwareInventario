@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -23,49 +23,48 @@
         }
         .login-container h2 {
             margin-bottom: 1em;
-            color: #333;
+            text-align: center;
         }
-        .login-container input {
+        .login-container .form-group {
+            margin-bottom: 1em;
+        }
+        .login-container .form-group label {
+            display: block;
+            margin-bottom: 0.5em;
+        }
+        .login-container .form-group input {
             width: 100%;
-            padding: 0.8em;
-            margin: 0.5em 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 0.5em;
+            box-sizing: border-box;
         }
         .login-container button {
             width: 100%;
-            padding: 0.8em;
-            background-color: #007BFF;
+            padding: 0.75em;
             border: none;
+            background-color: #007bff;
             color: #fff;
-            font-size: 1em;
             border-radius: 4px;
             cursor: pointer;
         }
         .login-container button:hover {
             background-color: #0056b3;
         }
-        .error {
-            color: red;
-            font-size: 0.9em;
-        }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h2>Iniciar Sesión</h2>
-        <form action="{{ url('/login') }}" method="post">
+        <h2>Login</h2>
+        <form action="{{ route('login') }}" method="POST">
             @csrf
-            <input type="email" name="email" placeholder="Correo electrónico" required>
-            <input type="password" name="password" placeholder="Contraseña" required>
-            @if ($errors->any())
-                <div class="error">
-                    @foreach ($errors->all() as $error)
-                        <p>{{ $error }}</p>
-                    @endforeach
-                </div>
-            @endif
-            <button type="submit">Ingresar</button>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+            </div>
+            <button type="submit">Login</button>
         </form>
     </div>
 </body>

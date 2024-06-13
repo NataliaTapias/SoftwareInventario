@@ -8,16 +8,16 @@ class CreateCategoriasTable extends Migration
 {
     public function up()
     {
-        Schema::create('categorias', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('Categorias', function (Blueprint $table) {
+            $table->increments('id_categoria');
             $table->string('nombre', 45);
-            $table->enum('tipo', ['consumo', 'devolutivo']);
+            $table->string('tipo', 45);
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('categorias');
+        Schema::dropIfExists('Categorias');
     }
 };

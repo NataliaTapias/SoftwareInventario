@@ -8,8 +8,8 @@ class CreateTipoMovimientosTable extends Migration
 {
     public function up()
     {
-        Schema::create('tipomovimientos', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('Tipomovimientos', function (Blueprint $table) {
+            $table->increments('id_tipomovimiento');
             $table->string('nombre', 45);
             $table->timestamps();
         });
@@ -17,6 +17,6 @@ class CreateTipoMovimientosTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('tipomovimientos');
+        Schema::dropIfExists('Tipomovimientos');
     }
 };

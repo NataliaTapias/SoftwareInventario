@@ -9,29 +9,20 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('login');
     }
 
     public function login(Request $request)
     {
-        // Validar los datos de entrada
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
         $credentials = $request->only('email', 'password');
 
-        // Intentar autenticar al usuario
         if (Auth::attempt($credentials)) {
-            // Redirigir al usuario autenticado
-            return redirect()->intended('dashboard');
+            return redirect()->intended('dashboard'); // Redirigir al usuario autenticado
         }
 
-        // Volver al formulario de login con errores
         return back()->withErrors([
             'email' => 'Las credenciales no coinciden con nuestros registros.',
-        ])->withInput($request->except('password'));
+        ]);
     }
 
     public function logout()
@@ -40,3 +31,5 @@ class AuthController extends Controller
         return redirect('/');
     }
 }
+
+

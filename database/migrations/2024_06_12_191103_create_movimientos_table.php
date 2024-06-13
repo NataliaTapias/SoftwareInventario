@@ -8,8 +8,8 @@ class CreateMovimientosTable extends Migration
 {
     public function up()
     {
-        Schema::create('movimientos', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('Movimientos', function (Blueprint $table) {
+            $table->increments('id_movimiento');
             $table->dateTime('fecha');
             $table->integer('cantidad');
             $table->decimal('precio', 10, 2);
@@ -21,15 +21,15 @@ class CreateMovimientosTable extends Migration
             $table->unsignedInteger('usuarios_id');
             $table->unsignedInteger('items_id');
             $table->unsignedInteger('tipoMovimientos_id');
-            $table->foreign('usuarios_id')->references('id')->on('usuarios');
-            $table->foreign('items_id')->references('id')->on('items');
-            $table->foreign('tipoMovimientos_id')->references('id')->on('tipomovimientos');
+            $table->foreign('usuarios_id')->references('id_usuario')->on('Usuarios');
+            $table->foreign('items_id')->references('id_item')->on('Items');
+            $table->foreign('tipoMovimientos_id')->references('id_tipomovimiento')->on('Tipomovimientos');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('movimientos');
+        Schema::dropIfExists('Movimientos');
     }
 };

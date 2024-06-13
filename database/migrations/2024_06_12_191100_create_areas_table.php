@@ -8,8 +8,8 @@ class CreateAreasTable extends Migration
 {
     public function up()
     {
-        Schema::create('areas', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('Areas', function (Blueprint $table) {
+            $table->increments('id_area');
             $table->string('nombre', 45);
             $table->timestamps();
         });
@@ -17,6 +17,6 @@ class CreateAreasTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('areas');
+        Schema::dropIfExists('Areas');
     }
 };

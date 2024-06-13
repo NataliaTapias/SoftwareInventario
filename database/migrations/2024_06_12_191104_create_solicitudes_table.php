@@ -8,8 +8,8 @@ class CreateSolicitudesTable extends Migration
 {
     public function up()
     {
-        Schema::create('solicitudes', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('Solicitudes', function (Blueprint $table) {
+            $table->increments('id_solicitud');
             $table->dateTime('fecha');
             $table->text('descripcionFalla');
             $table->string('tiempoEstimado', 45)->nullable();
@@ -27,16 +27,16 @@ class CreateSolicitudesTable extends Migration
             $table->unsignedInteger('estados_id');
             $table->unsignedInteger('areas_id');
             $table->unsignedInteger('movimientos_id')->nullable();
-            $table->foreign('tipoMantenimientos_id')->references('id')->on('tipomantenimientos');
-            $table->foreign('estados_id')->references('id')->on('estados');
-            $table->foreign('areas_id')->references('id')->on('areas');
-            $table->foreign('movimientos_id')->references('id')->on('movimientos');
+            $table->foreign('tipoMantenimientos_id')->references('id_tipomante')->on('Tipomantenimientos');
+            $table->foreign('estados_id')->references('id_estado')->on('Estados');
+            $table->foreign('areas_id')->references('id_area')->on('Areas');
+            $table->foreign('movimientos_id')->references('id_movimiento')->on('Movimientos');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('solicitudes');
+        Schema::dropIfExists('Solicitudes');
     }
 };

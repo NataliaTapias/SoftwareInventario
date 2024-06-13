@@ -8,8 +8,8 @@ class CreateTrabajadoresTable extends Migration
 {
     public function up()
     {
-        Schema::create('trabajadores', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('Trabajadores', function (Blueprint $table) {
+            $table->increments('id_trabajador');
             $table->string('nombre', 45);
             $table->timestamps();
         });
@@ -17,7 +17,7 @@ class CreateTrabajadoresTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('trabajadores');
+        Schema::dropIfExists('Trabajadores');
     }
 }
 ;
