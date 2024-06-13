@@ -9,8 +9,8 @@ class CreateTrabajadoresTable extends Migration
     public function up()
     {
         Schema::create('Trabajadores', function (Blueprint $table) {
-            $table->increments('id_trabajador');
-            $table->string('nombre', 45);
+            $table->increments('idTrabajador');
+            $table->string('nombre', 150);
             $table->timestamps();
         });
     }
