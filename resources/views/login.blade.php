@@ -58,7 +58,7 @@
             @csrf
             <div class="form-group">
                 <label for="email">Email address</label>
-                <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" required>
+                <input type="email" name="email" class="form-control" id="email" placeholder="email" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
@@ -68,4 +68,4 @@
         </form>
     </div>
 </body>
-</html>
+</html>]

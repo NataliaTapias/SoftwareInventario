@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AuthController;
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware('auth');
+
 
 // Ruta protegida (dashboard o inicio)
 Route::get('/dashboard', function () {
@@ -14,3 +16,5 @@ Route::get('/dashboard', function () {
 Route::get('/', function () {
     return view('welcome');
 });
+
+

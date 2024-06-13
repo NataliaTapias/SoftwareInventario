@@ -9,7 +9,7 @@ class CreateMovimientosTable extends Migration
     public function up()
     {
         Schema::create('Movimientos', function (Blueprint $table) {
-            $table->increments('id_movimiento');
+            $table->increments('idMovimiento');
             $table->dateTime('fecha');
             $table->integer('cantidad');
             $table->decimal('precio', 10, 2);
@@ -21,9 +21,9 @@ class CreateMovimientosTable extends Migration
             $table->unsignedInteger('usuarios_id');
             $table->unsignedInteger('items_id');
             $table->unsignedInteger('tipoMovimientos_id');
-            $table->foreign('usuarios_id')->references('id_usuario')->on('Usuarios');
-            $table->foreign('items_id')->references('id_item')->on('Items');
-            $table->foreign('tipoMovimientos_id')->references('id_tipomovimiento')->on('Tipomovimientos');
+            $table->foreign('usuarios_id')->references('idUsuario')->on('Usuarios');
+            $table->foreign('items_id')->references('idItem')->on('Items');
+            $table->foreign('tipoMovimientos_id')->references('idTipomovimiento')->on('Tipomovimientos');
             $table->timestamps();
         });
     }

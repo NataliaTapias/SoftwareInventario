@@ -9,7 +9,7 @@ class CreateTipoMantenimientosTable extends Migration
     public function up()
     {
         Schema::create('TipoMantenimientos', function (Blueprint $table) {
-            $table->increments('idTipoMantenimiento');
+            $table->increments('idTipomantenimiento');
             $table->string('nombre', 80);
             $table->timestamps();
         });

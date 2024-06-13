@@ -9,7 +9,7 @@ class CreateSolicitudesTable extends Migration
     public function up()
     {
         Schema::create('Solicitudes', function (Blueprint $table) {
-            $table->increments('id_solicitud');
+            $table->increments('idSolicitud');
             $table->dateTime('fecha');
             $table->text('descripcionFalla');
             $table->string('tiempoEstimado', 45)->nullable();
@@ -27,10 +27,10 @@ class CreateSolicitudesTable extends Migration
             $table->unsignedInteger('estados_id');
             $table->unsignedInteger('areas_id');
             $table->unsignedInteger('movimientos_id')->nullable();
-            $table->foreign('tipoMantenimientos_id')->references('id_tipomante')->on('Tipomantenimientos');
-            $table->foreign('estados_id')->references('id_estado')->on('Estados');
-            $table->foreign('areas_id')->references('id_area')->on('Areas');
-            $table->foreign('movimientos_id')->references('id_movimiento')->on('Movimientos');
+            $table->foreign('tipoMantenimientos_id')->references('idTipomantenimiento')->on('Tipomantenimientos');
+            $table->foreign('estados_id')->references('idEstado')->on('Estados');
+            $table->foreign('areas_id')->references('idArea')->on('Areas');
+            $table->foreign('movimientos_id')->references('idMovimiento')->on('Movimientos');
             $table->timestamps();
         });
     }

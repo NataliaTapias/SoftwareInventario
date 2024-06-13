@@ -9,7 +9,7 @@ class CreateTipoMovimientosTable extends Migration
     public function up()
     {
         Schema::create('Tipomovimientos', function (Blueprint $table) {
-            $table->increments('id_tipomovimiento');
+            $table->increments('idTipomovimiento');
             $table->string('nombre', 45);
             $table->timestamps();
         });
