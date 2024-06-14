@@ -20,7 +20,9 @@ class CreateItemsTable extends Migration
             $table->unsignedInteger('estados_id');
             $table->foreign('subcategorias_id')->references('idSubcategoria')->on('Subcategorias')->onDelete('cascade');
             $table->foreign('estados_id')->references('idEstado')->on('Estados')->onDelete('cascade');
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+            
         });
     }
 

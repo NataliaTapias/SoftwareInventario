@@ -24,7 +24,9 @@ class CreateMovimientosTable extends Migration
             $table->foreign('usuarios_id')->references('idUsuario')->on('Usuarios');
             $table->foreign('items_id')->references('idItem')->on('Items');
             $table->foreign('tipoMovimientos_id')->references('idTipomovimiento')->on('Tipomovimientos');
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+            
         });
     }
 

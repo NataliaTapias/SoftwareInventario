@@ -11,7 +11,9 @@ class CreateTipoMovimientosTable extends Migration
         Schema::create('Tipomovimientos', function (Blueprint $table) {
             $table->increments('idTipomovimiento');
             $table->string('nombre', 45);
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+            
         });
     }
 

@@ -31,7 +31,9 @@ class CreateSolicitudesTable extends Migration
             $table->foreign('estados_id')->references('idEstado')->on('Estados');
             $table->foreign('areas_id')->references('idArea')->on('Areas');
             $table->foreign('movimientos_id')->references('idMovimiento')->on('Movimientos');
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+            
         });
     }
 

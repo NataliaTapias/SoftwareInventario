@@ -12,7 +12,9 @@ class CreateEstadosTable extends Migration
             $table->increments('idEstado');
             $table->string('nombre', 45);
             $table->string('tipo', 45);
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+            
         });
     }
 

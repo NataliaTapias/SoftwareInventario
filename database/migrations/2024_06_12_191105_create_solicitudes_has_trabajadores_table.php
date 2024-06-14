@@ -18,7 +18,9 @@ class CreateSolicitudesHasTrabajadoresTable extends Migration
             $table->foreign('soli_tipoMantenimientos_id')->references('idTipomantenimiento')->on('TipoMantenimientos');
             $table->foreign('solicitudes_estados_id')->references('idEstado')->on('Estados');
             $table->foreign('trabajadores_id')->references('idTrabajador')->on('Trabajadores');
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+            
         });
     }
 
