@@ -1,0 +1,90 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #343a40;
+    padding: 20px;
+    color: white;
+    position: fixed;
+    height: 100vh;
+    transition: width 0.3s;
+}
+
+.sidebar h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a, .sidebar ul li button {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    background-color: #495057;
+    border: none;
+    text-align: left;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.sidebar ul li a.logout-button, .sidebar ul li button.logout-button {
+    background-color: #dc3545;
+}
+
+.sidebar ul li a:hover, .sidebar ul li button:hover {
+    background-color: #495057;
+}
+
+.sidebar ul li a.logout-button:hover, .sidebar ul li button.logout-button:hover {
+    background-color: #c82333;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
