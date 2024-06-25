@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Movimiento;
 use App\Models\Usuario;
+use App\Models\Solicitud;
 use App\Models\Item;
 use App\Models\TipoMovimiento;
 use Illuminate\Http\Request;
@@ -26,8 +27,9 @@ class MovimientoController extends Controller
         $usuarios = Usuario::all();
         $items = Item::all();
         $tiposMovimientos = TipoMovimiento::all();
+        $solicitudes = Solicitud::all();
     
-        return view('movimientos.create', compact('usuarios', 'items', 'tiposMovimientos'));
+        return view('movimientos.create', compact('usuarios', 'items', 'tiposMovimientos','solicitudes'));
     }
     
 
@@ -43,6 +45,7 @@ class MovimientoController extends Controller
     $movimiento->proveedor = $request->input('proveedor');
     $movimiento->colaborador = $request->input('colaborador');
     $movimiento->usuarios_id = $request->input('usuarios_id');
+    $movimiento->solicitudes_id = $request->input('solicitudes_id');
     $movimiento->items_id = $request->input('items_id');
     $movimiento->tipoMovimientos_id = $request->input('tipoMovimientos_id');
     $movimiento->save();
@@ -51,11 +54,16 @@ class MovimientoController extends Controller
 }
 
 
-    public function edit($idMovimiento)
-    {
-        $movimiento = Movimiento::findOrFail($idMovimiento);
-        return view('movimientos.edit', compact('movimiento'));
-    }
+public function edit($id)
+{
+    $movimiento = Movimiento::findOrFail($id);
+    $usuarios = Usuario::all();
+    $solicitudes = Solicitud::all();
+    $items = Item::all();
+    $tipoMovimientos = TipoMovimiento::all();
+
+    return view('movimientos.edit', compact('movimiento', 'usuarios', 'solicitudes', 'items', 'tipoMovimientos'));
+}
 
     public function update(Request $request, $idMovimiento)
     {
@@ -69,6 +77,7 @@ class MovimientoController extends Controller
         $movimiento->proveedor = $request->input('proveedor');
         $movimiento->colaborador = $request->input('colaborador');
         $movimiento->usuarios_id = $request->input('usuarios_id');
+        $movimiento->solicitudes_id = $request->input('solicitudes_id');
         $movimiento->items_id = $request->input('items_id');
         $movimiento->tipoMovimientos_id = $request->input('tipoMovimientos_id');
         $movimiento->save();

@@ -13,27 +13,41 @@ use App\Http\Controllers\TrabajadorController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RolController;
+
+
+// routes/web.php
+
 use App\Http\Controllers\RoleController;
+
+Route::resource('roles', RoleController::class);
+
+
+
+Route::resource('tipomantenimientos', TipoMantenimientoController::class);
+
+
+
 // Definición de las rutas
 Route::resource('areas', AreaController::class);
 Route::resource('categorias', CategoriaController::class);
 Route::resource('estados', EstadoController::class);
 Route::resource('movimientos', MovimientoController::class);
 
-Route::resource('roles', RolController::class);
+
 
 Route::resource('solicitudes', SolicitudController::class);
-Route::resource('solicitudesHasTrabajadores', SolicitudHasTrabajadorController::class);
+Route::resource('solicitudes_has_trabajadores', SolicitudHasTrabajadorController::class);
 Route::resource('subcategorias', SubcategoriaController::class);
 Route::resource('tipoMantenimiento', TipoMantenimientoController::class);
-Route::resource('tipoMovimientos', TipoMovimientoController::class);
+Route::resource('tipomovimientos', TipoMovimientoController::class);
 Route::resource('trabajadores', TrabajadorController::class);
+
 Route::resource('usuarios', UsuarioController::class);
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 
 Route::middleware([])->group(function () {

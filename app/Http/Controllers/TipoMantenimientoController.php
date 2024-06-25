@@ -2,63 +2,57 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TipoMantenimiento;
 use Illuminate\Http\Request;
 
 class TipoMantenimientoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->input('search');
+        $query = TipoMantenimiento::query();
+        
+        if ($search) {
+            $query->where('nombre', 'like', "%{$search}%");
+        }
+        
+        $tipomantenimientos = $query->get();
+        return view('tipomantenimientos.index', compact('tipomantenimientos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('tipomantenimientos.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:80',
+        ]);
+
+        TipoMantenimiento::create($request->all());
+        return redirect()->route('tipomantenimientos.index')->with('success', 'Tipo de Mantenimiento creado con éxito');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(TipoMantenimiento $tipomantenimiento)
     {
-        //
+        return view('tipomantenimientos.edit', compact('tipomantenimiento'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, TipoMantenimiento $tipomantenimiento)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:80',
+        ]);
+
+        $tipomantenimiento->update($request->all());
+        return redirect()->route('tipomantenimientos.index')->with('success', 'Tipo de Mantenimiento actualizado con éxito');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(TipoMantenimiento $tipomantenimiento)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $tipomantenimiento->delete();
+        return redirect()->route('tipomantenimientos.index')->with('success', 'Tipo de Mantenimiento eliminado con éxito');
     }
 }

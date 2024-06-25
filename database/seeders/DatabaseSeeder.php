@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             SubcategoriasSeeder::class,
             EstadosSeeder::class,
             TipoMovimientoSeeder::class,
+            TipoMantenimientoSeeder::class,
             AreasSeeder::class,
             TrabajadoresSeeder::class,
 

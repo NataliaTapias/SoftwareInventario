@@ -31,6 +31,7 @@
                     <th>Precio</th>
                     <th>Num Remisión Proveedor</th>
                     <th>Observación</th>
+                    <th>Solicitud</th>
                     <th>Firma</th>
                     <th>Proveedor</th>
                     <th>Colaborador</th>
@@ -46,6 +47,7 @@
                         <td>{{ $movimiento->precio }}</td>
                         <td>{{ $movimiento->numRemisionProveedor }}</td>
                         <td>{{ $movimiento->observacion }}</td>
+                        <td>{{ $movimiento->solicitud->nombre ?? 'N/A' }}</td>
                         <td>{{ $movimiento->firma }}</td>
                         <td>{{ $movimiento->proveedor }}</td>
                         <td>{{ $movimiento->colaborador }}</td>

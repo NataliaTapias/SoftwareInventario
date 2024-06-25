@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Usuario;
-use App\Models\Rol;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
 class UsuarioController extends Controller
@@ -16,7 +16,7 @@ class UsuarioController extends Controller
 
     public function create()
     {
-        $roles = Rol::all();
+        $roles = Role::all();
         return view('usuarios.create', compact('roles'));
     }
     
@@ -45,7 +45,7 @@ class UsuarioController extends Controller
 
     public function edit(Usuario $usuario)
     {
-        $roles = Rol::all();
+        $roles = Role::all();
         return view('usuarios.edit', compact('usuario', 'roles'));
     }
     
@@ -53,24 +53,25 @@ class UsuarioController extends Controller
     public function update(Request $request, Usuario $usuario)
     {
         $request->validate([
-            'nombre' => 'required',
+            'nombre' => 'required|string|max:255',
             'cargo' => 'nullable|string|max:45',
-            'email' => 'required|email|unique:Usuarios,email,' . $usuario->idUsuario,
-            'password' => 'nullable|min:8',
+            'email' => 'required|string|email|max:255|unique:Usuarios,email,' . $usuario->idUsuario . ',idUsuario',
+            'password' => 'nullable|string|min:8',
             'roles_id' => 'required|exists:Roles,idRol',
         ]);
-
+    
         $data = $request->all();
-        if($request->filled('password')){
-            $data['password'] = bcrypt($request->input('password'));
-        } else {
+        if (empty($data['password'])) {
             unset($data['password']);
+        } else {
+            $data['password'] = bcrypt($data['password']);
         }
-
+    
         $usuario->update($data);
-        return redirect()->route('usuarios.index');
+    
+        return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado correctamente.');
     }
-
+    
     public function destroy(Usuario $usuario)
     {
         $usuario->delete();

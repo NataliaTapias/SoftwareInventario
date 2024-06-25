@@ -9,9 +9,10 @@
         <form method="POST" action="{{ route('movimientos.update', $movimiento->idMovimiento) }}">
             @csrf
             @method('PUT')
+
             <div class="form-group">
                 <label for="fecha">Fecha</label>
-                <input type="datetime-local" class="form-control" id="fecha" name="fecha" value="{{ $movimiento->fecha }}" required>
+                <input type="datetime-local" class="form-control" id="fecha" name="fecha" value="{{ \Carbon\Carbon::parse($movimiento->fecha)->format('Y-m-d\TH:i') }}" required>
             </div>
             <div class="form-group">
                 <label for="cantidad">Cantidad</label>
@@ -42,16 +43,36 @@
                 <input type="text" class="form-control" id="colaborador" name="colaborador" value="{{ $movimiento->colaborador }}" required>
             </div>
             <div class="form-group">
-                <label for="usuarios_id">ID Usuario</label>
-                <input type="number" class="form-control" id="usuarios_id" name="usuarios_id" value="{{ $movimiento->usuarios_id }}" required>
+                <label for="usuarios_id">Usuario</label>
+                <select class="form-control" id="usuarios_id" name="usuarios_id" required>
+                    @foreach($usuarios as $usuario)
+                        <option value="{{ $usuario->idUsuario }}" {{ $movimiento->usuarios_id == $usuario->idUsuario ? 'selected' : '' }}>{{ $usuario->nombre }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group">
-                <label for="items_id">ID Item</label>
-                <input type="number" class="form-control" id="items_id" name="items_id" value="{{ $movimiento->items_id }}" required>
+                <label for="solicitudes_id">Solicitud</label>
+                <select class="form-control" id="solicitudes_id" name="solicitudes_id" required>
+                    @foreach($solicitudes as $solicitud)
+                        <option value="{{ $solicitud->idSolicitud }}" {{ $movimiento->solicitudes_id == $solicitud->idSolicitud ? 'selected' : '' }}>{{ $solicitud->descripcionFalla }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group">
-                <label for="tipoMovimientos_id">ID Tipo Movimiento</label>
-                <input type="number" class="form-control" id="tipoMovimientos_id" name="tipoMovimientos_id" value="{{ $movimiento->tipoMovimientos_id }}" required>
+                <label for="items_id">Item</label>
+                <select class="form-control" id="items_id" name="items_id" required>
+                    @foreach($items as $item)
+                        <option value="{{ $item->idItem }}" {{ $movimiento->items_id == $item->idItem ? 'selected' : '' }}>{{ $item->nombre }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="tipoMovimientos_id">Tipo Movimiento</label>
+                <select class="form-control" id="tipoMovimientos_id" name="tipoMovimientos_id" required>
+                    @foreach($tipoMovimientos as $tipoMovimiento)
+                        <option value="{{ $tipoMovimiento->idTipomovimiento }}" {{ $movimiento->tipoMovimientos_id == $tipoMovimiento->idTipomovimiento ? 'selected' : '' }}>{{ $tipoMovimiento->nombre }}</option>
+                    @endforeach
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Actualizar</button>
             <a href="{{ route('movimientos.index') }}" class="btn btn-secondary">Cancelar</a>

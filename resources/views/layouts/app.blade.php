@@ -104,10 +104,11 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('solicitudesHasTrabajadores.index') }}">
-                    <i class="fas fa-user-friends"></i> Solicitudes has Trabajadores
-                </a>
+             <a class="nav-link" href="{{ route('solicitudes_has_trabajadores.index') }}">
+              <i class="fas fa-user-friends"></i> Solicitudes has Trabajadores
+            </a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('subcategorias.index') }}">
                     <i class="fas fa-layer-group"></i> Subcategorías
@@ -119,9 +120,10 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('tipoMovimientos.index') }}">
-                    <i class="fas fa-exchange-alt"></i> Tipo de Movimientos
-                </a>
+            <a class="nav-link" href="{{ route('tipomovimientos.index') }}">
+    <i class="fas fa-tools"></i> Tipo de Movimientos
+</a>
+
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('trabajadores.index') }}">

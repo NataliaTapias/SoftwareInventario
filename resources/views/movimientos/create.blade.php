@@ -59,6 +59,15 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="solicitudes_id">Solicitudes</label>
+                <select class="form-control" id="solicitudes_id" name="solicitudes_id" required>
+                    <option value="">Seleccione una solicitud</option>
+                    @foreach($solicitudes as $solicitud)
+                        <option value="{{ $solicitud->solicitudes_id }}">{{ $solicitud->descripcionFalla }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="tipoMovimientos_id">Tipo de Movimiento</label>
                 <select class="form-control" id="tipoMovimientos_id" name="tipoMovimientos_id" required>
                     <option value="">Seleccione un tipo de movimiento</option>

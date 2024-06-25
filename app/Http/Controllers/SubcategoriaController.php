@@ -1,64 +1,63 @@
 <?php
 
+// app/Http/Controllers/SubcategoriaController.php
 namespace App\Http\Controllers;
 
+use App\Models\Subcategoria;
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 
 class SubcategoriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $subcategorias = Subcategoria::with('categoria')->get();
+        return view('subcategorias.index', compact('subcategorias'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $categorias = Categoria::all();
+        return view('subcategorias.create', compact('categorias'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:45',
+            'categorias_id' => 'required|exists:categorias,idCategoria'
+        ]);
+
+        Subcategoria::create($request->all());
+        return redirect()->route('subcategorias.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Subcategoria $subcategoria)
     {
-        //
+        return view('subcategorias.show', compact('subcategoria'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Subcategoria $subcategoria)
     {
-        //
+        $categorias = Categoria::all();
+        return view('subcategorias.edit', compact('subcategoria', 'categorias'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Subcategoria $subcategoria)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:45',
+            'categorias_id' => 'required|exists:categorias,idCategoria'
+        ]);
+
+        $subcategoria->update($request->all());
+        return redirect()->route('subcategorias.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Subcategoria $subcategoria)
     {
-        //
+        $subcategoria->delete();
+        return redirect()->route('subcategorias.index');
     }
 }
+

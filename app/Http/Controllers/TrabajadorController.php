@@ -2,63 +2,57 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Trabajador;
 use Illuminate\Http\Request;
 
 class TrabajadorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->query('search');
+        $query = Trabajador::query();
+        
+        if ($search) {
+            $query->where('nombre', 'like', "%{$search}%");
+        }
+        
+        $trabajadores = $query->get();
+        return view('trabajadores.index', compact('trabajadores'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('trabajadores.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:150',
+        ]);
+
+        Trabajador::create($request->all());
+        return redirect()->route('trabajadores.index')->with('success', 'Trabajador creado con éxito');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Trabajador $trabajadore)
     {
-        //
+        return view('trabajadores.edit', compact('trabajadore'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Trabajador $trabajadore)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:150',
+        ]);
+
+        $trabajadore->update($request->all());
+        return redirect()->route('trabajadores.index')->with('success', 'Trabajador actualizado con éxito');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Trabajador $trabajadore)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $trabajadore->delete();
+        return redirect()->route('trabajadores.index')->with('success', 'Trabajador eliminado con éxito');
     }
 }

@@ -10,9 +10,10 @@ class TipoMovimientoSeeder extends Seeder
     public function run()
     {
         $tipoMovimiento = [
-            ['nombre' => 'Movimiento Preventivo'],
-            ['nombre' => 'Movimiento Correctivo'],
-            ['nombre' => 'Movimiento Programable'],
+            ['nombre' => 'Movimiento de Entrada'],
+            ['nombre' => 'Movimiento de Salida'],
+            ['nombre' => 'Ajuste de Entrada'],
+            ['nombre' => 'Ajuste de Salida'],
         ];
 
         DB::table('Tipomovimientos')->insert($tipoMovimiento);

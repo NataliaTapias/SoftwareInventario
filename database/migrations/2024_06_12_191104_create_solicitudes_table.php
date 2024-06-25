@@ -26,11 +26,9 @@ class CreateSolicitudesTable extends Migration
             $table->string('firmaLider', 255)->nullable();
             $table->unsignedInteger('estados_id');
             $table->unsignedInteger('areas_id');
-            $table->unsignedInteger('movimientos_id')->nullable();
             $table->foreign('tipoMantenimientos_id')->references('idTipomantenimiento')->on('Tipomantenimientos');
             $table->foreign('estados_id')->references('idEstado')->on('Estados');
             $table->foreign('areas_id')->references('idArea')->on('Areas');
-            $table->foreign('movimientos_id')->references('idMovimiento')->on('Movimientos');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
             

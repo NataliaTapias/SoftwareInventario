@@ -2,63 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TipoMovimiento;
 use Illuminate\Http\Request;
 
 class TipoMovimientoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $tipomovimientos = TipoMovimiento::all();
+        return view('tipomovimientos.index', compact('tipomovimientos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('tipomovimientos.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:45'
+        ]);
+
+        TipoMovimiento::create($request->all());
+        return redirect()->route('tipomovimientos.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(TipoMovimiento $tipomovimiento)
     {
-        //
+        return view('tipomovimientos.edit', compact('tipomovimiento'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, TipoMovimiento $tipomovimiento)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:45',
+        ]);
+
+        $tipomovimiento->update($request->all());
+
+        return redirect()->route('tipomovimientos.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(TipoMovimiento $tipomovimiento)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $tipomovimiento->delete();
+        return redirect()->route('tipomovimientos.index');
     }
 }

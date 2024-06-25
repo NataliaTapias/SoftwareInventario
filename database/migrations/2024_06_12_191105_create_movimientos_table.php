@@ -19,9 +19,11 @@ class CreateMovimientosTable extends Migration
             $table->string('proveedor', 255);
             $table->string('colaborador', 255);
             $table->unsignedInteger('usuarios_id');
+            $table->unsignedInteger('solicitudes_id');
             $table->unsignedInteger('items_id');
             $table->unsignedInteger('tipoMovimientos_id');
             $table->foreign('usuarios_id')->references('idUsuario')->on('Usuarios');
+            $table->foreign('solicitudes_id')->references('idSolicitud')->on('Solicitudes');
             $table->foreign('items_id')->references('idItem')->on('Items');
             $table->foreign('tipoMovimientos_id')->references('idTipomovimiento')->on('Tipomovimientos');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
