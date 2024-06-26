@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard')</title>
+    <title>@yield('title', 'Quimint')</title>
+    <link rel="icon" href="{{ asset('public\images\favicon.ico.png') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -21,7 +22,19 @@
             top: 0;
             left: 0;
             padding: 20px;
+            overflow-y: auto;
             transition: width 0.3s;
+        }
+        .sidebar .logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .sidebar .logo img {
+            max-width: 100px;
+            height: auto;
+            border-radius: 50%;
+            background-color: #4CAF50; /* Color verde césped */
+            padding: 10px;
         }
         .sidebar h2 {
             font-size: 1.5rem;
@@ -60,6 +73,11 @@
 </head>
 <body>
     <div class="sidebar">
+        <div class="logo">
+            <a class="nav-link" href="{{ route('home') }}">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo">
+            </a>
+        </div>
         <h2>Admin Panel</h2>
         <ul class="nav flex-column">
             <li class="nav-item">
@@ -104,11 +122,10 @@
                 </a>
             </li>
             <li class="nav-item">
-             <a class="nav-link" href="{{ route('solicitudes_has_trabajadores.index') }}">
-              <i class="fas fa-user-friends"></i> Solicitudes has Trabajadores
-            </a>
+                <a class="nav-link" href="{{ route('solicitudes_has_trabajadores.index') }}">
+                    <i class="fas fa-user-friends"></i> Solicitudes has Trabajadores
+                </a>
             </li>
-
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('subcategorias.index') }}">
                     <i class="fas fa-layer-group"></i> Subcategorías
@@ -120,10 +137,9 @@
                 </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="{{ route('tipomovimientos.index') }}">
-    <i class="fas fa-tools"></i> Tipo de Movimientos
-</a>
-
+                <a class="nav-link" href="{{ route('tipomovimientos.index') }}">
+                    <i class="fas fa-tools"></i> Tipo de Movimientos
+                </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('trabajadores.index') }}">

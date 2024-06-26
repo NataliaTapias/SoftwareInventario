@@ -19,7 +19,7 @@ class CreateMovimientosTable extends Migration
             $table->string('proveedor', 255);
             $table->string('colaborador', 255);
             $table->unsignedInteger('usuarios_id');
-            $table->unsignedInteger('solicitudes_id');
+            $table->unsignedInteger('solicitudes_id')->nullable(); // Aquí se define como NOT NULL
             $table->unsignedInteger('items_id');
             $table->unsignedInteger('tipoMovimientos_id');
             $table->foreign('usuarios_id')->references('idUsuario')->on('Usuarios');

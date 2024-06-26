@@ -16,7 +16,7 @@ class CreateSolicitudesTable extends Migration
             $table->unsignedInteger('tipoMantenimientos_id');
             $table->dateTime('fechaInicio')->nullable();
             $table->dateTime('fechaTermina')->nullable();
-            $table->boolean('mantenimientoEficiente')->nullable();
+            $table->boolean('mantenimientoEficiente')->default(false);
             $table->decimal('totalHorasTrabajadas', 5, 2)->nullable();
             $table->decimal('tiempoParada', 5, 2)->nullable();
             $table->text('repuestosUtilizados')->nullable();
