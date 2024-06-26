@@ -45,4 +45,9 @@ class Solicitud extends Model
     {
         return $this->belongsTo(Area::class, 'areas_id', 'idArea');
     }
+
+    public function solicitudHasTrabajador()
+    {
+        return $this->hasOne(SolicitudHasTrabajador::class, 'solicitudes_id');
+    }
 }

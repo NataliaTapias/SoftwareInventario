@@ -21,10 +21,12 @@ use App\Http\Controllers\RoleController;
 
 Route::resource('roles', RoleController::class);
 
+Route::get('solicitudes/{id}/asignaciones', [SolicitudHasTrabajadorController::class, 'showBySolicitud'])->name('solicitudes.asignaciones');
 
 
 Route::resource('tipomantenimientos', TipoMantenimientoController::class);
 
+Route::get('solicitudes_has_trabajadores', [SolicitudHasTrabajadorController::class, 'index'])->name('solicitudes_has_trabajadores.index');
 
 
 // Definición de las rutas

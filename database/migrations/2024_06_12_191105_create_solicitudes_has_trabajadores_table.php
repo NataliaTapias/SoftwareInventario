@@ -11,9 +11,9 @@ class CreateSolicitudesHasTrabajadoresTable extends Migration
         Schema::create('Solicitudes_has_trabajadores', function (Blueprint $table) {
             $table->increments('idSolicitudtrabajadores');
             $table->unsignedInteger('solicitudes_id');
-            $table->unsignedInteger('soli_tipoMantenimientos_id');
-            $table->unsignedInteger('solicitudes_estados_id');
-            $table->unsignedInteger('trabajadores_id');
+            $table->unsignedInteger('soli_tipoMantenimientos_id')->nullable();
+            $table->unsignedInteger('solicitudes_estados_id')->nullable();
+            $table->unsignedInteger('trabajadores_id')->nullable();
             $table->foreign('solicitudes_id')->references('idSolicitud')->on('Solicitudes');
             $table->foreign('soli_tipoMantenimientos_id')->references('idTipomantenimiento')->on('TipoMantenimientos');
             $table->foreign('solicitudes_estados_id')->references('idEstado')->on('Estados');

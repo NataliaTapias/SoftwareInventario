@@ -1,53 +1,41 @@
 @extends('layouts.app')
 
-@section('title', 'Solicitudes asignadas a Trabajadores')
+@section('title', 'Solicitudes Asignadas')
 
 @section('content')
     <div class="container">
-        <h1 class="my-4">Solicitudes asignadas a Trabajadores</h1>
+        <h1 class="my-4">Listado de Solicitudes Asignadas a Trabajadores</h1>
 
-<!-- Formulario de búsqueda y filtrado -->
-        <form method="GET" action="{{ route('solicitudes_has_trabajadores.index') }}" class="row mb-4">
-            <div class="col">
-                <input type="text" name="search" class="form-control" placeholder="Buscar por descripción de la solicitud" value="{{ request('search') }}">
-            </div>
-            <div class="col">
-                <button type="submit" class="btn btn-primary">Buscar</button>
-            </div>
-        </form>
-
-
-        <a href="{{ route('solicitudes_has_trabajadores.create') }}" class="btn btn-success mb-4">Asignar Solicitud a Trabajador</a>
-        <table class="table table-striped">
+        <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Solicitud</th>
-                    <th>Tipo de Mantenimiento</th>
-                    <th>Estado</th>
-                    <th>Trabajador</th>
+                    <th>ID Solicitud</th>
+                    <th>ID Trabajador</th>
+                    <th>Nombre Trabajador</th>
+                    <th>Fecha Asignación</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($solicitudesHasTrabajadores as $solicitudHasTrabajador)
+                @foreach($solicitudesHasTrabajadores as $asignacion)
                     <tr>
-                        <td>{{ $solicitudHasTrabajador->idSolicitudtrabajadores }}</td>
-                        <td>{{ $solicitudHasTrabajador->solicitud->descripcionFalla }}</td>
-                        <td>{{ $solicitudHasTrabajador->tipoMantenimiento->nombre }}</td>
-                        <td>{{ $solicitudHasTrabajador->estado->nombre }}</td>
-                        <td>{{ $solicitudHasTrabajador->trabajador->nombre }}</td>
+                        <td>{{ $asignacion->solicitudes_id }}</td>
+                        <td>{{ $asignacion->trabajadores_id }}</td>
+                        <td>{{ $asignacion->trabajador->nombre }}</td>
+                        <td>{{ $asignacion->created_at }}</td>
                         <td>
-                            <a href="{{ route('solicitudes_has_trabajadores.edit', $solicitudHasTrabajador->idSolicitudtrabajadores) }}" class="btn btn-warning btn-sm">Editar</a>
-                            <form action="{{ route('solicitudes_has_trabajadores.destroy', $solicitudHasTrabajador->idSolicitudtrabajadores) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta asignación?');">
+                            <a href="{{ route('solicitudes_has_trabajadores.edit', $asignacion->idSolicitudtrabajadores) }}" class="btn btn-primary">Editar</a>
+                            <form action="{{ route('solicitudes_has_trabajadores.destroy', $asignacion->idSolicitudtrabajadores) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
                             </form>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+
+        <a href="{{ route('solicitudes.index') }}" class="btn btn-secondary">Volver al Listado de Solicitudes</a>
     </div>
 @endsection

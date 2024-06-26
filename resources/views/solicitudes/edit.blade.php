@@ -53,14 +53,26 @@
                         <label for="fechaTermina">Fecha de Término</label>
                         <input type="datetime-local" class="form-control" id="fechaTermina" name="fechaTermina" value="{{ $solicitude->fechaTermina ? Carbon\Carbon::parse($solicitude->fechaTermina)->format('Y-m-d\TH:i') : '' }}">
                     </div>
+                    
                     <div class="form-group">
-    <label for="mantenimientoEficiente">Mantenimiento Eficiente</label>
-    <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="mantenimientoEficiente" name="mantenimientoEficiente" value="1" {{ $solicitude->mantenimientoEficiente ? 'checked' : '' }}>
-        <label class="form-check-label" for="mantenimientoEficiente">Sí</label>
-    </div>
-</div>
+                        <label for="mantenimientoEficiente">Mantenimiento Eficiente</label>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="mantenimientoEficiente" name="mantenimientoEficiente" value="1" {{ $solicitude->mantenimientoEficiente ? 'checked' : '' }}>
+                            <label class="form-check-label" for="mantenimientoEficiente">Sí</label>
+                        </div>
+                    </div>
 
+                    <div class="form-group">
+                        <label for="trabajadores_id">Asignar Trabajador</label>
+                        <select class="form-control" id="trabajadores_id" name="trabajadores_id">
+                            <option value="">-- No Asignar --</option>
+                            @foreach($trabajadores as $trabajador)
+                                <option value="{{ $trabajador->idTrabajador }}" {{ $solicitudHasTrabajador && $solicitudHasTrabajador->trabajadores_id == $trabajador->idTrabajador ? 'selected' : '' }}>
+                                    {{ $trabajador->nombre }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
                 <div class="col-md-6">
@@ -132,5 +144,3 @@
         </form>
     </div>
 @endsection
-
-

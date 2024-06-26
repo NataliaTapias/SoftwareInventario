@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Quimint')</title>
-    <link rel="icon" href="{{ asset('public\images\favicon.ico.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -59,6 +60,18 @@
             padding: 20px;
             transition: margin-left 0.3s;
         }
+        .nav-item {
+            margin-bottom: 10px;
+        }
+        .nav-item:last-child {
+            margin-bottom: 0;
+        }
+        .nav-link i {
+            margin-right: 10px;
+        }
+        .nav-link i.fa {
+            color: #4CAF50; /* Color verde para los iconos */
+        }
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
@@ -69,6 +82,31 @@
                 margin-left: 0;
             }
         }
+
+        /* Estilos para la barra de desplazamiento */
+    ::-webkit-scrollbar {
+        width: 8px; /* Ancho de la barra de desplazamiento */
+        
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Color del fondo del track */
+        border-radius: 5px; /* Radio de borde del track */
+        
+    }
+
+    /* Thumb (scrollbar) */
+    ::-webkit-scrollbar-thumb {
+        
+        background: #4CAF50; /* Color del scrollbar */
+        border-radius: 5px; /* Radio de borde del scrollbar */
+    }
+
+    /* Cambio de color al pasar el ratón */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Color del scrollbar al pasar el ratón */
+    }
     </style>
 </head>
 <body>
@@ -82,79 +120,76 @@
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('home') }}">
-                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                    <i class="fas fa-tachometer-alt fa"></i> Dashboard
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('items.index') }}">
-                    <i class="fas fa-box"></i> Inventario
-                </a>
-            </li>
-            <!-- Nuevos elementos de navegación -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('areas.index') }}">
-                    <i class="fas fa-th-large"></i> Áreas
+                    <i class="fas fa-box fa"></i> Inventario
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('categorias.index') }}">
-                    <i class="fas fa-tags"></i> Categorías
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('estados.index') }}">
-                    <i class="fas fa-flag"></i> Estados
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('movimientos.index') }}">
-                    <i class="fas fa-exchange-alt"></i> Movimientos
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('roles.index') }}">
-                    <i class="fas fa-user-tag"></i> Roles
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('solicitudes.index') }}">
-                    <i class="fas fa-envelope"></i> Solicitudes
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('solicitudes_has_trabajadores.index') }}">
-                    <i class="fas fa-user-friends"></i> Solicitudes has Trabajadores
+                    <i class="fas fa-tags fa"></i> Categorías
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('subcategorias.index') }}">
-                    <i class="fas fa-layer-group"></i> Subcategorías
+                    <i class="fas fa-layer-group fa"></i> Subcategorías
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('tipoMantenimiento.index') }}">
-                    <i class="fas fa-tools"></i> Tipo de Mantenimiento
+                <a class="nav-link" href="{{ route('movimientos.index') }}">
+                    <i class="fas fa-exchange-alt fa"></i> Movimientos
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('tipomovimientos.index') }}">
-                    <i class="fas fa-tools"></i> Tipo de Movimientos
+                <a class="nav-link" href="{{ route('solicitudes.index') }}">
+                    <i class="fas fa-envelope fa"></i> Solicitudes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('estados.index') }}">
+                    <i class="fas fa-flag fa"></i> Estados
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('usuarios.index') }}">
+                    <i class="fas fa-user fa"></i> Usuarios
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('roles.index') }}">
+                    <i class="fas fa-user-tag fa"></i> Roles
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('solicitudes_has_trabajadores.index') }}">
+                    <i class="fas fa-user-friends fa"></i> Solicitudes has Trabajadores
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('trabajadores.index') }}">
-                    <i class="fas fa-users"></i> Trabajadores
+                    <i class="fas fa-users fa"></i> Trabajadores
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('tipoMantenimiento.index') }}">
+                    <i class="fas fa-tools fa"></i> Tipo de Mantenimiento
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('usuarios.index') }}">
-                    <i class="fas fa-user"></i> Usuarios
+                <a class="nav-link" href="{{ route('tipomovimientos.index') }}">
+                    <i class="fas fa-tools fa"></i> Tipo de Movimientos
                 </a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link logout-button" href="{{ route('logout') }}"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                   <i class="fas fa-sign-out-alt"></i> Logout
+                   <i class="fas fa-sign-out-alt fa"></i> Logout
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf

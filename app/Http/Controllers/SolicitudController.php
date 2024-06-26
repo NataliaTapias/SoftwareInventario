@@ -1,10 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Solicitud;
 use App\Models\TipoMantenimiento;
 use App\Models\Estado;
+use App\Models\Trabajador;
+use App\Models\SolicitudHasTrabajador;
 use App\Models\Area;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -47,8 +48,12 @@ class SolicitudController extends Controller
             'areas_id' => 'required|exists:areas,idArea',
         ]);
     
-        Solicitud::create($request->all());
+        $solicitud = Solicitud::create($request->all());
     
+        if ($request->has('asignar_trabajador')) {
+            return redirect()->route('solicitudes_has_trabajadores.create', ['solicitud_id' => $solicitud->idSolicitud]);
+        }
+
         return redirect()->route('solicitudes.index')->with('success', 'Solicitud creada exitosamente.');
     }
 
@@ -57,7 +62,10 @@ class SolicitudController extends Controller
         $tiposMantenimientos = TipoMantenimiento::all();
         $estados = Estado::all();
         $areas = Area::all();
-        return view('solicitudes.edit', compact('solicitude', 'tiposMantenimientos', 'estados', 'areas'));
+        $trabajadores = Trabajador::all(); // Añadido para listar trabajadores
+        $solicitudHasTrabajador = $solicitude->solicitudHasTrabajador()->first(); // Obtener la asignación si existe
+    
+        return view('solicitudes.edit', compact('solicitude', 'tiposMantenimientos', 'estados', 'areas', 'trabajadores', 'solicitudHasTrabajador'));
     }
 
     public function update(Request $request, Solicitud $solicitude)
@@ -83,14 +91,26 @@ class SolicitudController extends Controller
             'firmaLider' => 'nullable|string|max:255',
             'estados_id' => 'required|exists:estados,idEstado',
             'areas_id' => 'required|exists:areas,idArea',
+            'trabajadores_id' => 'nullable|integer|exists:trabajadores,idTrabajador' // Añadido para la asignación opcional de trabajador
         ]);
     
         // Actualizar solicitud
         $solicitude->update($request->all());
     
+        // Asignación del trabajador si se proporciona
+        if ($request->filled('trabajadores_id')) {
+            SolicitudHasTrabajador::updateOrCreate(
+                ['solicitudes_id' => $solicitude->id],
+                [
+                    'soli_tipoMantenimientos_id' => $request->tipoMantenimientos_id,
+                    'solicitudes_estados_id' => $request->estados_id,
+                    'trabajadores_id' => $request->trabajadores_id
+                ]
+            );
+        }
+    
         return redirect()->route('solicitudes.index')->with('success', 'Solicitud actualizada exitosamente.');
     }
-    
 
     public function destroy(Solicitud $solicitude)
     {

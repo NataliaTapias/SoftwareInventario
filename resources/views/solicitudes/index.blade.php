@@ -1,37 +1,24 @@
 @extends('layouts.app')
 
-@section('title', 'Solicitudes')
+@section('title', 'Listado de Solicitudes')
 
 @section('content')
-    <div class="container-fluid">
-        <h1 class="my-4">Solicitudes</h1>
+    <div class="container">
+        <h1 class="my-4">Listado de Solicitudes</h1>
 
-        <!-- Formulario de búsqueda y filtrado -->
-        <form method="GET" action="{{ route('solicitudes.index') }}" class="row mb-4">
-            <div class="col">
-                <input type="text" name="search" class="form-control" placeholder="Buscar por firma, estado o área" value="{{ request('search') }}">
-            </div>
-            <div class="col">
-                <button type="submit" class="btn btn-primary">Buscar</button>
-            </div>
-        </form>
+        <!-- Botón para crear una nueva solicitud -->
+        <a href="{{ route('solicitudes.create') }}" class="btn btn-success mb-3">Crear Nueva Solicitud</a>
 
-        <!-- Botón Crear Solicitud -->
-        <div class="mb-4">
-            <a href="{{ route('solicitudes.create') }}" class="btn btn-success">Crear Solicitud</a>
-        </div>
+        <!-- Botón para ver todas las solicitudes asignadas a trabajadores -->
+        <a href="{{ route('solicitudes_has_trabajadores.index') }}" class="btn btn-info mb-3">Ver Solicitudes Asignadas a Trabajadores</a>
 
-        <!-- Tabla de solicitudes -->
-        <table class="table table-striped">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Fecha</th>
-                    <th>Descripción de la Falla</th>
-                    <th>Tiempo Estimado</th>
-                    <th>Tipo de Mantenimiento</th>
+                    <th>Descripción</th>
                     <th>Estado</th>
-                    <th>Área</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -41,16 +28,13 @@
                         <td>{{ $solicitud->idSolicitud }}</td>
                         <td>{{ $solicitud->fecha }}</td>
                         <td>{{ $solicitud->descripcionFalla }}</td>
-                        <td>{{ $solicitud->tiempoEstimado }}</td>
-                        <td>{{ $solicitud->tipoMantenimiento->nombre }}</td>
                         <td>{{ $solicitud->estado->nombre }}</td>
-                        <td>{{ $solicitud->area->nombre }}</td>
                         <td>
-                            <a href="{{ route('solicitudes.edit', $solicitud->idSolicitud) }}" class="btn btn-warning btn-sm mr-2">Editar</a>
-                            <form action="{{ route('solicitudes.destroy', $solicitud->idSolicitud) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta solicitud?');">
+                            <a href="{{ route('solicitudes.edit', $solicitud->idSolicitud) }}" class="btn btn-primary">Editar</a>
+                            <form action="{{ route('solicitudes.destroy', $solicitud->idSolicitud) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
                             </form>
                         </td>
                     </tr>

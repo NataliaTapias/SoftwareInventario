@@ -14,30 +14,33 @@ class SolicitudHasTrabajadorController extends Controller
     public function index(Request $request)
     {
         $query = SolicitudHasTrabajador::query();
-
+    
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->whereHas('solicitud', function($q) use ($search) {
                 $q->where('descripcionFalla', 'LIKE', '%' . $search . '%');
             });
         }
-
+    
         $solicitudesHasTrabajadores = $query->get();
-
+    
         return view('solicitudes_has_trabajadores.index', compact('solicitudesHasTrabajadores'));
     }
+    
 
-    public function create()
-    {
-        // Recuperar todas las solicitudes, tipos de mantenimiento, estados y trabajadores
-        $solicitudes = Solicitud::all();
-        $tiposMantenimientos = TipoMantenimiento::all();
-        $estados = Estado::all();
-        $trabajadores = Trabajador::all();
+public function create(Request $request)
+{
+    $solicitud_id = $request->get('solicitud_id');
+    $solicitud = Solicitud::find($solicitud_id);
 
-        // Pasar los datos a la vista
-        return view('solicitudes_has_trabajadores.create', compact('solicitudes', 'tiposMantenimientos', 'estados', 'trabajadores'));
-    }
+    // Obtener los datos necesarios para el formulario
+    $trabajadores = Trabajador::all();
+    $tiposMantenimientos = TipoMantenimiento::all();
+    $estados = Estado::all();
+
+    return view('solicitudes_has_trabajadores.create', compact('solicitud', 'trabajadores', 'tiposMantenimientos', 'estados'));
+}
+
 
     public function store(Request $request)
     {
@@ -60,6 +63,15 @@ class SolicitudHasTrabajadorController extends Controller
         // Redirigir a la página de índice con un mensaje de éxito
         return redirect()->route('solicitudes_has_trabajadores.index')->with('success', 'Solicitud asignada exitosamente.');
     }
+
+    public function showBySolicitud($id)
+{
+    $solicitud = Solicitud::findOrFail($id);
+    $asignaciones = SolicitudHasTrabajador::where('solicitudes_id', $id)->get();
+
+    return view('solicitudes_has_trabajadores.index', compact('solicitud', 'asignaciones'));
+}
+
 
     public function edit($id)
     {

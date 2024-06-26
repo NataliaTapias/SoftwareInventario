@@ -28,10 +28,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
-                    <label for="descripcion">Descripción</label>
-                    <textarea name="descripcion" class="form-control">{{ $item->descripcion }}</textarea>
-                </div>
+
                 <div class="form-group">
                     <label for="cantidadMinima">Cantidad Mínima</label>
                     <input type="number" name="cantidadMinima" class="form-control" value="{{ $item->cantidadMinima }}" required>
@@ -55,6 +52,10 @@
                             </option>
                         @endforeach
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción</label>
+                    <textarea name="descripcion" class="form-control">{{ $item->descripcion }}</textarea>
                 </div>
             </div>
         </div>

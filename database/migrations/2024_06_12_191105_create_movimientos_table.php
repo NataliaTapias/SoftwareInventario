@@ -15,9 +15,9 @@ class CreateMovimientosTable extends Migration
             $table->decimal('precio', 10, 2);
             $table->string('numRemisionProveedor', 45)->nullable();
             $table->text('observacion')->nullable();
-            $table->string('firma', 255);
-            $table->string('proveedor', 255);
-            $table->string('colaborador', 255);
+            $table->string('firma', 255)->nullable();
+            $table->string('proveedor', 255)->nullable();
+            $table->string('colaborador', 255)->nullable();
             $table->unsignedInteger('usuarios_id');
             $table->unsignedInteger('solicitudes_id')->nullable(); // Aquí se define como NOT NULL
             $table->unsignedInteger('items_id');
