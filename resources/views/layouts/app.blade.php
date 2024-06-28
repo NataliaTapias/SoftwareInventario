@@ -22,7 +22,7 @@
         <div class="user-info">
            
         @if(Auth::check())
-                <p>Bienvenido, {{ Auth::user()->name }}</p>
+                <p>Bienvenido, {{ Auth::user()->nombre }}</p>
             @else
                 <p>No estás autenticado</p>
             @endif
