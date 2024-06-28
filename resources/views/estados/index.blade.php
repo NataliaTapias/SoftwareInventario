@@ -12,7 +12,7 @@
                 <input type="text" name="search" class="form-control" placeholder="Buscar por nombre" value="{{ request('search') }}">
             </div>
             <div class="col">
-                <button type="submit" class="btn btn-primary">Buscar</button>
+                <button type="submit" class="btn btn-success">Buscar</button>
             </div>
         </form>
 
@@ -42,12 +42,18 @@
                         <td>{{ $estado->created_at }}</td>
                         <td>{{ $estado->updated_at }}</td>
                         <td>
-                            <a href="{{ route('estados.edit', $estado->idEstado) }}" class="btn btn-warning btn-sm mr-2">Editar</a>
-                            <form action="{{ route('estados.destroy', $estado->idEstado) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este estado?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>
+                            <div class="d-flex justify-content-start">
+                                <a href="{{ route('estados.edit', $estado->idEstado) }}" class="btn btn-warning btn-sm mr-2">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ route('estados.destroy', $estado->idEstado) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este estado?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @endforeach

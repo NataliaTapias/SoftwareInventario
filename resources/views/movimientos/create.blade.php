@@ -43,36 +43,25 @@
                         <input type="text" class="form-control" id="colaborador" name="colaborador" value="{{ old('colaborador') }}" required>
                     </div>
                     <div class="col">
-                        <label for="usuarios_id">Usuario</label>
-                        <select class="form-control" id="usuarios_id" name="usuarios_id" required>
-                            <option value="">Seleccione un usuario</option>
-                            @foreach($usuarios as $usuario)
-                                <option value="{{ $usuario->idUsuario }}">{{ $usuario->nombre }}</option>
+                        <label for="solicitudes_id">Solicitud</label>
+                        <select class="form-control" id="solicitudes_id" name="solicitudes_id" required>
+                            <option value="">Seleccione una solicitud</option>
+                            @foreach($solicitudes as $solicitud)
+                                <option value="{{ $solicitud->idSolicitud }}">{{ $solicitud->descripcionFalla }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="col">
-                    <label for="solicitudes_id">Solicitud</label>
-            <select class="form-control" id="solicitudes_id" name="solicitudes_id" required>
-                <option value="">Seleccione una solicitud</option>
-                @foreach($solicitudes as $solicitud)
-                    <option value="{{ $solicitud->solicitudes_id }}">{{ $solicitud->descripcionFalla }}</option>
-                @endforeach
-            </select>
-
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-        <label for="items_id">Item</label>
-                        <select class="form-control" id="items_id" name="items_id" required>
-                            <option value="">Seleccione un item</option>
-                            @foreach($items as $item)
-                            <option value="{{ $item->idItem }}">{{ $item->nombre }}</option>
-                         @endforeach
-                    </select>
+            <label for="items_id">Item</label>
+            <input type="text" class="form-control" id="item-search" placeholder="Buscar ítem...">
+            <input type="hidden" id="items_id" name="items_id">
+            <div id="item-results" style="display: none;">
+                <ul class="list-group" id="item-list"></ul>
+            </div>
         </div>
         <div class="form-group">
             <label for="tipoMovimientos_id">Tipo de Movimiento</label>
@@ -92,4 +81,51 @@
         <a href="{{ route('movimientos.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const itemSearch = document.getElementById('item-search');
+        const itemList = document.getElementById('item-list');
+
+        itemSearch.addEventListener('keyup', function () {
+            const query = itemSearch.value;
+            console.log('Query:', query);  // Verifica el valor de búsqueda
+            if (query !== '') {
+                fetch('/items/search?query=' + encodeURIComponent(query))
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Respuesta del servidor:', data);  // Verifica la respuesta del servidor
+                        let results = '';
+                        data.forEach(item => {
+                            results += '<li class="list-group-item" data-id="' + item.idItem + '">' + item.nombre + '</li>';
+                        });
+                        itemList.innerHTML = results;
+                        itemList.style.display = 'block';
+                    })
+                    .catch(error => {
+                        console.error('Error en la solicitud Fetch:', error);  // Verifica los errores
+                    });
+            } else {
+                itemList.style.display = 'none';
+            }
+        });
+
+        itemList.addEventListener('click', function (event) {
+            if (event.target && event.target.matches('li.list-group-item')) {
+                const itemName = event.target.textContent;
+                const itemId = event.target.getAttribute('data-id');
+                itemSearch.value = itemName;
+                document.getElementById('items_id').value = itemId;
+                itemList.style.display = 'none';
+            }
+        });
+    });
+</script>
 @endsection

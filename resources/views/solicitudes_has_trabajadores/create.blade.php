@@ -41,7 +41,8 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary">Asignar</button>
+        <a href="{{ route('solicitudes.index') }}" type="submit" class="btn btn-primary">Asignar</a>
+
         <a href="{{ route('solicitudes.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>

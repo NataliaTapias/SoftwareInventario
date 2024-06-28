@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,4 +50,5 @@ class Movimiento extends Model
         return $this->belongsTo(TipoMovimiento::class, 'tipoMovimientos_id', 'idTipomovimiento');
     }
 }
+
 

@@ -1,3 +1,10 @@
+/* Estilos generales */
+
+
+
+
+
+
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #f8f9fa;
@@ -9,6 +16,75 @@ body {
     display: flex;
 }
 
+/* Botones */
+.btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: color 0.3s;
+}
+
+.btn:hover {
+    color: #28a745; /* Verde para el hover */
+}
+
+.btn.btn-primary {
+    background-color: green;
+    border-color: green;
+}
+
+.btn.btn-primary:hover,
+.btn.btn-primary:focus,
+.btn.btn-primary:active,
+.btn.btn-primary.active {
+    background-color: darkgreen;
+    border-color: darkgreen;
+}
+
+.btn.btn-success {
+    background-color: #28a745; /* Verde */
+    border-color: #28a745;
+}
+
+.btn.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.btn.btn-warning {
+    background-color: yellow;
+    border-color: yellow;
+    color: black; /* Color del texto */
+}
+
+.btn.btn-warning:hover,
+.btn.btn-warning:focus,
+.btn.btn-warning:active,
+.btn.btn-warning.active {
+    background-color: goldenrod; /* Color de fondo al pasar el ratón */
+    border-color: goldenrod;
+    color: black; /* Color del texto al pasar el ratón */
+}
+
+.btn.btn-danger {
+    background-color: red;
+    border-color: red;
+}
+
+.btn.btn-danger:hover,
+.btn.btn-danger:focus,
+.btn.btn-danger:active,
+.btn.btn-danger.active {
+    background-color: darkred;
+    border-color: darkred;
+}
+
+.btn-sm {
+    padding: 5px 10px; /* Asegurar que los botones de tamaño pequeño tengan el mismo estilo */
+}
+
+/* Sidebar */
 .sidebar {
     width: 250px;
     background-color: #343a40;
@@ -34,7 +110,8 @@ body {
     margin: 10px 0;
 }
 
-.sidebar ul li a, .sidebar ul li button {
+.sidebar ul li a,
+.sidebar ul li button {
     color: white;
     text-decoration: none;
     display: block;
@@ -46,18 +123,22 @@ body {
     transition: background-color 0.3s;
 }
 
-.sidebar ul li a.logout-button, .sidebar ul li button.logout-button {
+.sidebar ul li a.logout-button,
+.sidebar ul li button.logout-button {
     background-color: #dc3545;
 }
 
-.sidebar ul li a:hover, .sidebar ul li button:hover {
+.sidebar ul li a:hover,
+.sidebar ul li button:hover {
     background-color: #495057;
 }
 
-.sidebar ul li a.logout-button:hover, .sidebar ul li button.logout-button:hover {
+.sidebar ul li a.logout-button:hover,
+.sidebar ul li button.logout-button:hover {
     background-color: #c82333;
 }
 
+/* Main Content */
 .main-content {
     margin-left: 250px;
     padding: 20px;
@@ -75,17 +156,30 @@ body {
     }
 }
 
+/* Tabla */
 table {
     width: 100%;
     border-collapse: collapse;
 }
 
-table, th, td {
+table,
+th,
+td {
     border: 1px solid black;
 }
 
-th, td {
+th,
+td {
     padding: 8px;
     text-align: left;
+}
+
+/* Botones de acciones en la tabla */
+.btn-edit {
+    color: #28a745; /* Verde */
+}
+
+.btn-delete {
+    color: #dc3545; /* Rojo */
 }
 

@@ -7,7 +7,7 @@ use App\Models\Solicitud;
 use App\Models\Item;
 use App\Models\TipoMovimiento;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class MovimientoController extends Controller
 {
     public function index(Request $request)
@@ -34,24 +34,38 @@ class MovimientoController extends Controller
     
 
     public function store(Request $request)
-{
-    $movimiento = new Movimiento();
-    $movimiento->fecha = $request->input('fecha');
-    $movimiento->cantidad = $request->input('cantidad');
-    $movimiento->precio = $request->input('precio');
-    $movimiento->numRemisionProveedor = $request->input('numRemisionProveedor');
-    $movimiento->observacion = $request->input('observacion');
-    $movimiento->firma = $request->input('firma');
-    $movimiento->proveedor = $request->input('proveedor');
-    $movimiento->colaborador = $request->input('colaborador');
-    $movimiento->usuarios_id = $request->input('usuarios_id');
-    $movimiento->solicitudes_id = $request->input('solicitudes_id');
-    $movimiento->items_id = $request->input('items_id');
-    $movimiento->tipoMovimientos_id = $request->input('tipoMovimientos_id');
-    $movimiento->save();
+    {
+        $validated = $request->validate([
+            'fecha' => 'required|date',
+            'cantidad' => 'required|integer',
+            'precio' => 'required|numeric',
+            'numRemisionProveedor' => 'nullable|string|max:45',
+            'firma' => 'required|string|max:255',
+            'colaborador' => 'required|string|max:255',
+            'solicitudes_id' => 'required|exists:Solicitudes,idSolicitud',
+            'items_id' => 'required|exists:Items,idItem',
+            'tipoMovimientos_id' => 'required|exists:Tipomovimientos,idTipomovimiento',
+            'observacion' => 'nullable|string',
+        ]);
 
-    return redirect()->route('movimientos.index');
-}
+        $movimiento = new Movimiento();
+        $movimiento->fecha = $validated['fecha'];
+        $movimiento->cantidad = $validated['cantidad'];
+        $movimiento->precio = $validated['precio'];
+        $movimiento->numRemisionProveedor = $validated['numRemisionProveedor'];
+        $movimiento->firma = $validated['firma'];
+        $movimiento->colaborador = $validated['colaborador'];
+        $movimiento->solicitudes_id = $validated['solicitudes_id'];
+        $movimiento->items_id = $validated['items_id'];
+        $movimiento->tipoMovimientos_id = $validated['tipoMovimientos_id'];
+        $movimiento->observacion = $validated['observacion'];
+        $movimiento->usuarios_id = Auth::id(); // Aquí se guarda el ID del usuario autenticado
+
+        $movimiento->save();
+
+        return redirect()->route('movimientos.index')->with('success', 'Movimiento creado exitosamente.');
+    }
+
 
 
 public function edit($id)
@@ -80,6 +94,7 @@ public function edit($id)
         $movimiento->solicitudes_id = $request->input('solicitudes_id');
         $movimiento->items_id = $request->input('items_id');
         $movimiento->tipoMovimientos_id = $request->input('tipoMovimientos_id');
+        $movimiento->usuarios_id = Auth::id(); // Aquí se guarda el ID del usuario autenticado
         $movimiento->save();
 
         return redirect()->route('movimientos.index');

@@ -40,12 +40,18 @@
                         <td>{{ $categoria->created_at }}</td>
                         <td>{{ $categoria->updated_at }}</td>
                         <td>
-                            <a href="{{ route('categorias.edit', $categoria->idCategoria) }}" class="btn btn-warning btn-sm mr-2">Editar</a>
-                            <form action="{{ route('categorias.destroy', $categoria->idCategoria) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>
+                            <div class="d-flex">
+                                <a href="{{ route('categorias.edit', $categoria->idCategoria) }}" class="btn btn-warning btn-sm mr-2">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ route('categorias.destroy', $categoria->idCategoria) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @endforeach

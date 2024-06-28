@@ -1,0 +1,143 @@
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* General button styles */
+.btn-primary {
+    background-color: #4CAF50; /* Color verde */
+    border-color: #4CAF50;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+    border-color: #45a049;
+}
+
+.btn-edit, .btn-delete {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.btn-edit:hover, .btn-delete:hover {
+    color: #0056b3;
+}
+
+        .sidebar {
+            background-color: #343a40;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            overflow-y: auto;
+            transition: width 0.3s;
+        }
+        .sidebar .logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .sidebar .logo img {
+            max-width: 100px;
+            height: auto;
+            border-radius: 50%;
+            background-color: #4CAF50; /* Color verde césped */
+            padding: 10px;
+        }
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .sidebar .nav-link {
+            color: white;
+        }
+        .sidebar .nav-link:hover {
+            background-color: #495057;
+        }
+        .logout-button {
+            background-color: #dc3545;
+            border: none;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
+        .nav-item {
+            margin-bottom: 10px;
+        }
+        .nav-item:last-child {
+            margin-bottom: 0;
+        }
+        .nav-link i {
+            margin-right: 10px;
+        }
+        .nav-link i.fa {
+            color: #4CAF50; /* Color verde para los iconos */
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .content {
+                margin-left: 0;
+            }
+        }
+
+        /* Estilos para la barra de desplazamiento */
+    ::-webkit-scrollbar {
+        width: 8px; /* Ancho de la barra de desplazamiento */
+        
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Color del fondo del track */
+        border-radius: 5px; /* Radio de borde del track */
+        
+    }
+
+    /* Thumb (scrollbar) */
+    ::-webkit-scrollbar-thumb {
+        
+        background: #4CAF50; /* Color del scrollbar */
+        border-radius: 5px; /* Radio de borde del scrollbar */
+    }
+
+    /* Cambio de color al pasar el ratón */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Color del scrollbar al pasar el ratón */
+    }
+
+    /* Table responsiveness */
+.table-responsive {
+    overflow-x: auto;
+}/* Estilo personalizado para barra de desplazamiento horizontal */
+.table-responsive::-webkit-scrollbar {
+    height: 8px; /* Altura de la barra de desplazamiento */
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color de la barra de desplazamiento */
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Color al pasar el ratón por la barra de desplazamiento */
+}
+.nav-link.active {
+    background-color: #505b50;
+    color: white;
+    border-radius: 4px;
+}

@@ -9,8 +9,7 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
-    public function index(Request $request)
-{
+    public function index(Request $request){
     // Capturamos los parámetros de búsqueda y filtrado
     $search = $request->input('search');
     $categoria = $request->input('categoria');
@@ -38,9 +37,20 @@ class ItemController extends Controller
     $categorias = \App\Models\Subcategoria::all();
     
     return view('items.index', compact('items', 'categorias'));
-}
 
+    // busqueda de items en movimiento 
     
+   }
+
+   public function search(Request $request)
+   {
+       $query = $request->get('query', '');
+       $items = Item::where('nombre', 'LIKE', "%{$query}%")->get();
+       return response()->json($items);
+   }
+
+
+
 
     public function create()
     {
@@ -60,6 +70,7 @@ class ItemController extends Controller
             'unidadMedida' => 'required|string|max:45',
             'subcategorias_id' => 'required|exists:subcategorias,idSubcategoria',
             'estados_id' => 'required|exists:estados,idEstado',
+            
         ]);
 
         Item::create($request->all());

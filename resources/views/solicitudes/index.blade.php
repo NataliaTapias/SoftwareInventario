@@ -1,45 +1,67 @@
 @extends('layouts.app')
 
-@section('title', 'Listado de Solicitudes')
+@section('title', 'Lista de Solicitudes')
 
 @section('content')
-    <div class="container">
-        <h1 class="my-4">Listado de Solicitudes</h1>
-
-        <!-- Botón para crear una nueva solicitud -->
-        <a href="{{ route('solicitudes.create') }}" class="btn btn-success mb-3">Crear Nueva Solicitud</a>
-
-        <!-- Botón para ver todas las solicitudes asignadas a trabajadores -->
-        <a href="{{ route('solicitudes_has_trabajadores.index') }}" class="btn btn-info mb-3">Ver Solicitudes Asignadas a Trabajadores</a>
-
-        <table class="table table-bordered">
+<div class="container-fluid">
+    <h1 class="my-4">Lista de Solicitudes</h1>
+    <div class="mb-3">
+        <a href="{{ route('solicitudes.create') }}" class="btn btn-success">Crear Solicitud</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Fecha</th>
-                    <th>Descripción</th>
+                    <th>Descripción de la Falla</th>
+                    <th>Tiempo Estimado</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha de Término</th>
+                    <th>Mantenimiento Eficiente</th>
+                    <th>Total Horas Trabajadas</th>
+                    <th>Tiempo de Parada</th>
+                    <th>Repuestos Utilizados</th>
+                    <th>Observaciones</th>
                     <th>Estado</th>
+                    <th>Área</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($solicitudes as $solicitud)
-                    <tr>
-                        <td>{{ $solicitud->idSolicitud }}</td>
-                        <td>{{ $solicitud->fecha }}</td>
-                        <td>{{ $solicitud->descripcionFalla }}</td>
-                        <td>{{ $solicitud->estado->nombre }}</td>
-                        <td>
-                            <a href="{{ route('solicitudes.edit', $solicitud->idSolicitud) }}" class="btn btn-primary">Editar</a>
-                            <form action="{{ route('solicitudes.destroy', $solicitud->idSolicitud) }}" method="POST" style="display:inline-block;">
+                <tr>
+                    <td>{{ $solicitud->idSolicitud }}</td>
+                    <td>{{ $solicitud->fecha }}</td>
+                    <td>{{ $solicitud->descripcionFalla }}</td>
+                    <td>{{ $solicitud->tiempoEstimado }}</td>
+                    <td>{{ $solicitud->fechaInicio }}</td>
+                    <td>{{ $solicitud->fechaTermina }}</td>
+                    <td>{{ $solicitud->mantenimientoEficiente ? 'Sí' : 'No' }}</td>
+                    <td>{{ $solicitud->totalHorasTrabajadas }}</td>
+                    <td>{{ $solicitud->tiempoParada }}</td>
+                    <td>{{ $solicitud->repuestosUtilizados }}</td>
+                    <td>{{ $solicitud->observaciones }}</td>
+                    <td>{{ $solicitud->estado->nombre }}</td>
+                    <td>{{ $solicitud->area->nombre }}</td>
+                    <td>
+                        <div class="d-flex justify-content-start">
+                            <a href="{{ route('solicitudes.edit', $solicitud->idSolicitud) }}" class="btn btn-warning btn-sm mr-2">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="{{ route('solicitudes.destroy', $solicitud->idSolicitud) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta solicitud?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
                             </form>
-                        </td>
-                    </tr>
+                        </div>
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+</div>
 @endsection

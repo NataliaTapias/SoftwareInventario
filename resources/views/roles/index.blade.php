@@ -28,15 +28,18 @@
                             <td>{{ $role->idRol }}</td>
                             <td>{{ $role->nombre }}</td>
                             <td>
-                                <a href="{{ route('roles.edit', $role->idRol) }}" class="btn btn-warning btn-sm">Editar</a>
-                                <form action="{{ route('roles.destroy', $role->idRol) }}" method="POST" style="display:inline;">
-                                <form action="{{ route('roles.destroy', $role->idRol) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este rol?')">Eliminar</button>
-                            </form>
-
-
+                                <div class="d-flex justify-content-start">
+                                    <a href="{{ route('roles.edit', $role->idRol) }}" class="btn btn-warning btn-sm mr-2">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('roles.destroy', $role->idRol) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este rol?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
