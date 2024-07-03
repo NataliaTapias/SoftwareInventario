@@ -18,6 +18,26 @@ class SolicitudController extends Controller
         return view('solicitudes.index', compact('solicitudes'));
     }
 
+
+
+// SolicitudController.php
+
+public function show($id)
+{
+    // Check if the request is a search query
+    if (request()->has('query')) {
+        $query = request()->input('query');
+        $solicitudes = Solicitud::where('descripcionFalla', 'LIKE', "%{$query}%")->get();
+        return response()->json($solicitudes);
+    }
+
+    // If not a search query, proceed with the normal show functionality
+    $solicitud = Solicitud::findOrFail($id);
+    return view('solicitudes.show', compact('solicitud'));
+}
+
+
+
     public function create()
     {
         $tiposMantenimientos = TipoMantenimiento::all();

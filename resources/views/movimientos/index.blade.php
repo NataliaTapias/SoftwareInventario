@@ -28,8 +28,9 @@
                     <th>ID</th>
                     <th>Fecha</th>
                     <th>Cantidad</th>
-                    <th>Precio</th>
-                    <th>Num Remisión Proveedor</th>
+                    <th>Item</th>
+                    <th>Total</th>
+                    <th>Remisión Proveedor</th>
                     <th>Observación</th>
                     <th>Solicitud</th>
                     <th>Firma</th>
@@ -44,10 +45,11 @@
                         <td>{{ $movimiento->idMovimiento }}</td>
                         <td>{{ $movimiento->fecha }}</td>
                         <td>{{ $movimiento->cantidad }}</td>
-                        <td>{{ $movimiento->precio }}</td>
+                        <td>{{ $movimiento->item->nombre ?? 'N/A' }}</td> <!-- Asumiendo que 'item' es una relación en tu modelo Movimiento -->
+                        <td>{{ $movimiento->total }}</td>
                         <td>{{ $movimiento->numRemisionProveedor }}</td>
                         <td>{{ $movimiento->observacion }}</td>
-                        <td>{{ $movimiento->solicitud->nombre ?? 'N/A' }}</td>
+                        <td>{{ $movimiento->solicitud->descripcionFalla ?? 'N/A' }}</td> <!-- Asumiendo que 'solicitud' es una relación en tu modelo Movimiento -->
                         <td>{{ $movimiento->firma }}</td>
                         <td>{{ $movimiento->proveedor }}</td>
                         <td>{{ $movimiento->colaborador }}</td>

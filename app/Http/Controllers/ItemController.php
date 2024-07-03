@@ -9,6 +9,21 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        if (!$query) {
+            return response()->json(['error' => 'No query provided'], 400);
+        }
+
+        $items = Item::where('nombre', 'LIKE', "%{$query}%")->get(['idItem as id', 'nombre as name']);
+
+        return response()->json($items);
+    }
+    
+ 
     public function index(Request $request){
     // Capturamos los parámetros de búsqueda y filtrado
     $search = $request->input('search');
@@ -42,14 +57,25 @@ class ItemController extends Controller
     
    }
 
-   public function search(Request $request)
+
+   public function show(Request $request, $id)
    {
-       $query = $request->get('query', '');
-       $items = Item::where('nombre', 'LIKE', "%{$query}%")->get();
-       return response()->json($items);
+       if ($request->has('query')) {
+           $query = $request->input('query');
+           $items = Item::where('nombre', 'LIKE', "%$query%")->get();
+
+           return response()->json($items);
+       }
+
+       $item = Item::find($id);
+
+       if (!$item) {
+           return redirect()->route('items.index')->with('error', 'Item not found');
+       }
+
+       return view('items.show', compact('item'));
    }
-
-
+   
 
 
     public function create()

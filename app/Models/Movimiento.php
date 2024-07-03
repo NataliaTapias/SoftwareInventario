@@ -18,6 +18,7 @@ class Movimiento extends Model
         'fecha',
         'cantidad',
         'precio',
+        'total',
         'numRemisionProveedor',
         'observacion',
         'firma',

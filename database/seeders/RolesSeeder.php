@@ -14,6 +14,7 @@ class RolesSeeder extends Seeder
             ['nombre' => 'admin'],
             ['nombre' => 'constructor'],
             ['nombre' => 'logistica'],
+            ['nombre' => 'mantenimiento'],
             // Puedes agregar más roles aquí si es necesario
         ];
 

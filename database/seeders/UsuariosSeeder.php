@@ -19,6 +19,13 @@ class UsuariosSeeder extends Seeder
                 'roles_id' => 1, // Rol para ADMIN
             ],
             [
+                'nombre' => 'Mantenimiento',
+                'cargo' => 'Mantenimento',
+                'email' => 'mantenimiento@quimint.com.co',
+                'password' => Hash::make('Mantenimiento,1234'),
+                'roles_id' => 1, // Rol para ADMIN
+            ],
+            [
                 'nombre' => 'Roland Cerquera Carvajal',
                 'cargo' => 'Administrativo',
                 'email' => 'roland.cerquera@quimint.com.co',
