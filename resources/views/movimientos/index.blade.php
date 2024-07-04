@@ -8,11 +8,25 @@
 
         <!-- Formulario de búsqueda y filtrado -->
         <form method="GET" action="{{ route('movimientos.index') }}" class="row mb-4">
-            <div class="col">
-                <input type="text" name="search" class="form-control" placeholder="Buscar por firma o proveedor" value="{{ request('search') }}">
+            <div class="col-md-3">
+                <input type="text" name="search" class="form-control" placeholder="Buscar por firma, proveedor o observación" value="{{ request('search') }}">
             </div>
-            <div class="col">
+            <div class="col-md-3">
+                <input type="text" name="item_name" class="form-control" placeholder="Buscar por nombre de ítem" value="{{ request('item_name') }}">
+            </div>
+            <div class="col-md-3">
+                <select name="tipoMovimientos_id" class="form-control">
+                    <option value="">Filtrar por tipo de movimiento</option>
+                    @foreach($tiposMovimientos as $tipoMovimiento)
+                        <option value="{{ $tipoMovimiento->idTipomovimiento }}" {{ request('tipoMovimientos_id') == $tipoMovimiento->idTipomovimiento ? 'selected' : '' }}>
+                            {{ $tipoMovimiento->nombre }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
                 <button type="submit" class="btn btn-success">Buscar</button>
+                <a href="{{ route('movimientos.index') }}" class="btn btn-success">Limpiar Filtros</a>
             </div>
         </form>
 

@@ -15,14 +15,33 @@ class MovimientoController extends Controller
     public function index(Request $request)
     {
         $search = $request->query('search');
-
+        $tipoMovimiento = $request->query('tipoMovimientos_id');
+        $itemName = $request->query('item_name');
+    
         $movimientos = Movimiento::when($search, function ($query, $search) {
-            return $query->where('firma', 'like', '%' . $search . '%')
-                ->orWhere('proveedor', 'like', '%' . $search . '%');
-        })->get();
-
-        return view('movimientos.index', compact('movimientos'));
+                return $query->where('observacion', 'like', '%' . $search . '%')
+                    ->orWhere('numRemisionProveedor', 'like', '%' . $search . '%')
+                    ->orWhere('firma', 'like', '%' . $search . '%')
+                    ->orWhere('proveedor', 'like', '%' . $search . '%');
+            })
+            ->when($tipoMovimiento, function ($query, $tipoMovimiento) {
+                return $query->where('tipoMovimientos_id', $tipoMovimiento);
+            })
+            ->when($itemName, function ($query, $itemName) {
+                return $query->whereHas('item', function ($query) use ($itemName) {
+                    $query->where('nombre', 'like', '%' . $itemName . '%');
+                });
+            })
+            ->get();
+    
+        // Obtener todos los tipos de movimientos para el filtro
+        $tiposMovimientos = TipoMovimiento::all();
+    
+        return view('movimientos.index', compact('movimientos', 'tiposMovimientos'));
     }
+    
+
+    
 
     public function create()
     {
