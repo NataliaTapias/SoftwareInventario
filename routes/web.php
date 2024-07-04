@@ -4,9 +4,15 @@ use App\Http\Controllers\{
     AreaController, CategoriaController, EstadoController, ItemController, MovimientoController,
     SolicitudController, SolicitudHasTrabajadorController, SubcategoriaController, 
     TipoMantenimientoController, TipoMovimientoController, TrabajadorController, UsuarioController, 
-    AuthController, HomeController, RoleController
+    AuthController, HomeController, RoleController,ExportController
 };
 use Illuminate\Support\Facades\Route;
+
+
+
+Route::get('/export-movimientos', [ExportController::class, 'exportMovimientos'])->name('export.movimientos');
+
+
 
 // Rutas de recursos
 Route::resource('roles', RoleController::class);
@@ -41,7 +47,6 @@ Route::middleware([])->group(function () {
 });
 
 // Rutas para búsqueda de ítems y solicitudes
-// routes/web.php
 
 
 Route::get('/items/search', [ItemController::class, 'search'])->name('items.search');

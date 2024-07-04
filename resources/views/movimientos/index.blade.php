@@ -33,7 +33,11 @@
         <!-- Botón Crear Movimiento -->
         <div class="mb-4">
             <a href="{{ route('movimientos.create') }}" class="btn btn-success">Crear Movimiento</a>
+            <a href="{{ route('export.movimientos') }}" class="btn btn-primary">Exportar Movimientos a Excel</a>
         </div>
+
+        <div class="mb-4">
+
 
         <!-- Tabla de movimientos -->
         <table class="table table-striped">
@@ -45,6 +49,7 @@
                     <th>Item</th>
                     <th>Total</th>
                     <th>Remisión Proveedor</th>
+                    <th>Tipo de Movimiento</th>
                     <th>Observación</th>
                     <th>Solicitud</th>
                     <th>Firma</th>
@@ -62,6 +67,7 @@
                         <td>{{ $movimiento->item->nombre ?? 'N/A' }}</td> <!-- Asumiendo que 'item' es una relación en tu modelo Movimiento -->
                         <td>{{ $movimiento->total }}</td>
                         <td>{{ $movimiento->numRemisionProveedor }}</td>
+                        <td>{{ $movimiento->tipoMovimiento->nombre ?? 'N/A'}}</td>                        
                         <td>{{ $movimiento->observacion }}</td>
                         <td>{{ $movimiento->solicitud->descripcionFalla ?? 'N/A' }}</td> <!-- Asumiendo que 'solicitud' es una relación en tu modelo Movimiento -->
                         <td>{{ $movimiento->firma }}</td>

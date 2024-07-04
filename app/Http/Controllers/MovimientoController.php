@@ -9,9 +9,14 @@ use App\Models\Item;
 use App\Models\TipoMovimiento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\MovimientosExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MovimientoController extends Controller
 {
+
+
+
     public function index(Request $request)
     {
         $search = $request->query('search');
@@ -40,7 +45,12 @@ class MovimientoController extends Controller
         return view('movimientos.index', compact('movimientos', 'tiposMovimientos'));
     }
     
-
+    public function show($id)
+    {
+        $movimiento = Movimiento::findOrFail($id);
+        return view('movimientos.show', compact('movimiento'));
+    }
+    
     
 
     public function create()
