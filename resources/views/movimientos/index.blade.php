@@ -9,7 +9,7 @@
         <!-- Formulario de búsqueda y filtrado -->
         <form method="GET" action="{{ route('movimientos.index') }}" class="row mb-4">
             <div class="col-md-3">
-                <input type="text" name="search" class="form-control" placeholder="Buscar por firma, proveedor o observación" value="{{ request('search') }}">
+                <input type="text" name="search" class="form-control" placeholder="Buscar por firma, proveedor u observación" value="{{ request('search') }}">
             </div>
             <div class="col-md-3">
                 <input type="text" name="item_name" class="form-control" placeholder="Buscar por nombre de ítem" value="{{ request('item_name') }}">

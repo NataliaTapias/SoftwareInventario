@@ -77,16 +77,18 @@ public function show($id)
         return redirect()->route('solicitudes.index')->with('success', 'Solicitud creada exitosamente.');
     }
 
-    public function edit(Solicitud $solicitude)
+    public function edit($id)
     {
+        $solicitude = Solicitud::findOrFail($id);
         $tiposMantenimientos = TipoMantenimiento::all();
         $estados = Estado::all();
         $areas = Area::all();
-        $trabajadores = Trabajador::all(); // Añadido para listar trabajadores
-        $solicitudHasTrabajador = $solicitude->solicitudHasTrabajador()->first(); // Obtener la asignación si existe
+        $trabajadores = Trabajador::all();
+        $solicitudHasTrabajador = SolicitudHasTrabajador::where('solicitudes_id', $id)->first();
     
         return view('solicitudes.edit', compact('solicitude', 'tiposMantenimientos', 'estados', 'areas', 'trabajadores', 'solicitudHasTrabajador'));
     }
+    
 
     public function update(Request $request, Solicitud $solicitude)
     {

@@ -12,7 +12,7 @@ class RolesSeeder extends Seeder
         // Definir los datos a insertar
         $roles = [
             ['nombre' => 'admin'],
-            ['nombre' => 'constructor'],
+            ['nombre' => 'consultor'],
             ['nombre' => 'logistica'],
             ['nombre' => 'mantenimiento'],
             // Puedes agregar más roles aquí si es necesario

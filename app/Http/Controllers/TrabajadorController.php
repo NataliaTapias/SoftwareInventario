@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class TrabajadorController extends Controller
 {
+
+
+
     public function index(Request $request)
     {
         $search = $request->query('search');
@@ -19,7 +22,23 @@ class TrabajadorController extends Controller
         $trabajadores = $query->get();
         return view('trabajadores.index', compact('trabajadores'));
     }
-
+    public function show(Request $request, $id = null)
+    {
+        if ($request->has('query')) {
+            $query = $request->input('query');
+            $trabajadores = Trabajador::where('nombre', 'LIKE', "%$query%")->get(['idTrabajador as id', 'nombre as name']);
+            return response()->json($trabajadores);
+        }
+    
+        $trabajador = Trabajador::find($id);
+    
+        if (!$trabajador) {
+            return redirect()->route('trabajadores.index')->with('error', 'Trabajador not found');
+        }
+    
+        return view('trabajadores.show', compact('trabajador'));
+    }
+    
     public function create()
     {
         return view('trabajadores.create');

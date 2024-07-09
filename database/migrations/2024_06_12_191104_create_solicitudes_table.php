@@ -19,7 +19,8 @@ class CreateSolicitudesTable extends Migration
             $table->boolean('mantenimientoEficiente')->default(false);
             $table->decimal('totalHorasTrabajadas', 5, 2)->nullable();
             $table->decimal('tiempoParada', 5, 2)->nullable();
-            $table->text('repuestosUtilizados')->nullable();
+            $table->json('repuestosUtilizados')->nullable(); // Cambiado a JSON
+            $table->json('trabajadoresAsignados')->nullable(); // Añadido para trabajadores
             $table->text('observaciones')->nullable();
             $table->string('firmaDirector', 255)->nullable();
             $table->string('firmaGerente', 255)->nullable();
@@ -29,10 +30,9 @@ class CreateSolicitudesTable extends Migration
             $table->foreign('tipoMantenimientos_id')->references('idTipomantenimiento')->on('Tipomantenimientos');
             $table->foreign('estados_id')->references('idEstado')->on('Estados');
             $table->foreign('areas_id')->references('idArea')->on('Areas');
-            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
-            
+            $table->timestamps();
         });
+        
     }
 
     public function down()

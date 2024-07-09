@@ -48,8 +48,11 @@ Route::middleware([])->group(function () {
 
 // Rutas para búsqueda de ítems y solicitudes
 
+Route::get('/items/show', [ItemController::class, 'show'])->name('items.show');
+Route::get('/trabajadores/show', [TrabajadorController::class, 'show']);
 
-Route::get('/items/search', [ItemController::class, 'search'])->name('items.search');
+
+
 Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.show');
 
 

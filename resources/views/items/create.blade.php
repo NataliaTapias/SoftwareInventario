@@ -1,166 +1,60 @@
 @extends('layouts.app')
 
-@section('title', 'Crear Movimiento')
+@section('title', 'Crear Ítem')
 
 @section('content')
-
-<style>
-    .search-result {
-        cursor: pointer;
-        padding: 5px;
-        border: 1px solid #ccc;
-        margin: 2px 0;
-    }
-    .search-result:hover {
-        background-color: #BFF7DC;
-    }
-</style>
-
-<div class="container">
-    <h1 class="my-4">Crear Movimiento</h1>
-
-    <form method="POST" action="{{ route('movimientos.store') }}">
+<div class="container-fluid">
+    <h1 class="my-4">Crear Ítem</h1>
+    <form action="{{ route('items.store') }}" method="POST">
         @csrf
-        <div class="row mb-3">
-            <div class="col-md-3">
-                <label for="fecha">Fecha</label>
-                <input type="datetime-local" class="form-control" id="fecha" name="fecha" value="{{ old('fecha') }}" required>
-            </div>
-            <div class="col-md-3">
-                <label for="numRemisionProveedor">Num Remisión Proveedor</label>
-                <input type="text" class="form-control" id="numRemisionProveedor" name="numRemisionProveedor" value="{{ old('numRemisionProveedor') }}">
-            </div>
-            <div class="col-md-3">
-                <label for="firma">Firma</label>
-                <input type="text" class="form-control" id="firma" name="firma" value="{{ old('firma') }}" required>
-            </div>
-            <div class="col-md-3">
-                <label for="colaborador">Colaborador</label>
-                <input type="text" class="form-control" id="colaborador" name="colaborador" value="{{ old('colaborador') }}" required>
-            </div>
-        </div>
-
-        <div class="row mb-3">
+        <div class="row">
             <div class="col-md-6">
-                <label for="item-search">Item</label>
-                <input type="text" id="item-search" class="form-control" placeholder="Buscar item..." required>
-                <div id="results-container"></div>
-            </div>
-            <div class="col-md-3">
-                <label for="cantidad">Cantidad</label>
-                <input type="number" class="form-control" id="cantidad" name="cantidad" value="{{ old('cantidad') }}" required>
-            </div>
-            <div class="col-md-3">
-                <label for="precio">Precio</label>
-                <input type="number" step="0.01" class="form-control" id="precio" name="precio" value="{{ old('precio') }}" required>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-3">
-                <label for="total">Total</label>
-                <input type="number" step="0.01" class="form-control" id="total" name="total" value="{{ old('total') }}" readonly>
-            </div>
-            <div class="col-md-3">
-                <label for="tipoMovimientos_id">Tipo de Movimiento</label>
-                <select class="form-control" id="tipoMovimientos_id" name="tipoMovimientos_id" required>
-                    <option value="">Seleccione un tipo de movimiento</option>
-                    @foreach($tiposMovimientos as $tipoMovimiento)
-                        <option value="{{ $tipoMovimiento->idTipomovimiento }}">{{ $tipoMovimiento->nombre }}</option>
-                    @endforeach
-                </select>
+                <div class="form-group">
+                    <label for="referencia">Referencia</label>
+                    <input type="text" name="referencia" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" name="nombre" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="cantidad">Cantidad</label>
+                    <input type="number" name="cantidad" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="unidadMedida">Unidad de Medida</label>
+                    <input type="text" name="unidadMedida" class="form-control" required>
+                </div>
             </div>
             <div class="col-md-6">
-                <label for="solicitud-search">Solicitud</label>
-                <input type="text" id="solicitud-search" class="form-control" placeholder="Buscar por Descripción Falla...">
-                <div id="solicitud-results-container"></div>
+
+                <div class="form-group">
+                    <label for="cantidadMinima">Cantidad Mínima</label>
+                    <input type="number" name="cantidadMinima" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="subcategorias_id">Subcategoría</label>
+                    <select name="subcategorias_id" class="form-control" required>
+                        @foreach($subcategorias as $subcategoria)
+                            <option value="{{ $subcategoria->idSubcategoria }}">{{ $subcategoria->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="estados_id">Estado</label>
+                    <select name="estados_id" class="form-control" required>
+                        @foreach($estados as $estado)
+                            <option value="{{ $estado->idEstado }}">{{ $estado->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción</label>
+                    <textarea name="descripcion" class="form-control"></textarea>
+                </div>
             </div>
         </div>
-
-        <div class="form-group mb-3">
-            <label for="observacion">Observación</label>
-            <textarea class="form-control" id="observacion" name="observacion">{{ old('observacion') }}</textarea>
-        </div>
-
-        <button type="submit" class="btn btn-success">Guardar</button>
-        <a href="{{ route('movimientos.index') }}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
 </div>
-@endsection
-
-@section('scripts')
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const itemInput = document.getElementById('item-search');
-        const itemResultsContainer = document.getElementById('results-container');
-
-        const solicitudInput = document.getElementById('solicitud-search');
-        const solicitudResultsContainer = document.getElementById('solicitud-results-container');
-
-        const cantidadInput = document.getElementById('cantidad');
-        const precioInput = document.getElementById('precio');
-        const totalInput = document.getElementById('total');
-
-        function updateTotal() {
-            const cantidad = parseFloat(cantidadInput.value) || 0;
-            const precio = parseFloat(precioInput.value) || 0;
-            totalInput.value = (cantidad * precio).toFixed(2);
-        }
-
-        cantidadInput.addEventListener('input', updateTotal);
-        precioInput.addEventListener('input', updateTotal);
-
-        itemInput.addEventListener('input', function () {
-            const query = itemInput.value;
-
-            if (query.length > 1) {
-                fetch(`/items/search?query=${query}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        itemResultsContainer.innerHTML = '';
-                        data.forEach(item => {
-                            const div = document.createElement('div');
-                            div.textContent = item.nombre;
-                            div.classList.add('search-result');
-                            div.addEventListener('click', () => {
-                                itemInput.value = item.nombre;
-                                itemResultsContainer.innerHTML = '';
-                            });
-                            itemResultsContainer.appendChild(div);
-                        });
-                    })
-                    .catch(error => console.error('Error fetching data:', error));
-            } else {
-                itemResultsContainer.innerHTML = '';
-            }
-        });
-
-        solicitudInput.addEventListener('input', function () {
-            const query = solicitudInput.value;
-
-            if (query.length > 1) {
-                fetch(`/solicitudes/search?query=${query}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        solicitudResultsContainer.innerHTML = '';
-                        data.forEach(solicitud => {
-                            const div = document.createElement('div');
-                            div.textContent = solicitud.descripcionFalla;
-                            div.classList.add('search-result');
-                            div.addEventListener('click', () => {
-                                solicitudInput.value = solicitud.descripcionFalla;
-                                solicitudResultsContainer.innerHTML = '';
-                            });
-                            solicitudResultsContainer.appendChild(div);
-                        });
-                    })
-                    .catch(error => console.error('Error fetching data:', error));
-            } else {
-                solicitudResultsContainer.innerHTML = '';
-            }
-        });
-    });
-</script>
-
 @endsection

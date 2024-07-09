@@ -117,3 +117,98 @@
     @yield('scripts')
 </body>
 </html>
+
+@section('scripts')
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const itemInput = document.getElementById('item-search');
+    const itemResultsContainer = document.getElementById('results-container');
+
+    const solicitudInput = document.getElementById('solicitud-search');
+    const solicitudResultsContainer = document.getElementById('solicitud-results-container');
+
+    const cantidadInput = document.getElementById('cantidad');
+    const precioInput = document.getElementById('precio');
+    const totalInput = document.getElementById('total');
+
+    function updateTotal() {
+        const cantidad = parseFloat(cantidadInput.value) || 0;
+        const precio = parseFloat(precioInput.value) || 0;
+        totalInput.value = (cantidad * precio).toFixed(2);
+    }
+
+    cantidadInput.addEventListener('input', updateTotal);
+    precioInput.addEventListener('input', updateTotal);
+
+    itemInput.addEventListener('input', function () {
+        const query = itemInput.value;
+
+        if (query.length > 1) {
+            fetch(`/items/search?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    itemResultsContainer.innerHTML = '';
+                    if (data.length === 0) {
+                        const div = document.createElement('div');
+                        div.textContent = 'No se encontraron resultados';
+                        itemResultsContainer.appendChild(div);
+                    } else {
+                        data.forEach(item => {
+                            const div = document.createElement('div');
+                            div.textContent = item.nombre;
+                            div.classList.add('search-result');
+                            div.dataset.itemId = item.idItem; // Asignar el ID del item al dataset
+                            div.addEventListener('click', () => {
+                                itemInput.value = item.nombre;
+                                document.getElementById('items_id').value = item.idItem; // Actualizar el campo oculto
+                                itemResultsContainer.innerHTML = '';
+                            });
+                            itemResultsContainer.appendChild(div);
+                        });
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        } else {
+            itemResultsContainer.innerHTML = '';
+        }
+    });
+
+    solicitudInput.addEventListener('input', function () {
+        const query = solicitudInput.value;
+
+        if (query.length > 1) {
+            fetch(`/solicitudes/search?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    solicitudResultsContainer.innerHTML = '';
+                    if (data.length === 0) {
+                        const div = document.createElement('div');
+                        div.textContent = 'No se encontraron resultados';
+                        solicitudResultsContainer.appendChild(div);
+                    } else {
+                        data.forEach(solicitud => {
+                            const div = document.createElement('div');
+                            div.textContent = solicitud.descripcionFalla;
+                            div.classList.add('search-result');
+                            div.dataset.solicitudId = solicitud.idSolicitud; // Asignar el ID de la solicitud al dataset
+                            div.addEventListener('click', () => {
+                                solicitudInput.value = solicitud.descripcionFalla;
+                                document.getElementById('solicitudes_id').value = solicitud.idSolicitud; // Actualizar el campo oculto
+                                solicitudResultsContainer.innerHTML = '';
+                            });
+                            solicitudResultsContainer.appendChild(div);
+                        });
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        } else {
+            solicitudResultsContainer.innerHTML = '';
+        }
+    });
+});
+
+
+</script>
+
+@endsection
