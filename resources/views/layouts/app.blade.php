@@ -19,8 +19,7 @@
         </div>
         <h2>Admin Panel</h2>
         <div class="user-info">
-           
-        @if(Auth::check())
+            @if(Auth::check())
                 <p>Bienvenido, {{ Auth::user()->nombre }}</p>
             @else
                 <p>No estás autenticado</p>
@@ -32,71 +31,99 @@
                     <i class="fas fa-tachometer-alt fa"></i> Dashboard
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('items.index') ? 'active' : '' }}" href="{{ route('items.index') }}">
-                    <i class="fas fa-box fa"></i> Inventario
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('categorias.index') ? 'active' : '' }}" href="{{ route('categorias.index') }}">
-                    <i class="fas fa-tags fa"></i> Categorías
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('areas.index') ? 'active' : '' }}" href="{{ route('areas.index') }}">
-                    <i class="fas fa-tags fa"></i> Areas
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('subcategorias.index') ? 'active' : '' }}" href="{{ route('subcategorias.index') }}">
-                    <i class="fas fa-layer-group fa"></i> Subcategorías
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('movimientos.index') ? 'active' : '' }}" href="{{ route('movimientos.index') }}">
-                    <i class="fas fa-exchange-alt fa"></i> Movimientos
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('solicitudes.index') ? 'active' : '' }}" href="{{ route('solicitudes.index') }}">
-                    <i class="fas fa-envelope fa"></i> Solicitudes
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('estados.index') ? 'active' : '' }}" href="{{ route('estados.index') }}">
-                    <i class="fas fa-flag fa"></i> Estados
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('usuarios.index') ? 'active' : '' }}" href="{{ route('usuarios.index') }}">
-                    <i class="fas fa-user fa"></i> Usuarios
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('roles.index') ? 'active' : '' }}" href="{{ route('roles.index') }}">
-                    <i class="fas fa-user-tag fa"></i> Roles
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('solicitudes_has_trabajadores.index') ? 'active' : '' }}" href="{{ route('solicitudes_has_trabajadores.index') }}">
-                    <i class="fas fa-user-friends fa"></i> Solicitudes has Trabajadores
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('trabajadores.index') ? 'active' : '' }}" href="{{ route('trabajadores.index') }}">
-                    <i class="fas fa-users fa"></i> Trabajadores
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('tipoMantenimiento.index') ? 'active' : '' }}" href="{{ route('tipoMantenimiento.index') }}">
-                    <i class="fas fa-tools fa"></i> Tipo de Mantenimiento
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('tipomovimientos.index') ? 'active' : '' }}" href="{{ route('tipomovimientos.index') }}">
-                    <i class="fas fa-tools fa"></i> Tipo de Movimientos
-                </a>
-            </li>
+            @if(Auth::check())
+                @can('view-inventario')
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('items.index') ? 'active' : '' }}" href="{{ route('items.index') }}">
+                            <i class="fas fa-box fa"></i> Inventario
+                        </a>
+                    </li>
+                @endcan
+                @can('view-categorias')
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('categorias.index') ? 'active' : '' }}" href="{{ route('categorias.index') }}">
+                            <i class="fas fa-tags fa"></i> Categorías
+                        </a>
+                    </li>
+                @endcan
+                @can('view-areas')
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('areas.index') ? 'active' : '' }}" href="{{ route('areas.index') }}">
+                            <i class="fas fa-tags fa"></i> Areas
+                        </a>
+                    </li>
+                @endcan
+                @can('view-subcategorias')
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('subcategorias.index') ? 'active' : '' }}" href="{{ route('subcategorias.index') }}">
+                            <i class="fas fa-layer-group fa"></i> Subcategorías
+                        </a>
+                    </li>
+                @endcan
+                @can('view-movimientos')
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('movimientos.index') ? 'active' : '' }}" href="{{ route('movimientos.index') }}">
+                            <i class="fas fa-exchange-alt fa"></i> Movimientos
+                        </a>
+                    </li>
+                @endcan
+                @can('view-solicitudes')
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('solicitudes.index') ? 'active' : '' }}" href="{{ route('solicitudes.index') }}">
+                            <i class="fas fa-envelope fa"></i> Solicitudes
+                        </a>
+                    </li>
+                @endcan
+                @can('view-estados')
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('estados.index') ? 'active' : '' }}" href="{{ route('estados.index') }}">
+                            <i class="fas fa-flag fa"></i> Estados
+                        </a>
+                    </li>
+                @endcan
+                @can('view-usuarios')
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('usuarios.index') ? 'active' : '' }}" href="{{ route('usuarios.index') }}">
+                            <i class="fas fa-user fa"></i> Usuarios
+                        </a>
+                    </li>
+                @endcan
+                @can('view-roles')
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('roles.index') ? 'active' : '' }}" href="{{ route('roles.index') }}">
+                            <i class="fas fa-user-tag fa"></i> Roles
+                        </a>
+                    </li>
+                @endcan
+                @can('view-solicitudes-has-trabajadores')
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('solicitudes_has_trabajadores.index') ? 'active' : '' }}" href="{{ route('solicitudes_has_trabajadores.index') }}">
+                            <i class="fas fa-user-friends fa"></i> Solicitudes has Trabajadores
+                        </a>
+                    </li>
+                @endcan
+                @can('view-trabajadores')
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('trabajadores.index') ? 'active' : '' }}" href="{{ route('trabajadores.index') }}">
+                            <i class="fas fa-users fa"></i> Trabajadores
+                        </a>
+                    </li>
+                @endcan
+                @can('view-tipo-mantenimiento')
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('tipoMantenimiento.index') ? 'active' : '' }}" href="{{ route('tipoMantenimiento.index') }}">
+                            <i class="fas fa-tools fa"></i> Tipo de Mantenimiento
+                        </a>
+                    </li>
+                @endcan
+                @can('view-tipo-movimientos')
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('tipomovimientos.index') ? 'active' : '' }}" href="{{ route('tipomovimientos.index') }}">
+                            <i class="fas fa-tools fa"></i> Tipo de Movimientos
+                        </a>
+                    </li>
+                @endcan
+            @endif
             <li class="nav-item">
                 <a class="nav-link logout-button" href="{{ route('logout') }}"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -119,7 +146,6 @@
 </html>
 
 @section('scripts')
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const itemInput = document.getElementById('item-search');
@@ -161,14 +187,13 @@ document.addEventListener('DOMContentLoaded', function () {
                             div.dataset.itemId = item.idItem; // Asignar el ID del item al dataset
                             div.addEventListener('click', () => {
                                 itemInput.value = item.nombre;
-                                document.getElementById('items_id').value = item.idItem; // Actualizar el campo oculto
+                                itemInput.dataset.itemId = item.idItem; // Almacenar el ID en el campo de entrada
                                 itemResultsContainer.innerHTML = '';
                             });
                             itemResultsContainer.appendChild(div);
                         });
                     }
-                })
-                .catch(error => console.error('Error fetching data:', error));
+                });
         } else {
             itemResultsContainer.innerHTML = '';
         }
@@ -191,24 +216,20 @@ document.addEventListener('DOMContentLoaded', function () {
                             const div = document.createElement('div');
                             div.textContent = solicitud.descripcionFalla;
                             div.classList.add('search-result');
-                            div.dataset.solicitudId = solicitud.idSolicitud; // Asignar el ID de la solicitud al dataset
+                            div.dataset.solicitudId = solicitud.id; // Asignar el ID del solicitud al dataset
                             div.addEventListener('click', () => {
                                 solicitudInput.value = solicitud.descripcionFalla;
-                                document.getElementById('solicitudes_id').value = solicitud.idSolicitud; // Actualizar el campo oculto
+                                solicitudInput.dataset.solicitudId = solicitud.id; // Almacenar el ID en el campo de entrada
                                 solicitudResultsContainer.innerHTML = '';
                             });
                             solicitudResultsContainer.appendChild(div);
                         });
                     }
-                })
-                .catch(error => console.error('Error fetching data:', error));
+                });
         } else {
             solicitudResultsContainer.innerHTML = '';
         }
     });
 });
-
-
 </script>
-
 @endsection

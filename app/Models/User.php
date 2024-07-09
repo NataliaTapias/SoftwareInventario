@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Rol::class, 'roles_id');
     }
+    public function hasRole($role)
+    {
+        return $this->roles_id === $role; // Aquí comparas el campo roles_id con el rol deseado
+    }
+    
 }

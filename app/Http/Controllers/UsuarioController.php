@@ -12,6 +12,21 @@ class UsuarioController extends Controller
     {
         $usuarios = Usuario::all();
         return view('usuarios.index', compact('usuarios'));
+
+        $user = User::find(1); // Obtener el usuario deseado, por ejemplo, con id 1
+    
+        if ($user->hasRole('logistica')) {
+            // Acciones específicas para usuarios con el rol 'logistica'
+            return "Usuario tiene el rol de logística";
+        } elseif ($user->hasRole('consultor')) {
+            // Acciones específicas para usuarios con el rol 'consultor'
+            return "Usuario tiene el rol de consultor";
+        } else {
+            // Acciones por defecto para otros roles o sin roles asignados
+            return "Usuario no tiene un rol específico";
+        }
+
+
     }
 
     public function create()
