@@ -63,5 +63,5 @@ Route::get('/solicitudes/search', [SolicitudController::class, 'search'])->name(
 
 // Ruta para la vista de bienvenida
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });

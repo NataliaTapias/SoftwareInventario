@@ -90,14 +90,7 @@
                     <i class="fas fa-users fa"></i> Trabajadores
                 </a>
             </li>
-            @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('solicitudes_has_trabajadores.index') ? 'active' : '' }}" href="{{ route('solicitudes_has_trabajadores.index') }}">
-                    <i class="fas fa-user-friends fa"></i> Solicitudes has Trabajadores
-                </a>
-            </li>
 
-            @endif
             @if (!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
 
             <li class="nav-item">

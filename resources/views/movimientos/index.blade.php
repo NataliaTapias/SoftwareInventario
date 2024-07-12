@@ -81,7 +81,7 @@
                         <td>
                         <div class="d-flex justify-content-start">
                         
-            <a href="{{ route('movimientos.show', $movimiento->idMovimiento) }}" class="btn btn-warning btn-sm mr-2">
+            <a href="{{ route('movimientos.show', $movimiento->idMovimiento) }}" class="btn btn-info btn-sm mr-1">
                 <i class="fas fa-eye"></i>
             </a>
            

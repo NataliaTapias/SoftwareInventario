@@ -1,10 +1,4 @@
 /* Estilos generales */
-
-
-
-
-
-
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #f8f9fa;
@@ -14,89 +8,42 @@ body {
 
 .container {
     display: flex;
+    justify-content: center;
 }
 
-
-
-
-    .search-result {
-        cursor: pointer;
-        padding: 5px;
-        border: 1px solid #ccc;
-        margin: 2px 0;
-    }
-    .search-result:hover {
-        background-color: #f0f0f0;
-    }
-
-
-
-/* Botones */
-.btn {
-    border: none;
-    background: none;
-    cursor: pointer;
-    padding: 5px 10px;
-    transition: color 0.3s;
+.container-fluid {
+    max-width: 1200px;
 }
 
-.btn:hover {
-    color: #28a745; /* Verde para el hover */
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.btn.btn-primary {
-    background-color: green;
-    border-color: green;
+.card-header {
+    font-size: 1.25rem;
+    font-weight: 500;
 }
 
-.btn.btn-primary:hover,
-.btn.btn-primary:focus,
-.btn.btn-primary:active,
-.btn.btn-primary.active {
-    background-color: darkgreen;
-    border-color: darkgreen;
+.card-body .btn {
+    border-radius: 20px;
+    font-size: 0.9rem;
 }
 
-.btn.btn-success {
-    background-color: #28a745; /* Verde */
-    border-color: #28a745;
+.card-header.bg-primary {
+    background-color: #007bff !important;
 }
 
-.btn.btn-success:hover {
-    background-color: #218838;
-    border-color: #1e7e34;
+.card-header.bg-secondary {
+    background-color: #6c757d !important;
 }
 
-.btn.btn-warning {
-    background-color: yellow;
-    border-color: yellow;
-    color: black; /* Color del texto */
+.card-header.text-white {
+    color: #fff !important;
 }
 
-.btn.btn-warning:hover,
-.btn.btn-warning:focus,
-.btn.btn-warning:active,
-.btn.btn-warning.active {
-    background-color: goldenrod; /* Color de fondo al pasar el ratón */
-    border-color: goldenrod;
-    color: black; /* Color del texto al pasar el ratón */
-}
-
-.btn.btn-danger {
-    background-color: red;
-    border-color: red;
-}
-
-.btn.btn-danger:hover,
-.btn.btn-danger:focus,
-.btn.btn-danger:active,
-.btn.btn-danger.active {
-    background-color: darkred;
-    border-color: darkred;
-}
-
-.btn-sm {
-    padding: 5px 10px; /* Asegurar que los botones de tamaño pequeño tengan el mismo estilo */
+.text-center {
+    text-align: center;
 }
 
 /* Sidebar */
@@ -177,14 +124,11 @@ table {
     border-collapse: collapse;
 }
 
-table,
-th,
-td {
+table, th, td {
     border: 1px solid black;
 }
 
-th,
-td {
+th, td {
     padding: 8px;
     text-align: left;
 }
@@ -198,3 +142,53 @@ td {
     color: #dc3545; /* Rojo */
 }
 
+/* Paginación */
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.pagination .page-item {
+    margin: 0 0.25rem;
+}
+
+.pagination .page-link {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    border: 1px solid #dee2e6;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.pagination .page-link:hover {
+    background-color: #e9ecef;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+/* Ajuste de iconos de paginación */
+.pagination .page-link i {
+    font-size: 1rem; /* Ajusta el tamaño de los iconos */
+    vertical-align: middle; /* Alinea los iconos verticalmente */
+}
+
+.sidebar .user-info p {
+    color: #fff;
+}
+
+.logout-container {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    text-align: center;
+}
+
+.content {
+    margin-left: 250px;
+    padding: 20px;
+}

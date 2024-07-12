@@ -23,7 +23,9 @@
             </div>
             <div class="col">
                 <button type="submit" class="btn btn-success">Buscar</button>
+                <a href="{{ route('items.index') }}" class="btn btn-success">Limpiar Filtros</a>
             </div>
+            
         </form>
 
         <!-- Botón Crear Ítem -->
@@ -82,5 +84,9 @@
                 @endforeach
             </tbody> 
         </table>
+
+
+
+
     </div>
 @endsection

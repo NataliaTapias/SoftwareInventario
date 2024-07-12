@@ -47,11 +47,12 @@
                     <td>{{ $solicitud->estado->nombre }}</td>
                     <td>{{ $solicitud->area->nombre }}</td>
                     <td>
-                    <a href="{{ route('solicitudes.show', $solicitud->idSolicitud) }}" class="btn btn-warning btn-sm mr-1">
-                <i class="fas fa-eye"></i>
-            </a>
+                    <div class="d-flex justify-content-start">
+                    <a href="{{ route('solicitudes.show', $solicitud->idSolicitud) }}" class="btn btn-info btn-sm mr-1">
+                            <i class="fas fa-eye"></i>
+                        </a>
                     @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
-                        <div class="d-flex justify-content-start">
+
                             <a href="{{ route('solicitudes.edit', $solicitud->idSolicitud) }}" class="btn btn-warning btn-sm mr-2">
                                 <i class="fas fa-edit"></i>
                             </a>

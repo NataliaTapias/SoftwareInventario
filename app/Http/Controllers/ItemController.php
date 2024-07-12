@@ -27,7 +27,7 @@ class ItemController extends Controller
 
         $items = $items->get();
 
-
+        return response()->json($items);
 
         if (!$query) {
             return response()->json(['error' => 'No query provided'], 400);
