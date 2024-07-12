@@ -32,7 +32,12 @@
 
         <!-- Botón Crear Movimiento -->
         <div class="mb-4">
-            <a href="{{ route('movimientos.create') }}" class="btn btn-success">Crear Movimiento</a>
+        @if(!Auth::user()->hasRole('consultor') )
+    <div class="mb-4">
+        <a href="{{ route('movimientos.create') }}" class="btn btn-success">Crear Movimiento</a>
+
+    </div>
+@endif
             <a href="{{ route('export.movimientos') }}" class="btn btn-primary">Exportar Movimientos a Excel</a>
         </div>
 
@@ -74,18 +79,25 @@
                         <td>{{ $movimiento->proveedor }}</td>
                         <td>{{ $movimiento->colaborador }}</td>
                         <td>
-                            <div class="d-flex justify-content-start">
-                                <a href="{{ route('movimientos.edit', $movimiento->idMovimiento) }}" class="btn btn-warning btn-sm mr-2">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="{{ route('movimientos.destroy', $movimiento->idMovimiento) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este movimiento?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
-                            </div>
+                        <div class="d-flex justify-content-start">
+                        
+            <a href="{{ route('movimientos.show', $movimiento->idMovimiento) }}" class="btn btn-warning btn-sm mr-2">
+                <i class="fas fa-eye"></i>
+            </a>
+           
+                        @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
+                            <a href="{{ route('movimientos.edit', $movimiento->idMovimiento) }}" class="btn btn-warning btn-sm mr-2">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="{{ route('movimientos.destroy', $movimiento->idMovimiento) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este movimiento?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        @endif
+                    </div>
                         </td>
                     </tr>
                 @endforeach

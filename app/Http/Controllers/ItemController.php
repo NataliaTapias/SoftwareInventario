@@ -13,6 +13,21 @@ class ItemController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
+        $subcategoriaNombre = $request->input('subcategoria');
+
+
+
+        $items = Item::where('nombre', 'LIKE', "%$query%");
+
+        if ($subcategoriaNombre) {
+            $items->whereHas('subcategoria', function ($q) use ($subcategoriaNombre) {
+                $q->where('nombre', $subcategoriaNombre);
+            });
+        }
+
+        $items = $items->get();
+
+
 
         if (!$query) {
             return response()->json(['error' => 'No query provided'], 400);

@@ -23,7 +23,10 @@ Route::resource('movimientos', MovimientoController::class);
 Route::resource('solicitudes', SolicitudController::class);
 Route::resource('solicitudes_has_trabajadores', SolicitudHasTrabajadorController::class);
 Route::resource('subcategorias', SubcategoriaController::class);
-Route::resource('tipoMantenimiento', TipoMantenimientoController::class);
+Route::resource('tipomantenimientos', TipoMantenimientoController::class);
+
+
+
 Route::resource('tipomovimientos', TipoMovimientoController::class);
 Route::resource('trabajadores', TrabajadorController::class);
 Route::resource('usuarios', UsuarioController::class);

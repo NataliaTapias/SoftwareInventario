@@ -122,7 +122,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const query = itemInput.value;
 
         if (query.length > 1) {
-            fetch(`/items/search?query=${query}`)
+            let url = `/items/search?query=${query}`;
+
+            // Verificar si el usuario tiene el rol 'logistica'
+            @if(Auth::user()->hasRole('logistica'))
+                url += '&subcategoria=logistica'; // Agregar filtro por subcategoría 'logistica'
+            @endif
+
+            fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     itemResultsContainer.innerHTML = '';

@@ -5,14 +5,18 @@
 @section('content')
     <div class="container">
         <h1 class="my-4">Trabajadores</h1>
+        @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
         <a href="{{ route('trabajadores.create') }}" class="btn btn-success mb-4">Crear Trabajador</a>
+        @endif
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
+                        @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
                         <th>Acciones</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -21,6 +25,7 @@
                             <td>{{ $trabajador->idTrabajador }}</td>
                             <td>{{ $trabajador->nombre }}</td>
                             <td>
+                            @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
                                 <div class="d-flex">
                                     <a href="{{ route('trabajadores.edit', $trabajador->idTrabajador) }}" class="btn btn-warning btn-sm mr-2">
                                         <i class="fas fa-edit"></i>
@@ -33,6 +38,7 @@
                                         </button>
                                     </form>
                                 </div>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

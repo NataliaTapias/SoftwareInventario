@@ -26,11 +26,15 @@
                         <td>{{ $usuario->email }}</td>
                         <td>{{ $usuario->rol->nombre }}</td>
                         <td>
-                            <a href="{{ route('usuarios.edit', $usuario->idUsuario) }}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="{{ route('usuarios.edit', $usuario->idUsuario) }}" class="btn btn-warning btn-sm mr-2">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
                             <form action="{{ route('usuarios.destroy', $usuario->idUsuario) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                             </form>
                         </td>
                     </tr>

@@ -1,13 +1,14 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Notifications\Notifiable;
 
 class Usuario extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table = 'Usuarios'; // Nombre de la tabla en la base de datos
     protected $primaryKey = 'idUsuario'; // Llave primaria
@@ -25,8 +26,9 @@ class Usuario extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'roles_id', 'idRol');
     }
+
     public function hasRole($role)
     {
-        return $this->roles_id === $role; // Aquí comparas el campo roles_id con el rol deseado
+        return $this->rol && $this->rol->nombre === $role;
     }
 }

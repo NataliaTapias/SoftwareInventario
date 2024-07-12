@@ -5,9 +5,11 @@
 @section('content')
 <div class="container-fluid">
     <h1 class="my-4">Lista de Solicitudes</h1>
+    @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
     <div class="mb-3">
         <a href="{{ route('solicitudes.create') }}" class="btn btn-success">Crear Solicitud</a>
     </div>
+    @endif
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -45,6 +47,10 @@
                     <td>{{ $solicitud->estado->nombre }}</td>
                     <td>{{ $solicitud->area->nombre }}</td>
                     <td>
+                    <a href="{{ route('solicitudes.show', $solicitud->idSolicitud) }}" class="btn btn-warning btn-sm mr-1">
+                <i class="fas fa-eye"></i>
+            </a>
+                    @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
                         <div class="d-flex justify-content-start">
                             <a href="{{ route('solicitudes.edit', $solicitud->idSolicitud) }}" class="btn btn-warning btn-sm mr-2">
                                 <i class="fas fa-edit"></i>
@@ -57,6 +63,7 @@
                                 </button>
                             </form>
                         </div>
+                        @endif
                     </td>
                 </tr>
                 @endforeach

@@ -5,9 +5,11 @@
 @section('content')
 <div class="container-fluid">
     <h1 class="my-4">Subcategorías</h1>
+    @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
     <div class="mb-3">
         <a href="{{ route('subcategorias.create') }}" class="btn btn-success">Crear Subcategoría</a>
     </div>
+    @endif
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -15,7 +17,9 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Categoría</th>
+                    @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
                     <th>Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +29,7 @@
                     <td>{{ $subcategoria->nombre }}</td>
                     <td>{{ $subcategoria->categoria->nombre }}</td>
                     <td>
+                    @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
                         <div class="d-flex justify-content-start">
                             <a href="{{ route('subcategorias.edit', $subcategoria->idSubcategoria) }}" class="btn btn-warning btn-sm mr-2">
                                 <i class="fas fa-edit"></i>
@@ -37,6 +42,7 @@
                                 </button>
                             </form>
                         </div>
+                        @endif
                     </td>
                 </tr>
                 @endforeach

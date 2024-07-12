@@ -27,10 +27,11 @@
         </form>
 
         <!-- Botón Crear Ítem -->
+        @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
         <div class="mb-4">
             <a href="{{ route('items.create') }}" class="btn btn-success">Crear Ítem</a>
         </div>
-
+        @endif
         <!-- Tabla de ítems -->
         <table class="table table-striped">
             <thead>
@@ -44,7 +45,9 @@
                     <th>Unidad de Medida</th>
                     <th>Subcategoría</th>
                     <th>Estado</th>
+                    @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
                     <th>Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -60,6 +63,7 @@
                         <td>{{ $Item->subcategoria->nombre ?? 'N/A' }}</td>
                         <td>{{ $Item->estado->nombre ?? 'N/A' }}</td>
                         <td>
+                        @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
                             <div class="d-flex justify-content-start">
                                 <a href="{{ route('items.edit', $Item->idItem) }}" class="btn btn-warning btn-sm mr-2">
                                     <i class="fas fa-edit"></i>
@@ -72,6 +76,7 @@
                                     </button>
                                 </form>
                             </div>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

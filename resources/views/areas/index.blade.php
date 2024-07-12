@@ -17,10 +17,11 @@
         </form>
 
         <!-- Botón Crear Área -->
+        @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
         <div class="mb-4">
             <a href="{{ route('areas.create') }}" class="btn btn-success">Crear Área</a>
         </div>
-
+        @endif
         <!-- Tabla de áreas -->
         <table class="table table-striped">
             <thead>
@@ -29,7 +30,9 @@
                     <th>Nombre</th>
                     <th>Creado</th>
                     <th>Actualizado</th>
+                    @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
                     <th>Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -40,6 +43,7 @@
                         <td>{{ $area->created_at }}</td>
                         <td>{{ $area->updated_at }}</td>
                         <td>
+                        @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
                             <div class="d-flex justify-content-start">
                                 <a href="{{ route('areas.edit', $area->idArea) }}" class="btn btn-warning btn-sm mr-2">
                                     <i class="fas fa-edit"></i>
@@ -51,6 +55,7 @@
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>
+                         @endif
                             </div>
                         </td>
                     </tr>

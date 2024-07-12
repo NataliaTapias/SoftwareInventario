@@ -40,6 +40,7 @@
                         <td>{{ $categoria->created_at }}</td>
                         <td>{{ $categoria->updated_at }}</td>
                         <td>
+                        @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
                             <div class="d-flex">
                                 <a href="{{ route('categorias.edit', $categoria->idCategoria) }}" class="btn btn-warning btn-sm mr-2">
                                     <i class="fas fa-edit"></i>
@@ -52,6 +53,7 @@
                                     </button>
                                 </form>
                             </div>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
