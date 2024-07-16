@@ -2,6 +2,11 @@
 
 @section('title', 'Inventario')
 
+
+
+
+
+
 @section('content')
     <div class="container-fluid">
         <h1 class="my-4">Inventario</h1>
@@ -25,7 +30,6 @@
                 <button type="submit" class="btn btn-success">Buscar</button>
                 <a href="{{ route('items.index') }}" class="btn btn-success">Limpiar Filtros</a>
             </div>
-            
         </form>
 
         <!-- Botón Crear Ítem -->
@@ -34,6 +38,7 @@
             <a href="{{ route('items.create') }}" class="btn btn-success">Crear Ítem</a>
         </div>
         @endif
+
         <!-- Tabla de ítems -->
         <table class="table table-striped">
             <thead>
@@ -82,11 +87,13 @@
                         </td>
                     </tr>
                 @endforeach
-            </tbody> 
+            </tbody>
         </table>
 
-
-
-
+        <!-- Enlaces de paginación -->
+<!-- Enlaces de paginación -->
+<div class="d-flex justify-content-center">
+    {{ $items->links() }}
+</div>
     </div>
 @endsection

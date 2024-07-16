@@ -142,53 +142,12 @@ th, td {
     color: #dc3545; /* Rojo */
 }
 
-/* Paginación */
-.pagination {
-    display: flex;
-    justify-content: center;
-    padding: 1rem;
-}
-
-.pagination .page-item {
-    margin: 0 0.25rem;
-}
-
-.pagination .page-link {
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.25rem;
-    border: 1px solid #dee2e6;
-    color: #007bff;
-    text-decoration: none;
-}
-
-.pagination .page-link:hover {
-    background-color: #e9ecef;
-}
-
-.pagination .page-item.active .page-link {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: white;
-}
-
-/* Ajuste de iconos de paginación */
 .pagination .page-link i {
     font-size: 1rem; /* Ajusta el tamaño de los iconos */
     vertical-align: middle; /* Alinea los iconos verticalmente */
 }
 
-.sidebar .user-info p {
-    color: #fff;
-}
-
-.logout-container {
-    position: absolute;
-    bottom: 15px;
-    width: 100%;
-    text-align: center;
-}
-
-.content {
-    margin-left: 250px;
-    padding: 20px;
+.pagination .page-item.disabled .page-link {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
 }

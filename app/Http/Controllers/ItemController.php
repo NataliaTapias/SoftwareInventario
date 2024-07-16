@@ -39,38 +39,36 @@ class ItemController extends Controller
     }
     
  
-    public function index(Request $request){
-    // Capturamos los parámetros de búsqueda y filtrado
-    $search = $request->input('search');
-    $categoria = $request->input('categoria');
+    public function index(Request $request)
+    {
+        // Capturamos los parámetros de búsqueda y filtrado
+        $search = $request->input('search');
+        $categoria = $request->input('categoria');
     
-    // Construimos la consulta inicial
-    $query = Item::query();
+        // Construimos la consulta inicial
+        $query = Item::query();
     
-    // Aplicamos filtros si existen
-    if ($search) {
-        $query->where(function ($q) use ($search) {
-            $q->where('referencia', 'like', "%{$search}%")
-              ->orWhere('nombre', 'like', "%{$search}%")
-              ->orWhere('descripcion', 'like', "%{$search}%");
-        });
+        // Aplicamos filtros si existen
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('referencia', 'like', "%{$search}%")
+                  ->orWhere('nombre', 'like', "%{$search}%")
+                  ->orWhere('descripcion', 'like', "%{$search}%");
+            });
+        }
+    
+        if ($categoria) {
+            $query->where('subcategorias_id', $categoria);
+        }
+    
+        // Ordenar por fecha de creación y paginar
+        $items = $query->orderBy('created_at', 'desc')->paginate(10);
+    
+        // Obtener todas las categorías para el filtro
+        $categorias = \App\Models\Subcategoria::all();
+    
+        return view('items.index', compact('items', 'categorias'));
     }
-    
-    if ($categoria) {
-        $query->where('subcategorias_id', $categoria);
-    }
-    
-    // Obtenemos los ítems con los filtros aplicados
-    $items = $query->get();
-    
-    // Obtener todas las categorías para el filtro
-    $categorias = \App\Models\Subcategoria::all();
-    
-    return view('items.index', compact('items', 'categorias'));
-
-    // busqueda de items en movimiento 
-    
-   }
 
 
    public function show(Request $request, $id)

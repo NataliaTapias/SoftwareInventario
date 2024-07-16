@@ -122,14 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const query = itemInput.value;
 
         if (query.length > 1) {
-            let url = `/items/search?query=${query}`;
-
-            // Verificar si el usuario tiene el rol 'logistica'
-            @if(Auth::user()->hasRole('logistica'))
-                url += '&subcategoria=logistica'; // Agregar filtro por subcategoría 'logistica'
-            @endif
-
-            fetch(url)
+            fetch(`/items/search?query=${query}&subcategoria=logistica`)
                 .then(response => response.json())
                 .then(data => {
                     itemResultsContainer.innerHTML = '';
@@ -142,10 +135,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             const div = document.createElement('div');
                             div.textContent = item.nombre;
                             div.classList.add('search-result');
-                            div.dataset.itemId = item.idItem; // Asignar el ID del item al dataset
+                            div.dataset.itemId = item.idItem;
                             div.addEventListener('click', () => {
                                 itemInput.value = item.nombre;
-                                document.getElementById('items_id').value = item.idItem; // Actualizar el campo oculto
+                                document.getElementById('items_id').value = item.idItem;
                                 itemResultsContainer.innerHTML = '';
                             });
                             itemResultsContainer.appendChild(div);
@@ -175,10 +168,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             const div = document.createElement('div');
                             div.textContent = solicitud.descripcionFalla;
                             div.classList.add('search-result');
-                            div.dataset.solicitudId = solicitud.idSolicitud; // Asignar el ID de la solicitud al dataset
+                            div.dataset.solicitudId = solicitud.idSolicitud;
                             div.addEventListener('click', () => {
                                 solicitudInput.value = solicitud.descripcionFalla;
-                                document.getElementById('solicitudes_id').value = solicitud.idSolicitud; // Actualizar el campo oculto
+                                document.getElementById('solicitudes_id').value = solicitud.idSolicitud;
                                 solicitudResultsContainer.innerHTML = '';
                             });
                             solicitudResultsContainer.appendChild(div);
