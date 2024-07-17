@@ -122,7 +122,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const query = itemInput.value;
 
         if (query.length > 1) {
-            fetch(`/items/search?query=${query}&subcategoria=logistica`)
+            fetch(`/items/${1}?query=${query}&subcategoria=logistica`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     itemResultsContainer.innerHTML = '';
@@ -184,8 +188,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
-
 </script>
 
 @endsection

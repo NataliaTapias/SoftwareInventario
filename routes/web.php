@@ -58,6 +58,7 @@ Route::get('/trabajadores/show', [TrabajadorController::class, 'show'])->name('t
 Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.show');
 
 
+
 Route::get('/solicitudes/search', [SolicitudController::class, 'search'])->name('solicitudes.search');
 
 

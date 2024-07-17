@@ -6,7 +6,7 @@ use App\Models\Item;
 use App\Models\Subcategoria;
 use App\Models\Estado;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class ItemController extends Controller
 {
 
@@ -71,24 +71,36 @@ class ItemController extends Controller
     }
 
 
-   public function show(Request $request, $id)
-   {
-       if ($request->has('query')) {
-           $query = $request->input('query');
-           $items = Item::where('nombre', 'LIKE', "%$query%")->get();
 
-           return response()->json($items);
-       }
+ 
 
-       $item = Item::find($id);
+    // Dentro del ItemController
+    public function show(Request $request, $id)
+    {
+        // Check if it's an AJAX request for item search
+        if ($request->ajax()) {
+            $query = $request->input('query');
+            $itemsQuery = Item::where('nombre', 'LIKE', "%{$query}%");
+    
+            // Verificar el rol del usuario
+            if (Auth::user()->hasRole('logistica')) {
+                $subcategoria = $request->input('subcategoria', 'logistica'); // Default to 'logistica' if not provided
+                $itemsQuery->whereHas('subcategoria', function ($q) use ($subcategoria) {
+                    $q->where('nombre', $subcategoria);
+                });
+            }
+    
+            $items = $itemsQuery->get();
+    
+            return response()->json($items);
+        }
+    
+        // Normal show method logic if it's not an AJAX request
+        $item = Item::findOrFail($id);
+        return view('items.show', compact('item'));
+    }
+    
 
-       if (!$item) {
-           return redirect()->route('items.index')->with('error', 'Item not found');
-       }
-
-       return view('items.show', compact('item'));
-   }
-   
 
 
     public function create()
