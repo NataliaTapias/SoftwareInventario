@@ -65,16 +65,7 @@
                 </a>
             </li>
             @endif
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('areas.index') ? 'active' : '' }}" href="{{ route('areas.index') }}">
-                    <i class="fas fa-tags fa"></i> Areas
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('subcategorias.index') ? 'active' : '' }}" href="{{ route('subcategorias.index') }}">
-                    <i class="fas fa-layer-group fa"></i> Subcategorías
-                </a>
-            </li>
+
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('movimientos.index') ? 'active' : '' }}" href="{{ route('movimientos.index') }}">
                     <i class="fas fa-exchange-alt fa"></i> Movimientos
@@ -105,6 +96,16 @@
             </li>
             @endif
             <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('areas.index') ? 'active' : '' }}" href="{{ route('areas.index') }}">
+                    <i class="fas fa-tags fa"></i> Areas
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('subcategorias.index') ? 'active' : '' }}" href="{{ route('subcategorias.index') }}">
+                    <i class="fas fa-layer-group fa"></i> Subcategorías
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link logout-button" href="{{ route('logout') }}"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                    <i class="fas fa-sign-out-alt fa"></i> Logout
@@ -113,6 +114,7 @@
                     @csrf
                 </form>
             </li>
+            
         </ul>
     </div>
     <div class="content">

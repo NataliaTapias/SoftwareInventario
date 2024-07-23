@@ -22,7 +22,7 @@ class MovimientoController extends Controller
         $search = $request->query('search');
         $tipoMovimiento = $request->query('tipoMovimientos_id');
         $itemName = $request->query('item_name');
-    
+        
         $movimientos = Movimiento::when($search, function ($query, $search) {
                 return $query->where('observacion', 'like', '%' . $search . '%')
                     ->orWhere('numRemisionProveedor', 'like', '%' . $search . '%')
@@ -37,13 +37,15 @@ class MovimientoController extends Controller
                     $query->where('nombre', 'like', '%' . $itemName . '%');
                 });
             })
-            ->get();
-    
+            ->orderBy('created_at', 'desc')
+            ->paginate(10); // Cambia 10 por el número de elementos que quieras por página
+            
         // Obtener todos los tipos de movimientos para el filtro
         $tiposMovimientos = TipoMovimiento::all();
     
         return view('movimientos.index', compact('movimientos', 'tiposMovimientos'));
     }
+    
     
     public function show($id)
     {

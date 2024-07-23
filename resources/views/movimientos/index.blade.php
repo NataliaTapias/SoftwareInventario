@@ -103,5 +103,6 @@
                 @endforeach
             </tbody>
         </table>
+        {{ $movimientos->links() }}
     </div>
 @endsection

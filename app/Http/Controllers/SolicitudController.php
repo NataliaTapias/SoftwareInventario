@@ -12,12 +12,40 @@ use Carbon\Carbon;
 
 class SolicitudController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $solicitudes = Solicitud::with(['tipoMantenimiento', 'estado', 'area'])->get();
-        return view('solicitudes.index', compact('solicitudes'));
+        $search = $request->query('search');
+        $estadoId = $request->query('estado_id');
+        $fechaInicio = $request->query('fecha_inicio');
+        $fechaFin = $request->query('fecha_fin');
+    
+        $solicitudes = Solicitud::with(['tipoMantenimiento', 'estado', 'area'])
+            ->when($search, function ($query, $search) {
+                return $query->where('descripcionFalla', 'like', '%' . $search . '%')
+                    ->orWhere('observaciones', 'like', '%' . $search . '%');
+            })
+            ->when($estadoId, function ($query, $estadoId) {
+                return $query->where('estado_id', $estadoId);
+            })
+            ->when($fechaInicio, function ($query, $fechaInicio) {
+                return $query->where('created_at', '>=', $fechaInicio);
+            })
+            ->when($fechaFin, function ($query, $fechaFin) {
+                return $query->where('created_at', '<=', $fechaFin);
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+    
+        $estados = Estado::all();
+        $areas = Area::all();
+    
+        return view('solicitudes.index', compact('solicitudes', 'estados', 'areas'));
     }
+    
+    
 
+
+    
 
 
 // SolicitudController.php

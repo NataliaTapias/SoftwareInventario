@@ -13,7 +13,7 @@
         <div class="row d-flex align-items-stretch justify-content-center">
             <!-- Cards Section -->
 
-            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('logística'))
+            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('logisstica'))
                 <div class="col-md-3 mb-4">
                     <div class="card text-white bg-info text-center h-100">
                         <div class="card-header"><i class="fas fa-box"></i> Inventario</div>
@@ -25,7 +25,7 @@
                 </div>
             @endif
 
-            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('mantenimiento'))
+            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('logistica') || Auth::user()->hasRole('mantenimiento'))
                 <div class="col-md-3 mb-4">
                     <div class="card text-white bg-warning text-center h-100">
                         <div class="card-header"><i class="fas fa-envelope"></i> Solicitudes</div>
@@ -37,12 +37,12 @@
                 </div>
             @endif
 
-            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('logística') || Auth::user()->hasRole('mantenimiento'))
+            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('logistica') || Auth::user()->hasRole('mantenimiento'))
                 <div class="col-md-3 mb-4">
                     <div class="card text-center bg-secondary text-white h-100">
-                        <div class="card-header">Movimientos</div>
+                        <div class="card-header"><i class="fas fa-exchange-alt fa"></i > Movimientos</div>
                         <div class="card-body">
-                            <p class="card-text">Controla los movimientos de productos</p>
+                            <p class="card-text">Controla los movimientos de productos.</p>
                             <a href="{{ route('movimientos.index') }}" class="btn btn-light">Ver Movimientos</a>
                         </div>
                     </div>
