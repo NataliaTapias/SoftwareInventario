@@ -141,6 +141,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Actualizar Solicitud</button>
+        <a href="{{ route('solicitudes.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 @endsection
