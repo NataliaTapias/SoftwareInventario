@@ -38,11 +38,7 @@
                 </a>
             </li>
             @if (!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('categorias.index') ? 'active' : '' }}" href="{{ route('categorias.index') }}">
-                    <i class="fas fa-tags fa"></i> Categorías
-                </a>
-            </li>
+
             @endif
             @if (!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
             <li class="nav-item">
@@ -98,6 +94,11 @@
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('areas.index') ? 'active' : '' }}" href="{{ route('areas.index') }}">
                     <i class="fas fa-tags fa"></i> Areas
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('categorias.index') ? 'active' : '' }}" href="{{ route('categorias.index') }}">
+                    <i class="fas fa-tags fa"></i> Categorías
                 </a>
             </li>
             <li class="nav-item">
