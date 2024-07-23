@@ -3,9 +3,12 @@
 @section('title', 'Editar Solicitud')
 
 @section('content')
-<div class="container">
-    <h1 class="my-4">Editar Solicitud</h1>
-
+<div class="d-flex align-items-center" style="gap: 1rem;">
+        <a href="{{ route('solicitudes.index') }}" class="icon-link" title="Atrás">
+            <i class="fa-solid fa-circle-left"></i>
+        </a>
+        <h1>Crear Solicitud</h1>
+    </div>
     <form method="POST" action="{{ route('solicitudes.update', $solicitude->idSolicitud) }}">
         @csrf
         @method('PUT')
@@ -141,7 +144,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Actualizar Solicitud</button>
-        <a href="{{ route('solicitudes.index') }}" class="btn btn-secondary">Cancelar</a>
+
     </form>
 </div>
 @endsection

@@ -4,7 +4,13 @@
 
 @section('content')
 <div class="container-fluid">
-    <h1 class="my-4">Editar Ítem</h1>
+    <div class="d-flex align-items-center" style="gap: 1rem;">
+        <a href="{{ route('items.index') }}" class="icon-link" title="Atrás">
+            <i class="fa-solid fa-circle-left"></i> <!-- Ícono de Font Awesome -->
+        </a>
+        <h1>Editar Ítem</h1>
+    </div>
+
     <form action="{{ route('items.update', $item->idItem) }}" method="POST">
         @csrf
         @method('PUT')
@@ -28,7 +34,6 @@
                 </div>
             </div>
             <div class="col-md-6">
-
                 <div class="form-group">
                     <label for="cantidadMinima">Cantidad Mínima</label>
                     <input type="number" name="cantidadMinima" class="form-control" value="{{ $item->cantidadMinima }}" required>
@@ -59,8 +64,9 @@
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-success">Actualizar</button>
-        <a href="{{ route('items.index') }}" class="btn btn-secondary">Cancelar</a>
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-success">Actualizar</button>
+        </div>
     </form>
 </div>
 @endsection

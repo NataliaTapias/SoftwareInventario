@@ -3,11 +3,15 @@
 @section('title', 'Editar Movimiento')
 
 @section('content')
+<div class="container-fluid">
+    <div class="d-flex align-items-center" style="gap: 1rem;">
+        <a href="{{ route('movimientos.index') }}" class="icon-link" title="Atrás">
+            <i class="fa-solid fa-circle-left"></i>
+        </a>
+        <h1>Editar Movimiento</h1>
+    </div>
 
-<div class="container">
-    <h1 class="my-4">Editar Movimiento</h1>
-
-    <form method="POST" action="{{ route('movimientos.update', $movimiento->idMovimiento) }}">
+    <form method="POST" action="{{ route('movimientos.update', $movimiento->idMovimiento) }}" class="col-md-10 mx-auto">
         @csrf
         @method('PUT')
         
@@ -83,11 +87,13 @@
 
         <div class="form-group mb-3">
             <label for="observacion">Observación</label>
-            <textarea class="form-control" id="observacion" name="observacion" rows="3" style="word-wrap: break-word; overflow-wrap: break-word;">{{ $movimiento->observacion }}</textarea>
+            <textarea class="form-control" id="observacion" name="observacion" rows="3" style="word-wrap: break-word; overflow-wrap: break-word;" >{{ $movimiento->observacion }}</textarea>
         </div>
 
-        <button type="submit" class="btn btn-success">Guardar</button>
-        <a href="{{ route('movimientos.index') }}" class="btn btn-secondary">Cancelar</a>
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="{{ route('movimientos.index') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 </div>
 @endsection

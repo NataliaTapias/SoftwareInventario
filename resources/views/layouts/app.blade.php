@@ -7,9 +7,16 @@
     <title>@yield('title', 'Quimint')</title>
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+   
+
+
+
 </head>
+
+
 <body>
     <div class="sidebar">
         <div class="logo">
@@ -132,7 +139,31 @@
     @yield('scripts')
 </body>
 </html>
+<Style>
 
+.icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px; /* Tamaño del contenedor */
+    height: 48px;
+    border-radius: 50%;
+    font-size: 30px; /* Tamaño del ícono */
+    color: #28a745; /* Color del ícono (verde) */
+    background-color: transparent;
+    border: 1px solid transparent; /* Ajusta el borde si es necesario */
+    cursor: pointer;
+    text-decoration: none; /* Quita el subrayado del enlace */
+    transition: color 0.3s, background-color 0.3s; /* Suaviza el cambio de color */
+}
+
+/* Estilo para el enlace del ícono al pasar el ratón */
+.icon-link:hover {
+    color: #20a60c; /* Color del ícono al pasar el ratón (verde oscuro) */
+    background-color: rgba(40, 167, 69, 0.1); /* Fondo verde claro al pasar el ratón */
+}
+
+</Style>
 @section('scripts')
 
 <script>

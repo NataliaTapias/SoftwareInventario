@@ -107,6 +107,30 @@ body {
     transition: margin-left 0.3s;
 }
 
+/* Estilo para el enlace del ícono */
+.icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px; /* Tamaño del contenedor */
+    height: 48px;
+    border-radius: 50%;
+    font-size: 24px; /* Tamaño del ícono */
+    color: #28a745; /* Color del ícono (verde) */
+    background-color: transparent;
+    border: 1px solid transparent; /* Ajusta el borde si es necesario */
+    cursor: pointer;
+    text-decoration: none; /* Quita el subrayado del enlace */
+    transition: color 0.3s, background-color 0.3s; /* Suaviza el cambio de color */
+}
+
+/* Estilo para el enlace del ícono al pasar el ratón */
+.icon-link:hover {
+    color: #20a60c; /* Color del ícono al pasar el ratón (verde oscuro) */
+    background-color: rgba(40, 167, 69, 0.1); /* Fondo verde claro al pasar el ratón */
+}
+
+
 @media (max-width: 768px) {
     .sidebar {
         width: 100%;
@@ -117,6 +141,9 @@ body {
         margin-left: 0;
     }
 }
+
+/* Estilo para el enlace del ícono */
+
 
 /* Tabla */
 table {

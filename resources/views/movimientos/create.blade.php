@@ -16,8 +16,13 @@
     }
 </style>
 
-<div class="container">
-    <h1 class="my-4">Crear Movimiento</h1>
+<div class="container-fluid">
+    <div class="d-flex align-items-center" style="gap: 1rem;">
+        <a href="{{ route('movimientos.index') }}" class="icon-link" title="Atrás">
+            <i class="fa-solid fa-circle-left"></i> <!-- Ícono de Font Awesome -->
+        </a>
+        <h1>Crear Movimiento</h1>
+    </div>
 
     <form method="POST" action="{{ route('movimientos.store') }}">
         @csrf
@@ -89,8 +94,9 @@
             <textarea class="form-control" id="observacion" name="observacion">{{ old('observacion') }}</textarea>
         </div>
 
-        <button type="submit" class="btn btn-success">Guardar</button>
-        <a href="{{ route('movimientos.index') }}" class="btn btn-secondary">Cancelar</a>
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
     </form>
 </div>
 @endsection

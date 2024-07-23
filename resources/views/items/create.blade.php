@@ -4,7 +4,13 @@
 
 @section('content')
 <div class="container-fluid">
-    <h1 class="my-4">Crear Ítem</h1>
+    <div class="d-flex align-items-center" style="gap: 1rem;">
+        <a href="{{ route('items.index') }}" class="icon-link" title="Atrás">
+            <i class="fa-solid fa-circle-left"></i> <!-- Ícono de Font Awesome -->
+        </a>
+        <h1>Crear Ítem</h1>
+    </div>
+
     <form action="{{ route('items.store') }}" method="POST">
         @csrf
         <div class="row">
@@ -27,7 +33,6 @@
                 </div>
             </div>
             <div class="col-md-6">
-
                 <div class="form-group">
                     <label for="cantidadMinima">Cantidad Mínima</label>
                     <input type="number" name="cantidadMinima" class="form-control" required>
@@ -54,7 +59,9 @@
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
     </form>
 </div>
 @endsection

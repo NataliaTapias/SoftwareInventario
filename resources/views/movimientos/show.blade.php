@@ -3,9 +3,15 @@
 @section('title', 'Detalles del Movimiento')
 
 @section('content')
-    <div class="container">
-        <h1 class="my-4">Detalles del Movimiento</h1>
+<div class="container-fluid">
+    <div class="d-flex align-items-center" style="gap: 1rem;">
+        <a href="{{ route('movimientos.index') }}" class="icon-link" title="Atrás">
+            <i class="fa-solid fa-circle-left"></i>
+        </a>
+        <h1>Detalles del Movimiento</h1>
+    </div>
 
+    <div class="col-md-10 mx-auto">
         <div class="row mb-3">
             <div class="col-md-3">
                 <label for="fecha">Fecha</label>
@@ -61,9 +67,10 @@
 
         <div class="form-group mb-3">
             <label for="observacion">Observación</label>
-            <textarea class="form-control" id="observacion" name="observacion" rows="3" disabled>{{ $movimiento->observacion }}</textarea>
+            <textarea class="form-control" id="observacion" name="observacion" rows="3" style="word-wrap: break-word; overflow-wrap: break-word;" disabled>{{ $movimiento->observacion }}</textarea>
         </div>
 
-        <a href="{{ route('movimientos.index') }}" class="btn btn-secondary">Volver</a>
+
     </div>
+</div>
 @endsection

@@ -5,7 +5,7 @@
 @section('title', 'Listado de Roles')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid" style="padding-left: 0; padding-right: 0;">
         <h1 class="my-4">Listado de Roles</h1>
         <a href="{{ route('roles.create') }}" class="btn btn-success mb-4">Crear Nuevo Rol</a>
 
