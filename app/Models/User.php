@@ -57,4 +57,6 @@ class User extends Authenticatable
         return $this->roles_id === $role; // Aquí comparas el campo roles_id con el rol deseado
     }
     
+
+
 }
