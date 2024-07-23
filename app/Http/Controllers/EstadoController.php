@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Estado; // Asegúrate de importar el modelo Estado
+use App\Models\Estado; 
+
 
 class EstadoController extends Controller
 {

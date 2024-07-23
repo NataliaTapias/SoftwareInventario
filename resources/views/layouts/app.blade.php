@@ -33,6 +33,11 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('informes.index') ? 'active' : '' }}" href="{{ route('informes.index') }}">
+                <i class="fas fa-file-alt fa"></i> Informes
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('items.index') ? 'active' : '' }}" href="{{ route('items.index') }}">
                     <i class="fas fa-box fa"></i> Inventario
                 </a>

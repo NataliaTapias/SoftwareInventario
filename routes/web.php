@@ -5,7 +5,7 @@ use App\Http\Controllers\{
     AreaController, CategoriaController, EstadoController, ItemController, MovimientoController,
     SolicitudController, SolicitudHasTrabajadorController, SubcategoriaController, 
     TipoMantenimientoController, TipoMovimientoController, TrabajadorController, UsuarioController, 
-    AuthController, HomeController, RoleController,ExportController
+    AuthController, HomeController, RoleController,ExportController,InformesController
 };
 
 Route::middleware(['auth'])->group(function () {
@@ -23,6 +23,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('trabajadores', TrabajadorController::class);
     Route::resource('usuarios', UsuarioController::class);
     Route::resource('items', ItemController::class);
+    Route::resource('informes', InformesController::class);
 
     Route::get('solicitudes/{id}/asignaciones', [SolicitudHasTrabajadorController::class, 'showBySolicitud'])->name('solicitudes.asignaciones');
     Route::get('solicitudes_has_trabajadores', [SolicitudHasTrabajadorController::class, 'index'])->name('solicitudes_has_trabajadores.index');
