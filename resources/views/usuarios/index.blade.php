@@ -3,7 +3,8 @@
 @section('title', 'Usuarios')
 
 @section('content')
-    <div class="container">
+<div class="container-fluid">
+
         <h1 class="my-4">Usuarios</h1>
         <a href="{{ route('usuarios.create') }}" class="btn btn-success mb-4">Crear Usuario</a>
         <table class="table table-striped">

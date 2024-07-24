@@ -19,7 +19,7 @@
             <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $categoria->nombre }}" required>
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-success">Actualizar</button>
+            <button type="submit" class="btn btn-success">Guardar</button>
         </div>
     </form>
 </div>

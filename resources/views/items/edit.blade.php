@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class="text-center mt-3">
-            <button type="submit" class="btn btn-success">Actualizar</button>
+            <button type="submit" class="btn btn-success">Guardar</button>
         </div>
     </form>
 </div>

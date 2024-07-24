@@ -3,7 +3,7 @@
 @section('title', 'Solicitudes Asignadas')
 
 @section('content')
-    <div class="container">
+<div class="container-fluid">
         <h1 class="my-4">Listado de Solicitudes Asignadas a Trabajadores</h1>
 
         <div class="table-responsive">

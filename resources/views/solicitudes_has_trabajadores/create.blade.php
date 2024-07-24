@@ -3,9 +3,13 @@
 @section('title', 'Asignar Trabajador a Solicitud')
 
 @section('content')
-<div class="container">
-    <h1 class="my-4 text-center">Asignar Trabajador a Solicitud</h1>
-
+<div class="container-fluid">
+    <div class="d-flex align-items-center mb-4" style="gap: 1rem;">
+        <a href="{{ route('solicitudes.index') }}" class="icon-link" title="Atrás">
+            <i class="fa-solid fa-circle-left"></i>
+        </a>
+        <h1> Asignar a solicitud trabajador</h1>
+    </div>
     <form method="POST" action="{{ route('solicitudes_has_trabajadores.store') }}">
         @csrf
 

@@ -3,7 +3,7 @@
 @section('title', 'Tipos de Mantenimiento')
 
 @section('content')
-    <div class="container">
+<div class="container-fluid">
         <h1 class="my-4">Tipos de Mantenimiento</h1>
         <a href="{{ route('tipomantenimientos.create') }}" class="btn btn-success mb-4">Crear Tipo de Mantenimiento</a>
         <div class="table-responsive">

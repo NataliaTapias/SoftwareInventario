@@ -92,7 +92,6 @@
 
         <div class="text-center mt-3">
             <button type="submit" class="btn btn-success">Guardar</button>
-            <a href="{{ route('movimientos.index') }}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </div>
@@ -101,7 +100,7 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Aquí podrías agregar scripts adicionales si es necesario
+
     });
 </script>
 @endsection

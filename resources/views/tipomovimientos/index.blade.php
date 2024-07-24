@@ -3,7 +3,7 @@
 @section('title', 'Tipos de Movimiento')
 
 @section('content')
-    <div class="container">
+<div class="container-fluid">
         <h1 class="my-4">Tipos de Movimiento</h1>
         <a href="{{ route('tipomovimientos.create') }}" class="btn btn-success mb-4">Crear Tipo de Movimiento</a>
         <div class="table-responsive">

@@ -23,7 +23,7 @@
             <input type="text" class="form-control" id="tipo" name="tipo" value="{{ $estado->tipo }}" required>
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-success">Actualizar</button>
+            <button type="submit" class="btn btn-success">Guardar</button>
         </div>
     </form>
 </div>

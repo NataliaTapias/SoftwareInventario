@@ -19,7 +19,7 @@
             <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $role->nombre }}" required>
         </div>
         <div class="text-center mt-3">
-            <button type="submit" class="btn btn-primary">Actualizar Rol</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
         </div>
     </form>
 </div>

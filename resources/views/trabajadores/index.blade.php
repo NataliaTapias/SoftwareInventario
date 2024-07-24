@@ -3,7 +3,7 @@
 @section('title', 'Trabajadores')
 
 @section('content')
-    <div class="container">
+<div class="container-fluid">
         <h1 class="my-4">Trabajadores</h1>
         @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
         <a href="{{ route('trabajadores.create') }}" class="btn btn-success mb-4">Crear Trabajador</a>

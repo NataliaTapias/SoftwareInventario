@@ -3,10 +3,14 @@
 @section('title', 'Editar Subcategoría')
 
 @section('content')
-    <div class="container">
-        <h1 class="my-4">Editar Subcategoría</h1>
-
-        <form method="POST" action="{{ route('subcategorias.update', $subcategoria->idSubcategoria) }}">
+<div class="container-fluid">
+    <div class="d-flex align-items-center" style="gap: 1rem;">
+        <a href="{{ route('subcategorias.index') }}" class="icon-link" title="Atrás">
+            <i class="fa-solid fa-circle-left"></i>
+        </a>
+        <h1>Editar Subcategoria</h1>
+    </div>
+        <form method="POST" action="{{ route('subcategorias.update', $subcategoria->idSubcategoria) }}" class="col-md-6 mx-auto">
             @csrf
             @method('PUT')
             <div class="form-group">
@@ -21,8 +25,9 @@
                     @endforeach
                 </select>
             </div>
-            <button type="submit" class="btn btn-success">Guardar</button>
-            <a href="{{ route('subcategorias.index') }}" class="btn btn-secondary">Cancelar</a>
+            <div class="text-center">
+                 <button type="submit" class="btn btn-success">Guardar</button>
+            </div>
         </form>
     </div>
 @endsection
