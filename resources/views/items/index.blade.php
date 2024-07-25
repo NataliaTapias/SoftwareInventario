@@ -64,7 +64,7 @@
                             $estadoClass = 'estado-minimo';
                         }
                     @endphp
-                    <tr class="{{ $estadoClass }}">
+                    <tr>
                         <td>{{ $item->idItem }}</td>
                         <td>{{ $item->referencia }}</td>
                         <td>{{ $item->nombre }}</td>
@@ -73,7 +73,7 @@
                         <td>{{ $item->cantidadMinima }}</td>
                         <td>{{ $item->unidadMedida }}</td>
                         <td>{{ $item->subcategoria->nombre ?? 'N/A' }}</td>
-                        <td>{{ $item->estado->nombre ?? 'N/A' }}</td>
+                        <td class="{{ $estadoClass }}">{{ $item->estado->nombre ?? 'N/A' }}</td>
                         @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
                         <td>
                             <div class="d-flex justify-content-start">

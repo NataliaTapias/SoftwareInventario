@@ -49,9 +49,20 @@
                     <i class="fas fa-box fa"></i> Inventario
                 </a>
             </li>
-            @if (!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
 
-            @endif
+
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('movimientos.index') ? 'active' : '' }}" href="{{ route('movimientos.index') }}">
+                    <i class="fas fa-exchange-alt fa"></i> Movimientos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('solicitudes.index') ? 'active' : '' }}" href="{{ route('solicitudes.index') }}">
+                    <i class="fas fa-envelope fa"></i> Solicitudes
+                </a>
+            </li>
+
             @if (!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('estados.index') ? 'active' : '' }}" href="{{ route('estados.index') }}">
@@ -59,6 +70,15 @@
                 </a>
             </li>
             @endif
+
+            @if (!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('trabajadores.index') ? 'active' : '' }}" href="{{ route('trabajadores.index') }}">
+                    <i class="fas fa-users fa"></i> Trabajadores
+                </a>
+            </li>
+            @endif
+
             @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('usuarios.index') ? 'active' : '' }}" href="{{ route('usuarios.index') }}">
@@ -73,23 +93,6 @@
                 </a>
             </li>
             @endif
-
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('movimientos.index') ? 'active' : '' }}" href="{{ route('movimientos.index') }}">
-                    <i class="fas fa-exchange-alt fa"></i> Movimientos
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('solicitudes.index') ? 'active' : '' }}" href="{{ route('solicitudes.index') }}">
-                    <i class="fas fa-envelope fa"></i> Solicitudes
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('trabajadores.index') ? 'active' : '' }}" href="{{ route('trabajadores.index') }}">
-                    <i class="fas fa-users fa"></i> Trabajadores
-                </a>
-            </li>
-
             @if (!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
 
             <li class="nav-item">
