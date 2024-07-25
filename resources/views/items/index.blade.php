@@ -2,11 +2,6 @@
 
 @section('title', 'Inventario')
 
-
-
-
-
-
 @section('content')
     <div class="container-fluid">
         <h1 class="my-4">Inventario</h1>
@@ -40,7 +35,7 @@
         @endif
 
         <!-- Tabla de ítems -->
-        <table class="table table-striped">
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -58,24 +53,34 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($items as $Item)
-                    <tr>
-                        <td>{{ $Item->idItem }}</td>
-                        <td>{{ $Item->referencia }}</td>
-                        <td>{{ $Item->nombre }}</td>
-                        <td>{{ $Item->descripcion }}</td>
-                        <td>{{ $Item->cantidad }}</td>
-                        <td>{{ $Item->cantidadMinima }}</td>
-                        <td>{{ $Item->unidadMedida }}</td>
-                        <td>{{ $Item->subcategoria->nombre ?? 'N/A' }}</td>
-                        <td>{{ $Item->estado->nombre ?? 'N/A' }}</td>
-                        <td>
+                @foreach($items as $item)
+                    @php
+                        $estadoClass = '';
+                        if ($item->estado->nombre == 'Agotado') {
+                            $estadoClass = 'estado-agotado';
+                        } elseif ($item->estado->nombre == 'Disponible') {
+                            $estadoClass = 'estado-disponible';
+                        } elseif ($item->estado->nombre == 'Mínimo') {
+                            $estadoClass = 'estado-minimo';
+                        }
+                    @endphp
+                    <tr class="{{ $estadoClass }}">
+                        <td>{{ $item->idItem }}</td>
+                        <td>{{ $item->referencia }}</td>
+                        <td>{{ $item->nombre }}</td>
+                        <td>{{ $item->descripcion }}</td>
+                        <td>{{ $item->cantidad }}</td>
+                        <td>{{ $item->cantidadMinima }}</td>
+                        <td>{{ $item->unidadMedida }}</td>
+                        <td>{{ $item->subcategoria->nombre ?? 'N/A' }}</td>
+                        <td>{{ $item->estado->nombre ?? 'N/A' }}</td>
                         @if(!Auth::user()->hasRole('consultor') && !Auth::user()->hasRole('logistica'))
+                        <td>
                             <div class="d-flex justify-content-start">
-                                <a href="{{ route('items.edit', $Item->idItem) }}" class="btn btn-warning btn-sm mr-2">
+                                <a href="{{ route('items.edit', $item->idItem) }}" class="btn btn-warning btn-sm mr-2">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('items.destroy', $Item->idItem) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este ítem?');">
+                                <form action="{{ route('items.destroy', $item->idItem) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este ítem?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">
@@ -83,17 +88,38 @@
                                     </button>
                                 </form>
                             </div>
-                            @endif
                         </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
         <!-- Enlaces de paginación -->
-<!-- Enlaces de paginación -->
-<div class="d-flex justify-content-center">
-    {{ $items->links() }}
-</div>
+        <div class="d-flex justify-content-center">
+            {{ $items->links() }}
+        </div>
     </div>
 @endsection
+
+<style>
+    .estado-agotado {
+        background-color: #ffcccc !important; /* Rojo claro */
+    }
+    .estado-disponible {
+        background-color: #ccffcc !important; /* Verde claro */
+    }
+    .estado-minimo {
+        background-color: #ffe5b4 !important; /* Naranja claro */
+    }
+
+    .table td, .table th {
+        vertical-align: middle; /* Asegura que el contenido de la celda esté centrado verticalmente */
+    }
+
+    .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
