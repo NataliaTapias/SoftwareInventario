@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Movimiento;
+use App\Models\Item;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -79,4 +80,61 @@ class ExportController extends Controller
 
         return response()->download($temp_file, $fileName);
     }
+
+    public function exportItems(Request $request)
+    {
+        // Aplicar filtros si se proporcionan en la solicitud
+        $query = Item::query();
+
+        if ($request->has('search')) {
+            $query->where('referencia', 'like', '%' . $request->input('search') . '%')
+                  ->orWhere('nombre', 'like', '%' . $request->input('search') . '%')
+                  ->orWhere('descripcion', 'like', '%' . $request->input('search') . '%');
+        }
+
+        if ($request->has('categoria')) {
+            $query->where('subcategorias_id', $request->input('categoria'));
+        }
+
+        $items = $query->get();
+
+        // Crear el archivo Excel
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Encabezados de columna
+        $sheet->setCellValue('A1', 'ID');
+        $sheet->setCellValue('B1', 'Referencia');
+        $sheet->setCellValue('C1', 'Nombre');
+        $sheet->setCellValue('D1', 'Descripción');
+        $sheet->setCellValue('E1', 'Cantidad');
+        $sheet->setCellValue('F1', 'Cantidad Mínima');
+        $sheet->setCellValue('G1', 'Unidad de Medida');
+        $sheet->setCellValue('H1', 'Subcategoría');
+        $sheet->setCellValue('I1', 'Estado');
+
+        // Datos de la tabla
+        $row = 2;
+        foreach ($items as $item) {
+            $sheet->setCellValue('A' . $row, $item->idItem);
+            $sheet->setCellValue('B' . $row, $item->referencia);
+            $sheet->setCellValue('C' . $row, $item->nombre);
+            $sheet->setCellValue('D' . $row, $item->descripcion);
+            $sheet->setCellValue('E' . $row, $item->cantidad);
+            $sheet->setCellValue('F' . $row, $item->cantidadMinima);
+            $sheet->setCellValue('G' . $row, $item->unidadMedida);
+            $sheet->setCellValue('H' . $row, $item->subcategoria->nombre ?? 'N/A'); // Asumiendo que tienes una relación con la tabla de subcategorías
+            $sheet->setCellValue('I' . $row, $item->estado->nombre ?? 'N/A'); // Asumiendo que tienes una relación con la tabla de estados
+            $row++;
+        }
+
+        // Guardar y descargar el archivo
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'items.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+        $writer->save($temp_file);
+
+        return response()->download($temp_file, $fileName);
+    }
 }
+

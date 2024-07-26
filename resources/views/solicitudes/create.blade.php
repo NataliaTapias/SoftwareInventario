@@ -97,23 +97,24 @@
 
 <!-- Paso 2: Repuestos Utilizados -->
 <div id="step-2" class="step d-none">
-    <div class="form-group search-container">
-        <label for="repuestosUtilizados">Repuestos Utilizados</label>
-        <div id="repuestos-container">
-            <div class="input-group mb-3 repuesto-group">
-                <input type="text" class="form-control repuesto-search" name="repuestosUtilizados[]" placeholder="Buscar repuesto...">
-                <div class="results-container"></div> <!-- Aquí se mostrarán los resultados -->
-                <div class="input-group-append">
-                    <button type="button" class="btn btn-success add-repuesto"><i class="fa fa-plus"></i> Añadir</button>
+        <div class="form-group search-container">
+            <label for="repuestosUtilizados">Repuestos Utilizados</label>
+            <div id="repuestos-container">
+                <div class="input-group mb-3 repuesto-group">
+                    <input type="text" class="form-control repuesto-search" name="repuestosUtilizados[]" placeholder="Buscar repuesto...">
+                    <div class="results-container"></div> <!-- Aquí se mostrarán los resultados -->
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-success add-repuesto"><i class="fa fa-plus"></i> Añadir</button>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="col-12 text-center">
+            <button type="button" class="btn btn-primary prev-step">Anterior</button>
+            <button type="button" class="btn btn-primary next-step">Siguiente</button>
+        </div>
     </div>
-    <div class="col-12 text-center">
-        <button type="button" class="btn btn-primary prev-step">Anterior</button>
-        <button type="button" class="btn btn-primary next-step">Siguiente</button>
-    </div>
-</div>
+
 
 
  <!-- Paso 3: Asignar Trabajador -->
@@ -138,7 +139,8 @@
 
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+
+document.addEventListener('DOMContentLoaded', function () {
     const steps = document.querySelectorAll('.step');
     const progressbar = document.querySelectorAll('.progressbar li');
     let currentStep = 0;
@@ -168,7 +170,6 @@
         });
     });
 
-    // Función para configurar la búsqueda de repuestos
     function setupRepuestoSearch(inputGroup) {
         const itemInput = inputGroup.querySelector('.repuesto-search');
         const itemResultsContainer = inputGroup.querySelector('.results-container');
@@ -211,7 +212,6 @@
         });
     }
 
-    // Función para configurar la búsqueda de trabajadores
     function setupTrabajadorSearch(inputGroup) {
         const trabajadorInput = inputGroup.querySelector('.trabajador-search');
         const trabajadorResultsContainer = inputGroup.querySelector('.results-container');
@@ -254,7 +254,6 @@
         });
     }
 
-    // Función para configurar botones de agregar y eliminar repuestos
     function setupAddRemoveRepuestoButtons() {
         document.querySelectorAll('.add-repuesto').forEach(button => {
             button.addEventListener('click', () => {
@@ -263,22 +262,17 @@
                 const addButton = newInputGroup.querySelector('.add-repuesto');
                 const itemInput = newInputGroup.querySelector('.repuesto-search');
 
-                // Limpiar el valor y resultados del nuevo input
                 itemInput.value = '';
                 newInputGroup.querySelector('.results-container').innerHTML = '';
 
-                // Cambiar el botón Añadir por Eliminar
                 addButton.innerHTML = '<i class="fa fa-trash"></i> Eliminar';
                 addButton.classList.replace('btn-success', 'btn-danger');
                 addButton.classList.replace('add-repuesto', 'remove-repuesto');
 
-                // Configurar búsqueda para el nuevo input
                 setupRepuestoSearch(newInputGroup);
 
-                // Añadir el nuevo grupo al contenedor
                 container.parentNode.appendChild(newInputGroup);
 
-                // Configurar el botón de eliminar para el nuevo grupo
                 addButton.addEventListener('click', () => {
                     newInputGroup.remove();
                 });
@@ -295,7 +289,6 @@
         });
     }
 
-    // Función para configurar botones de agregar y eliminar trabajadores
     function setupAddRemoveTrabajadorButtons() {
         document.querySelectorAll('.add-trabajador').forEach(button => {
             button.addEventListener('click', () => {
@@ -304,22 +297,17 @@
                 const addButton = newInputGroup.querySelector('.add-trabajador');
                 const trabajadorInput = newInputGroup.querySelector('.trabajador-search');
 
-                // Limpiar el valor y resultados del nuevo input
                 trabajadorInput.value = '';
                 newInputGroup.querySelector('.results-container').innerHTML = '';
 
-                // Cambiar el botón Añadir por Eliminar
                 addButton.innerHTML = '<i class="fa fa-trash"></i> Eliminar';
                 addButton.classList.replace('btn-success', 'btn-danger');
                 addButton.classList.replace('add-trabajador', 'remove-trabajador');
 
-                // Configurar búsqueda para el nuevo input
                 setupTrabajadorSearch(newInputGroup);
 
-                // Añadir el nuevo grupo al contenedor
                 container.parentNode.appendChild(newInputGroup);
 
-                // Configurar el botón de eliminar para el nuevo grupo
                 addButton.addEventListener('click', () => {
                     newInputGroup.remove();
                 });
@@ -336,16 +324,12 @@
         });
     }
 
-    // Inicializar búsqueda y botones para el primer input group de repuestos
-    setupRepuestoSearch(document.querySelector('.repuesto-group'));
-    setupAddRemoveRepuestoButtons();
+    document.querySelectorAll('.repuesto-group').forEach(setupRepuestoSearch);
+    document.querySelectorAll('.trabajador-group').forEach(setupTrabajadorSearch);
 
-    // Inicializar búsqueda y botones para el primer input group de trabajadores
-    setupTrabajadorSearch(document.querySelector('.trabajador-group'));
+    setupAddRemoveRepuestoButtons();
     setupAddRemoveTrabajadorButtons();
 });
-
-
 </script>
 
 <style>

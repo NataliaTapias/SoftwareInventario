@@ -10,6 +10,9 @@ use App\Http\Controllers\{
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/export-movimientos', [ExportController::class, 'exportMovimientos'])->name('export.movimientos');
+    Route::get('/export-items', [ExportController::class, 'exportItems'])->name('export.items');
+
+
     Route::resource('roles', RoleController::class);
     Route::resource('areas', AreaController::class);
     Route::resource('categorias', CategoriaController::class);
@@ -24,7 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('usuarios', UsuarioController::class);
     Route::resource('items', ItemController::class);
     Route::resource('informes', InformesController::class);
-
+    Route::get('/items/show', [ItemController::class, 'show']);
     Route::get('solicitudes/{id}/asignaciones', [SolicitudHasTrabajadorController::class, 'showBySolicitud'])->name('solicitudes.asignaciones');
     Route::get('solicitudes_has_trabajadores', [SolicitudHasTrabajadorController::class, 'index'])->name('solicitudes_has_trabajadores.index');
     Route::get('/home', [HomeController::class, 'mostrarVista'])->name('home');

@@ -41,35 +41,23 @@ class SolicitudController extends Controller
     
         return view('solicitudes.index', compact('solicitudes', 'estados', 'areas'));
     }
-    
-    
 
+    public function show($id)
+    {
+        if (request()->has('query')) {
+            $query = request()->input('query');
+            $solicitudes = Solicitud::where('descripcionFalla', 'LIKE', "%{$query}%")->get();
+            return response()->json($solicitudes);
+        }
 
-    
-
-
-// SolicitudController.php
-
-public function show($id)
-{
-    // Check if the request is a search query
-    if (request()->has('query')) {
-        $query = request()->input('query');
-        $solicitudes = Solicitud::where('descripcionFalla', 'LIKE', "%{$query}%")->get();
-        return response()->json($solicitudes);
+        $solicitud = Solicitud::findOrFail($id);
+        return view('solicitudes.show', compact('solicitud'));
     }
-
-    // If not a search query, proceed with the normal show functionality
-    $solicitud = Solicitud::findOrFail($id);
-    return view('solicitudes.show', compact('solicitud'));
-}
-
-
 
     public function create()
     {
         $tiposMantenimientos = TipoMantenimiento::all();
-        $estados = Estado::all();
+        $estados = Estado::whereIn('nombre', ['Aprobado', 'No Aprobado'])->get();
         $areas = Area::all();
     
         return view('solicitudes.create', compact('tiposMantenimientos', 'estados', 'areas'));
@@ -77,39 +65,58 @@ public function show($id)
 
     public function store(Request $request)
     {
-        $request->validate([
+        // Validar los datos del formulario
+        $validatedData = $request->validate([
             'fecha' => 'required|date',
             'descripcionFalla' => 'required|string',
             'tiempoEstimado' => 'nullable|string|max:45',
-            'tipoMantenimientos_id' => 'required|exists:tipomantenimientos,idTipomantenimiento',
+            'tipoMantenimientos_id' => 'required|exists:Tipomantenimientos,idTipomantenimiento',
             'fechaInicio' => 'nullable|date',
             'fechaTermina' => 'nullable|date',
-            'mantenimientoEficiente' => 'nullable|boolean',
-            'totalHorasTrabajadas' => 'nullable|numeric|min:0',
-            'tiempoParada' => 'nullable|numeric|min:0',
-            'repuestosUtilizados' => 'nullable|string',
+            'mantenimientoEficiente' => 'required|boolean',
+            'totalHorasTrabajadas' => 'nullable|numeric',
+            'tiempoParada' => 'nullable|numeric',
+            'repuestosUtilizados' => 'nullable|json',
+            'trabajadoresAsignados' => 'nullable|json',
             'observaciones' => 'nullable|string',
             'firmaDirector' => 'nullable|string|max:255',
             'firmaGerente' => 'nullable|string|max:255',
             'firmaLider' => 'nullable|string|max:255',
-            'estados_id' => 'required|exists:estados,idEstado',
-            'areas_id' => 'required|exists:areas,idArea',
+            'estados_id' => 'required|exists:Estados,idEstado',
+            'areas_id' => 'required|exists:Areas,idArea',
         ]);
     
-        $solicitud = Solicitud::create($request->all());
+        // Crear la solicitud
+        $solicitud = new Solicitud();
+        $solicitud->fecha = $validatedData['fecha'];
+        $solicitud->descripcionFalla = $validatedData['descripcionFalla'];
+        $solicitud->tiempoEstimado = $validatedData['tiempoEstimado'];
+        $solicitud->tipoMantenimientos_id = $validatedData['tipoMantenimientos_id'];
+        $solicitud->fechaInicio = $validatedData['fechaInicio'];
+        $solicitud->fechaTermina = $validatedData['fechaTermina'];
+        $solicitud->mantenimientoEficiente = $validatedData['mantenimientoEficiente'];
+        $solicitud->totalHorasTrabajadas = $validatedData['totalHorasTrabajadas'];
+        $solicitud->tiempoParada = $validatedData['tiempoParada'];
+        $solicitud->repuestosUtilizados = $validatedData['repuestosUtilizados'];
+        $solicitud->trabajadoresAsignados = $validatedData['trabajadoresAsignados'];
+        $solicitud->observaciones = $validatedData['observaciones'];
+        $solicitud->firmaDirector = $validatedData['firmaDirector'];
+        $solicitud->firmaGerente = $validatedData['firmaGerente'];
+        $solicitud->firmaLider = $validatedData['firmaLider'];
+        $solicitud->estados_id = $validatedData['estados_id'];
+        $solicitud->areas_id = $validatedData['areas_id'];
+        $solicitud->save();
     
-        if ($request->has('asignar_trabajador')) {
-            return redirect()->route('solicitudes_has_trabajadores.create', ['solicitud_id' => $solicitud->idSolicitud]);
-        }
-
+        // Redirigir a una página de éxito o mostrar un mensaje de éxito
         return redirect()->route('solicitudes.index')->with('success', 'Solicitud creada exitosamente.');
     }
+    
 
     public function edit($id)
     {
         $solicitude = Solicitud::findOrFail($id);
         $tiposMantenimientos = TipoMantenimiento::all();
-        $estados = Estado::all();
+        $estados = Estado::whereIn('nombre', ['Aprobado', 'No Aprobado'])->get();
         $areas = Area::all();
         $trabajadores = Trabajador::all();
         $solicitudHasTrabajador = SolicitudHasTrabajador::where('solicitudes_id', $id)->first();
@@ -117,13 +124,10 @@ public function show($id)
         return view('solicitudes.edit', compact('solicitude', 'tiposMantenimientos', 'estados', 'areas', 'trabajadores', 'solicitudHasTrabajador'));
     }
     
-
     public function update(Request $request, Solicitud $solicitude)
     {
-        // Asegurarse de que mantenimientoEficiente esté presente y sea booleano
         $request->merge(['mantenimientoEficiente' => $request->has('mantenimientoEficiente')]);
     
-        // Validación de datos
         $request->validate([
             'fecha' => 'required|date',
             'descripcionFalla' => 'required|string',
@@ -131,7 +135,7 @@ public function show($id)
             'tipoMantenimientos_id' => 'required|exists:tipomantenimientos,idTipomantenimiento',
             'fechaInicio' => 'nullable|date',
             'fechaTermina' => 'nullable|date',
-            'mantenimientoEficiente' => 'required|boolean', // Validación como booleano
+            'mantenimientoEficiente' => 'required|boolean',
             'totalHorasTrabajadas' => 'nullable|numeric|min:0',
             'tiempoParada' => 'nullable|numeric|min:0',
             'repuestosUtilizados' => 'nullable|string',
@@ -141,30 +145,36 @@ public function show($id)
             'firmaLider' => 'nullable|string|max:255',
             'estados_id' => 'required|exists:estados,idEstado',
             'areas_id' => 'required|exists:areas,idArea',
-            'trabajadores_id' => 'nullable|integer|exists:trabajadores,idTrabajador' // Añadido para la asignación opcional de trabajador
+            'trabajadores_id' => 'nullable|integer|exists:trabajadores,idTrabajador'
         ]);
+
+        try {
+            $solicitude->update($request->all());
     
-        // Actualizar solicitud
-        $solicitude->update($request->all());
+            if ($request->filled('trabajadores_id')) {
+                SolicitudHasTrabajador::updateOrCreate(
+                    ['solicitudes_id' => $solicitude->idSolicitud],
+                    [
+                        'soli_tipoMantenimientos_id' => $request->tipoMantenimientos_id,
+                        'solicitudes_estados_id' => $request->estados_id,
+                        'trabajadores_id' => $request->trabajadores_id
+                    ]
+                );
+            }
     
-        // Asignación del trabajador si se proporciona
-        if ($request->filled('trabajadores_id')) {
-            SolicitudHasTrabajador::updateOrCreate(
-                ['solicitudes_id' => $solicitude->id],
-                [
-                    'soli_tipoMantenimientos_id' => $request->tipoMantenimientos_id,
-                    'solicitudes_estados_id' => $request->estados_id,
-                    'trabajadores_id' => $request->trabajadores_id
-                ]
-            );
+            return redirect()->route('solicitudes.index')->with('success', 'Solicitud actualizada exitosamente.');
+        } catch (\Exception $e) {
+            return back()->withErrors('Error al actualizar la solicitud: ' . $e->getMessage())->withInput();
         }
-    
-        return redirect()->route('solicitudes.index')->with('success', 'Solicitud actualizada exitosamente.');
     }
 
     public function destroy(Solicitud $solicitude)
     {
-        $solicitude->delete();
-        return redirect()->route('solicitudes.index')->with('success', 'Solicitud eliminada con éxito');
+        try {
+            $solicitude->delete();
+            return redirect()->route('solicitudes.index')->with('success', 'Solicitud eliminada con éxito');
+        } catch (\Exception $e) {
+            return back()->withErrors('Error al eliminar la solicitud: ' . $e->getMessage());
+        }
     }
 }

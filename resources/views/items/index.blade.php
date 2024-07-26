@@ -34,6 +34,12 @@
         </div>
         @endif
 
+                <!-- Botón Exportar Ítems -->
+                <div class="mb-4">
+            <a href="{{ route('export.items') }}" class="btn btn-success">Exportar Ítems a Excel</a>
+        </div>
+
+
         <!-- Tabla de ítems -->
         <table class="table">
             <thead>

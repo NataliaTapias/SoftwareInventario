@@ -75,29 +75,14 @@ class ItemController extends Controller
  
 
     // Dentro del ItemController
-    public function show(Request $request, $id)
+    public function show(Request $request)
     {
-        // Check if it's an AJAX request for item search
-        if ($request->ajax()) {
+        if ($request->has('query')) {
             $query = $request->input('query');
-            $itemsQuery = Item::where('nombre', 'LIKE', "%{$query}%");
-    
-            // Verificar el rol del usuario
-            if (Auth::user()->hasRole('logistica')) {
-                $subcategoria = $request->input('subcategoria', 'logistica'); // Default to 'logistica' if not provided
-                $itemsQuery->whereHas('subcategoria', function ($q) use ($subcategoria) {
-                    $q->where('nombre', $subcategoria);
-                });
-            }
-    
-            $items = $itemsQuery->get();
-    
+            $items = Item::where('nombre', 'LIKE', "%{$query}%")->get();
             return response()->json($items);
         }
-    
-        // Normal show method logic if it's not an AJAX request
-        $item = Item::findOrFail($id);
-        return view('items.show', compact('item'));
+        return response()->json([]);
     }
     
 
@@ -106,7 +91,7 @@ class ItemController extends Controller
     public function create()
     {
         $subcategorias = Subcategoria::all();
-        $estados = Estado::all();
+        $estados = Estado::whereIn('nombre', ['Disponible', 'Agotado', 'Mínimo'])->get();
         return view('items.create', compact('subcategorias', 'estados'));
     }
 
@@ -132,7 +117,7 @@ class ItemController extends Controller
     public function edit(Item $item)
     {
         $subcategorias = Subcategoria::all();
-        $estados = Estado::all();
+        $estados = Estado::whereIn('nombre', ['Disponible', 'Agotado', 'Mínimo'])->get();
         return view('items.edit', compact('item', 'subcategorias', 'estados'));
     }
 
