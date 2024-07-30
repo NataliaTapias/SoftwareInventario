@@ -82,7 +82,7 @@ class MovimientoController extends Controller
 
     public function store(Request $request)
     {
-        // Validación y almacenamiento de los datos
+        // Validación de los datos del formulario
         $validatedData = $request->validate([
             'fecha' => 'required|date',
             'cantidad' => 'required|integer',
@@ -94,33 +94,34 @@ class MovimientoController extends Controller
             'colaborador' => 'required|string|max:255',
             'tipoMovimientos_id' => 'required|integer',
             'observacion' => 'nullable|string',
-            'usuarios_id' => 'required|integer', // Asegúrate de validar que el usuario está logeado o que se envía el ID correcto
+            'usuarios_id' => 'required|integer',
             'solicitudes_id' => 'required|integer',
             'items_id' => 'required|integer',
         ]);
-    
-        // Asignar los IDs desde el formulario
-        $movimientoData = [
-            'fecha' => $validatedData['fecha'],
-            'cantidad' => $validatedData['cantidad'],
-            'precio' => $validatedData['precio'],
-            'total' => $validatedData['total'],
-            'numRemisionProveedor' => $validatedData['numRemisionProveedor'],
-            'firma' => $validatedData['firma'],
-            'colaborador' => $validatedData['colaborador'],
-            'proveedor' => $validatedData['proveedor'],
-            'tipoMovimientos_id' => $validatedData['tipoMovimientos_id'],
-            'observacion' => $validatedData['observacion'],
-            'usuarios_id' => $validatedData['usuarios_id'],
-            'solicitudes_id' => $validatedData['solicitudes_id'],
-            'items_id' => $validatedData['items_id'],
-        ];
-    
-        // Crear el movimiento con los datos validados
-        Movimiento::create($movimientoData);
-    
+
+        // Crear el movimiento
+        $movimiento = Movimiento::create($validatedData);
+
+        // Obtener el ítem asociado
+        $item = Item::findOrFail($validatedData['items_id']);
+
+        // Ajustar la cantidad del ítem según el tipo de movimiento
+        $tipoMovimiento = TipoMovimiento::findOrFail($validatedData['tipoMovimientos_id']);
+
+        if ($tipoMovimiento->nombre == 'Movimiento de Entrada') {
+            // Sumar la cantidad al ítem
+            $item->cantidad += $validatedData['cantidad'];
+        } elseif ($tipoMovimiento->nombre == 'Movimiento de Salida') {
+            // Restar la cantidad del ítem
+            $item->cantidad -= $validatedData['cantidad'];
+        }
+
+        // Guardar los cambios en el ítem
+        $item->save();
+
         return redirect()->route('movimientos.index')->with('success', 'Movimiento creado con éxito.');
     }
+
     
 
     public function edit($id)

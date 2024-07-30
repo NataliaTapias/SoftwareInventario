@@ -106,13 +106,17 @@ class ItemController extends Controller
             'unidadMedida' => 'required|string|max:45',
             'subcategorias_id' => 'required|exists:subcategorias,idSubcategoria',
             'estados_id' => 'required|exists:estados,idEstado',
-            
         ]);
-
-        Item::create($request->all());
-
+    
+        // Crear el ítem
+        $item = Item::create($request->all());
+    
+        // Actualizar el estado del ítem según la cantidad
+        $this->updateItemStatus($item);
+    
         return redirect()->route('items.index')->with('success', 'Ítem creado con éxito');
     }
+    
 
     public function edit(Item $item)
     {
@@ -133,11 +137,30 @@ class ItemController extends Controller
             'subcategorias_id' => 'required|exists:subcategorias,idSubcategoria',
             'estados_id' => 'required|exists:estados,idEstado',
         ]);
-
+    
+        // Actualizar el ítem
         $item->update($request->all());
-
+    
+        // Actualizar el estado del ítem según la cantidad
+        $this->updateItemStatus($item);
+    
         return redirect()->route('items.index')->with('success', 'Ítem actualizado con éxito');
+
+
+        if ($item->cantidad <= 0) {
+            $estado = Estado::where('nombre', 'Agotado')->first();
+        } elseif ($item->cantidad <= $item->cantidadMinima) {
+            $estado = Estado::where('nombre', 'Mínimo')->first();
+        } else {
+            $estado = Estado::where('nombre', 'Disponible')->first();
+        }
+    
+        if ($estado) {
+            $item->estados_id = $estado->idEstado;
+            $item->save();
+        }
     }
+    
 
     public function destroy(Item $item)
     {
@@ -145,6 +168,22 @@ class ItemController extends Controller
 
         return redirect()->route('items.index')->with('success', 'Ítem eliminado con éxito');
     }
+
+    private function updateItemStatus(Item $item)
+{
+    if ($item->cantidad <= 0) {
+        $estado = Estado::where('nombre', 'Agotado')->first();
+    } elseif ($item->cantidad <= $item->cantidadMinima) {
+        $estado = Estado::where('nombre', 'Mínimo')->first();
+    } else {
+        $estado = Estado::where('nombre', 'Disponible')->first();
+    }
+
+    if ($estado) {
+        $item->estados_id = $estado->idEstado;
+        $item->save();
+    }
+}
 }
 
 
