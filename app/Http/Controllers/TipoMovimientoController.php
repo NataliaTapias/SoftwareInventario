@@ -21,7 +21,8 @@ class TipoMovimientoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|string|max:45'
+            'nombre' => 'required|string|max:45',
+            'Operacion' => 'required|in:0,1',
         ]);
 
         TipoMovimiento::create($request->all());
@@ -37,6 +38,7 @@ class TipoMovimientoController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:45',
+            'Operacion' => 'required|in:0,1',
         ]);
 
         $tipomovimiento->update($request->all());

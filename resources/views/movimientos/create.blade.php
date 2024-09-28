@@ -26,50 +26,18 @@
 
     <form method="POST" action="{{ route('movimientos.store') }}">
         @csrf
+        <input type="hidden" id="usuarios_id" name="usuarios_id" value="{{ Auth::id() }}">
         <div class="row mb-3">
             <div class="col-md-3">
-                <label for="fecha">Fecha</label>
+                <label for="fecha">Fecha *</label>
                 <input type="datetime-local" class="form-control" id="fecha" name="fecha" value="{{ old('fecha') }}" required>
             </div>
             <div class="col-md-3">
-                <label for="numRemisionProveedor">Num Remisión Proveedor</label>
-                <input type="text" class="form-control" id="numRemisionProveedor" name="numRemisionProveedor" value="{{ old('numRemisionProveedor') }}">
-            </div>
-            <div class="col-md-3">
-                <label for="firma">Firma</label>
-                <input type="text" class="form-control" id="firma" name="firma" value="{{ old('firma') }}" required>
-            </div>
-            <div class="col-md-3">
-                <label for="colaborador">Colaborador</label>
-                <input type="text" class="form-control" id="colaborador" name="colaborador" value="{{ old('colaborador') }}" required>
-            </div>
-        </div>
-        <input type="hidden" id="usuarios_id" name="usuarios_id" value="{{ Auth::id() }}">
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="item-search">Item</label>
-                <input type="text" id="item-search" class="form-control" placeholder="Buscar item..." required>
-                <input type="hidden" id="items_id" name="items_id" value="">
-                
-                <div id="results-container"></div>
-            </div>
-            <div class="col-md-3">
-                <label for="cantidad">Cantidad</label>
+                <label for="cantidad">Cantidad *</label>
                 <input type="number" class="form-control" id="cantidad" name="cantidad" value="{{ old('cantidad') }}" required>
             </div>
             <div class="col-md-3">
-                <label for="precio">Precio</label>
-                <input type="number" step="0.01" class="form-control" id="precio" name="precio" value="{{ old('precio') }}" required>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-3">
-                <label for="total">Total</label>
-                <input type="number" step="0.01" class="form-control" id="total" name="total" value="{{ old('total') }}" readonly>
-            </div>
-            <div class="col-md-3">
-                <label for="tipoMovimientos_id">Tipo de Movimiento</label>
+                <label for="tipoMovimientos_id">Tipo de Movimiento *</label>
                 <select class="form-control" id="tipoMovimientos_id" name="tipoMovimientos_id" required>
                     <option value="">Seleccione un tipo de movimiento</option>
                     @foreach($tiposMovimientos as $tipoMovimiento)
@@ -77,15 +45,47 @@
                     @endforeach
                 </select>
             </div>
+            <!--
+            <div class="col-md-3">
+                <label for="firma">Firma</label>
+                <input type="text" class="form-control" id="firma" name="firma" value="{{ old('firma') }}" required>
+            </div>
+            -->
             <div class="col-md-3">
                 <label for="solicitud-search">Solicitud</label>
                 <input type="text" id="solicitud-search" class="form-control" placeholder="Buscar por Descripción Falla...">
                 <input type="hidden" id="solicitudes_id" name="solicitudes_id" value="">
                 <div id="solicitud-results-container"></div>
             </div>
+            
+            <div class="col-md-6">
+                <label for="item-search">Item *</label>
+                <input type="text" id="item-search" class="form-control" placeholder="Buscar item..." required>
+                <input type="hidden" id="items_id" name="items_id" value="">
+                
+                <div id="results-container"></div>
+            </div>
+            
+            <div class="col-md-3">
+                <label for="precio">Precio</label>
+                <input type="number" step="0.01" class="form-control" id="precio" name="precio" value="{{ old('precio') }}" required>
+            </div>
+            <div class="col-md-3">
+                <label for="total">Total</label>
+                <input type="number" step="0.01" class="form-control" id="total" name="total" value="{{ old('total') }}" readonly>
+            </div>
+            <div class="col-md-3">
+                <label for="numRemisionProveedor">Num Remisión Proveedor</label>
+                <input type="text" class="form-control" id="numRemisionProveedor" name="numRemisionProveedor" value="{{ old('numRemisionProveedor') }}">
+            </div>
+            <div class="col-md-3">
+                <label for="colaborador">Colaborador</label>
+                <input type="text" class="form-control" id="colaborador" name="colaborador" value="{{ old('colaborador') }}" required>
+            </div>
+            
             <div class="col-md-3">
                 <label for="proveedor">Proveedor</label>
-                <input type="text" step="0.01" class="form-control" id="proveedor" name="proveedor" value="{{ old('proveedor') }}" required>
+                <input type="text" class="form-control" id="proveedor" name="proveedor" value="{{ old('proveedor') }}" required>
             </div>
         </div>
 

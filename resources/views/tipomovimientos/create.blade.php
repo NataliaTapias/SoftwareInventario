@@ -16,6 +16,13 @@
                 <label for="nombre">Nombre</label>
                 <input type="text" class="form-control" id="nombre" name="nombre" required>
             </div>
+            <div class="form-group">
+                <label for="Operacion">Operación</label>
+                <select class="form-control" id="Operacion" name="Operacion" required>
+                    <option value="1" selected>Suma</option>
+                    <option value="0">Resta</option>
+                </select>
+            </div>
             <div class="text-center">
                  <button type="submit" class="btn btn-success">Guardar</button>
             </div>

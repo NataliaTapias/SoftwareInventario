@@ -11,6 +11,7 @@ class TipoMovimiento extends Model
 
     protected $fillable = [
         'nombre',
+        'Operacion',
     ];
 
     public $timestamps = true;

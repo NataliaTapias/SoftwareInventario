@@ -12,6 +12,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
+                        <th>Operación</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -20,6 +21,7 @@
                         <tr>
                             <td>{{ $tipomovimiento->idTipomovimiento }}</td>
                             <td>{{ $tipomovimiento->nombre }}</td>
+                            <td>{{ $tipomovimiento->Operacion? "Suma" : "Resta" }}</td>
                             <td>
                                 <div class="d-flex">
                                     <a href="{{ route('tipomovimientos.edit', $tipomovimiento->idTipomovimiento) }}" class="btn btn-warning btn-sm mr-2">
