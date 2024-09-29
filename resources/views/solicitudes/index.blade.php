@@ -12,6 +12,12 @@
     </div>
     @endif
 
+    @if(session('success'))
+        <div class="alert alert-success fade show" role="alert" id="success-alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <!-- Formulario de búsqueda y filtros -->
     <form action="{{ route('solicitudes.index') }}" method="GET" class="mb-4">
         <div class="row">

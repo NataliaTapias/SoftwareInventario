@@ -15,8 +15,6 @@ use Maatwebsite\Excel\Facades\Excel;
 class MovimientoController extends Controller
 {
 
-
-
     public function index(Request $request)
     {
         $search = $request->query('search');
@@ -82,44 +80,48 @@ class MovimientoController extends Controller
 
     public function store(Request $request)
     {
-        // Validación de los datos del formulario
-        $validatedData = $request->validate([
-            'fecha' => 'required|date',
-            'cantidad' => 'required|integer',
-            'precio' => 'required|numeric',
-            'total' => 'required|numeric',
-            'numRemisionProveedor' => 'nullable|string|max:45',
-            'firma' => 'required|string|max:255',
-            'proveedor' => 'required|string|max:255',
-            'colaborador' => 'required|string|max:255',
-            'tipoMovimientos_id' => 'required|integer',
-            'observacion' => 'nullable|string',
-            'usuarios_id' => 'required|integer',
-            'solicitudes_id' => 'required|integer',
-            'items_id' => 'required|integer',
-        ]);
+        try {
+            // Validación de los datos del formulario
+            $validatedData = $request->validate([
+                'fecha' => 'required|date',
+                'tipoMovimientos_id' => 'required|integer',
+                'cantidad' => 'required|integer',
+                'precio' => 'required|numeric',
+                'total' => 'required|numeric',
+                'items_id' => 'required|integer',
+                'usuarios_id' => 'required|integer',
+                'numRemisionProveedor' => 'nullable|string|max:45',
+                'colaborador' => 'nullable|string|max:255',
+                'proveedor' => 'nullable|string|max:255',
+                'observacion' => 'nullable|string',
+                'solicitudes_id' => 'nullable|integer',
+            ]);
 
-        // Crear el movimiento
-        $movimiento = Movimiento::create($validatedData);
+            // Crear el movimiento
+            $movimiento = Movimiento::create($validatedData);
 
-        // Obtener el ítem asociado
-        $item = Item::findOrFail($validatedData['items_id']);
+            // Obtener el ítem asociado
+            $item = Item::findOrFail($validatedData['items_id']);
+            
+            // Ajustar la cantidad del ítem según el tipo de movimiento
+            $tipoMovimiento = TipoMovimiento::findOrFail($validatedData['tipoMovimientos_id']);
 
-        // Ajustar la cantidad del ítem según el tipo de movimiento
-        $tipoMovimiento = TipoMovimiento::findOrFail($validatedData['tipoMovimientos_id']);
+            if ($tipoMovimiento->nombre == 'Movimiento de Entrada' && $tipoMovimiento->Operacion == 1) { // valida el tipo de operacion 1 = suma
+                // Sumar la cantidad al ítem
+                $item->cantidad += $validatedData['cantidad'];
+            } elseif ($tipoMovimiento->nombre == 'Movimiento de Salida' && $tipoMovimiento->Operacion == 0) { // valida el tipo de operacion 0 = resta 
+                // Restar la cantidad del ítem
+                $item->cantidad -= $validatedData['cantidad'];
+            }
 
-        if ($tipoMovimiento->nombre == 'Movimiento de Entrada') {
-            // Sumar la cantidad al ítem
-            $item->cantidad += $validatedData['cantidad'];
-        } elseif ($tipoMovimiento->nombre == 'Movimiento de Salida') {
-            // Restar la cantidad del ítem
-            $item->cantidad -= $validatedData['cantidad'];
+            // Guardar los cambios en el ítem
+            $item->save();
+
+            return redirect()->route('movimientos.index')->with('success', 'Movimiento creado con éxito.');
+        } catch (\Exception $e) {
+            // Manejar el error y redirigir
+            return redirect()->back()->with('error', 'Ocurrió un error al crear el movimiento. Por favor, inténtalo de nuevo.');
         }
-
-        // Guardar los cambios en el ítem
-        $item->save();
-
-        return redirect()->route('movimientos.index')->with('success', 'Movimiento creado con éxito.');
     }
 
     

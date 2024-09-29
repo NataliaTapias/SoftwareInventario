@@ -31,18 +31,21 @@
         </form>
 
         <!-- Botón Crear Movimiento -->
-        <div class="mb-4">
         @if(!Auth::user()->hasRole('consultor') )
-    <div class="mb-4">
-        <a href="{{ route('movimientos.create') }}" class="btn btn-success">Crear Movimiento</a>
-
-    </div>
-@endif
+            <div class="mb-4">
+                <a href="{{ route('movimientos.create') }}" class="btn btn-success">Crear Movimiento</a>
+            </div>
+        @endif
+        <div class="mb-4">
             <a href="{{ route('export.movimientos') }}" class="btn btn-primary">Exportar Movimientos a Excel</a>
         </div>
 
+        @if(session('success'))
+            <div class="alert alert-success fade show" role="alert" id="success-alert">
+                {{ session('success') }}
+            </div>
+        @endif
         <div class="mb-4">
-
 
         <!-- Tabla de movimientos -->
         <table class="table table-striped">
@@ -70,7 +73,7 @@
                         <td>{{ $movimiento->fecha }}</td>
                         <td>{{ $movimiento->cantidad }}</td>
                         <td>{{ $movimiento->item->nombre ?? 'N/A' }}</td> <!-- Asumiendo que 'item' es una relación en tu modelo Movimiento -->
-                        <td>{{ $movimiento->total }}</td>
+                        <td class="movimiento-total">{{ $movimiento->total }}</td>
                         <td>{{ $movimiento->numRemisionProveedor }}</td>
                         <td>{{ $movimiento->tipoMovimiento->nombre ?? 'N/A'}}</td>                        
                         <td>{{ $movimiento->observacion }}</td>
@@ -105,4 +108,22 @@
         </table>
         {{ $movimientos->links() }}
     </div>
+@endsection
+
+
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function agregateFormatMoney(value) {
+                return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(value);
+            }
+
+            // Iterar sobre todos los elementos con la clase 'movimiento-total'
+            let totalElements = document.querySelectorAll('.movimiento-total');
+            totalElements.forEach(function(element) {
+                let totalValue = parseFloat(element.textContent); // Convertir a número
+                element.textContent = agregateFormatMoney(totalValue); // Formatear y actualizar
+            });
+        });
+    </script>
 @endsection

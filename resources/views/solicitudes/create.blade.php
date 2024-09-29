@@ -4,7 +4,13 @@
 
 @section('content')
 
-<div class="d-flex align-items-center" style="gap: 1rem;">
+<style>
+    .required {
+        color: red; /* Color rojo para el asterisco */
+    }   
+</style>
+
+    <div class="d-flex align-items-center" style="gap: 1rem;">
         <a href="{{ route('solicitudes.index') }}" class="icon-link" title="Atrás">
             <i class="fa-solid fa-circle-left"></i>
         </a>
@@ -17,133 +23,248 @@
         <li>Asignar Trabajador</li>
     </ul>
 
-    <form method="POST" action="{{ route('solicitudes.create') }}">
+    <form method="POST" action="{{ route('solicitudes.store') }}" id="formCrearSolicitudes" enctype="multipart/form-data" class="px-5">
         @csrf
+        @if(session('success'))
+            <div class="alert alert-success fade show" role="alert" id="success-alert">
+                {{ session('success') }}
+            </div>
+        @endif
 
- <!-- Paso 1: Información Básica -->
- <div id="step-1" class="step row">
-    <div class="col-md-6">
-        <div class="form-group">
-            <label for="fecha">Fecha</label>
-            <input type="datetime-local" class="form-control" id="fecha" name="fecha" required>
-        </div>
-        <div class="form-group">
-            <label for="tipoMantenimientos_id">Tipo de Mantenimiento</label>
-            <select class="form-control" id="tipoMantenimientos_id" name="tipoMantenimientos_id" required>
-                @foreach($tiposMantenimientos as $tipoMantenimiento)
-                <option value="{{ $tipoMantenimiento->id }}">{{ $tipoMantenimiento->nombre }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="mantenimientoEficiente">Mantenimiento Eficiente</label>
-            <select class="form-control" id="mantenimientoEficiente" name="mantenimientoEficiente">
-                <option value="1">Sí</option>
-                <option value="0">No</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="tiempoEstimado">Tiempo Estimado</label>
-            <input type="text" class="form-control" id="tiempoEstimado" name="tiempoEstimado">
-        </div>
-        <div class="form-group">
-            <label for="fechaTermina">Fecha de Término</label>
-            <input type="date" class="form-control" id="fechaTermina" name="fechaTermina">
-        </div>
-        <div class="form-group">
-            <label for="totalHorasTrabajadas">Total de Horas Trabajadas</label>
-            <input type="number" class="form-control" id="totalHorasTrabajadas" name="totalHorasTrabajadas" min="0">
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="form-group">
-            <label for="tiempoParada">Tiempo de Parada</label>
-            <input type="number" class="form-control" id="tiempoParada" name="tiempoParada" min="0">
-        </div>
-        <div class="form-group">
-            <label for="firmaDirector">Firma del Director</label>
-            <input type="text" class="form-control" id="firmaDirector" name="firmaDirector" maxlength="255">
-        </div>
-        <div class="form-group">
-            <label for="firmaGerente">Firma del Gerente</label>
-            <input type="text" class="form-control" id="firmaGerente" name="firmaGerente" maxlength="255">
-        </div>
-        <div class="form-group">
-            <label for="firmaLider">Firma del Líder</label>
-            <input type="text" class="form-control" id="firmaLider" name="firmaLider" maxlength="255">
-        </div>
-        <div class="form-group">
-            <label for="estados_id">Estado</label>
-            <select class="form-control" id="estados_id" name="estados_id" required>
-                @foreach($estados as $estado)
-                <option value="{{ $estado->id }}">{{ $estado->nombre }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="areas_id">Área</label>
-            <select class="form-control" id="areas_id" name="areas_id" required>
-                @foreach($areas as $area)
-                <option value="{{ $area->id }}">{{ $area->nombre }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-    <div class="col-12 text-center">
-        <button type="button" class="btn btn-primary next-step">Siguiente</button>
-    </div>
-</div>
+        @if(session('error'))
+            <div class="alert alert-danger fade show" role="alert" id="error-alert">
+                {{ session('error') }}
+            </div>
+        @endif
 
+        <!-- Paso 1: Información Básica -->
+        <div id="step-1" class="step row">
+            <!-- Columna izquierda -->
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="fecha">Fecha <span class="required">*</span></label>
+                    <input type="datetime-local" class="form-control" id="fecha" name="fecha" required>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="tipoMantenimientos_id">Tipo de Mantenimiento <span class="required">*</span></label>
+                    <select class="form-control" id="tipoMantenimientos_id" name="tipoMantenimientos_id" required>
+                        @foreach($tiposMantenimientos as $tipoMantenimiento)
+                            <option value="{{ $tipoMantenimiento->idTipomantenimiento }}">{{ $tipoMantenimiento->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
 
-<!-- Paso 2: Repuestos Utilizados -->
-<div id="step-2" class="step d-none">
-        <div class="form-group search-container">
-            <label for="repuestosUtilizados">Repuestos Utilizados</label>
-            <div id="repuestos-container">
-                <div class="input-group mb-3 repuesto-group">
-                    <input type="text" class="form-control repuesto-search" name="repuestosUtilizados[]" placeholder="Buscar repuesto...">
-                    <div class="results-container"></div> <!-- Aquí se mostrarán los resultados -->
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-success add-repuesto"><i class="fa fa-plus"></i> Añadir</button>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Mantenimiento Eficiente</label>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="mantenimientoEficienteSi" name="mantenimientoEficiente" value="1" checked>
+                                <label class="form-check-label" for="mantenimientoEficienteSi">Sí</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="mantenimientoEficienteNo" name="mantenimientoEficiente" value="0">
+                                <label class="form-check-label" for="mantenimientoEficienteNo">No</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-12 text-center">
-            <button type="button" class="btn btn-primary prev-step">Anterior</button>
-            <button type="button" class="btn btn-primary next-step">Siguiente</button>
-        </div>
-    </div>
 
-
-
- <!-- Paso 3: Asignar Trabajador -->
-<div id="step-3" class="step d-none">
-    <div class="form-group">
-        <label for="trabajadores">Asignar Trabajadores</label>
-        <div id="trabajadores-container">
-            <div class="input-group mb-3 trabajador-group">
-                <input type="text" class="form-control trabajador-search" name="trabajadores[]" placeholder="Buscar trabajador...">
-                <div class="results-container"></div>
-                <div class="input-group-append">
-                    <button type="button" class="btn btn-success add-trabajador"><i class="fa fa-plus"></i> Añadir</button>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="estados_id">Estado <span class="required">*</span></label>
+                    <select class="form-control" id="estados_id" name="estados_id" required>
+                        @foreach($estados as $estado)
+                            <option value="{{ $estado->idEstado }}">{{ $estado->nombre }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="col-12 text-center">
-        <button type="button" class="btn btn-primary prev-step">Anterior</button>
-        <button type="submit" class="btn btn-primary">Finalizar</button>
-    </div>
-</div>
 
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="areas_id">Área <span class="required">*</span></label>
+                    <select class="form-control" id="areas_id" name="areas_id" required>
+                        @foreach($areas as $area)
+                            <option value="{{ $area->idArea }}">{{ $area->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="tiempoEstimado">Tiempo Estimado</label>
+                    <input type="time" class="form-control" id="tiempoEstimado" name="tiempoEstimado">
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="tiempoParada">Tiempo de Parada</label>
+                    <input type="time" class="form-control" id="tiempoParada" name="tiempoParada" min="0">
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="totalHorasTrabajadas">Total de Horas Trabajadas</label>
+                    <input type="time" class="form-control" id="totalHorasTrabajadas" name="totalHorasTrabajadas" min="0">
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="fechaTermina">Fecha de Término</label>
+                    <input type="date" class="form-control" id="fechaTermina" name="fechaTermina">
+                </div>
+            </div>
+            <div class="col-md-3">
+            </div>
+
+            <!-- Columna derecha -->
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="firmaDirector">Firma del Director</label>
+                    <input type="file" class="form-control-file" id="firmaDirector" name="firmaDirector" accept="image/*">
+                    <img id="previewFirmaDirector" src="" alt="Previsualización de la firma del Director" style="max-width: 200px; display:none;">
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="firmaGerente">Firma del Gerente</label>
+                    <input type="file" class="form-control-file" id="firmaGerente" name="firmaGerente" accept="image/*">
+                    <img id="previewFirmaGerente" src="" alt="Previsualización de la firma del Gerente" style="max-width: 200px; display:none;">
+                </div>
+            </div> <!-- Aquí se corrigió el cierre del div -->
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="firmaLider">Firma del Líder</label>
+                    <input type="file" class="form-control-file" id="firmaLider" name="firmaLider" accept="image/*">
+                    <img id="previewFirmaLider" src="" alt="Previsualización de la firma del Líder" style="max-width: 200px; display:none;">
+                </div>
+            </div>
+
+            <div class="col-12 text-center mt-4">
+                <button type="button" class="btn btn-primary next-step px-5 py-2">Siguiente</button>
+            </div>
+        </div>
+
+
+
+        <!-- Paso 2: Repuestos Utilizados -->
+        <div id="step-2" class="step d-none">
+            <div class="form-group search-container">
+                <label for="repuestosUtilizados">Repuestos Utilizados</label>
+                <div id="repuestos-container">
+                    <div class="input-group mb-3 repuesto-group">
+                        <input type="text" class="form-control repuesto-search" name="repuestosUtilizados" placeholder="Buscar repuesto...">
+                        <input type="text" id="repuestosUtilizadosId" value="" hidden>
+                        <div class="results-container"></div> <!-- Aquí se mostrarán los resultados -->
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-success add-repuesto"><i class="fa fa-plus"></i> Añadir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 text-center">
+                <button type="button" class="btn btn-primary prev-step px-5 py-2">Anterior</button>
+                <button type="button" class="btn btn-primary next-step px-5 py-2">Siguiente</button>
+            </div>
+        </div>
+
+
+
+        <!-- Paso 3: Asignar Trabajador -->
+        <div id="step-3" class="step d-none">
+            <div class="form-group">
+                <label for="trabajadores">Asignar Trabajadores</label>
+                <div id="trabajadores-container">
+                    <div class="input-group mb-3 trabajador-group">
+                        <input type="text" class="form-control trabajador-search" name="trabajadores[]" placeholder="Buscar trabajador...">
+                        <input type="text" id="trabajadoresUtilizadosId" value="" hidden>
+                        <div class="results-container"></div>
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-success add-trabajador"><i class="fa fa-plus"></i> Añadir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 text-center">
+                <button type="button" class="btn btn-primary prev-step px-5 py-2">Anterior</button>
+                <button type="button" class="btn btn-primary next-step px-5 py-2">Finalizar</button>
+            </div>
+        </div>
+</form>
 
 <script>
 
 document.addEventListener('DOMContentLoaded', function () {
+
     const steps = document.querySelectorAll('.step');
     const progressbar = document.querySelectorAll('.progressbar li');
     let currentStep = 0;
+
+    // Espera 5 segundos antes de ocultar la alerta
+    setTimeout(function() {
+        // Obtén las alertas
+        let successAlert = document.getElementById('success-alert');
+        let errorAlert = document.getElementById('error-alert');
+        
+        // Si hay una alerta de éxito, agrega la clase de fade out y se remueve
+        if (successAlert) {
+            successAlert.classList.remove('show'); // Oculta la alerta suavemente
+            successAlert.classList.add('fade'); // Agrega clase fade
+            successAlert.addEventListener('transitionend', function() {
+                successAlert.remove(); // Remueve la alerta del DOM
+            });
+        }
+
+        // Si hay una alerta de error, agrega la clase de fade out y se remueve
+        if (errorAlert) {
+            errorAlert.classList.remove('show'); // Oculta la alerta suavemente
+            errorAlert.classList.add('fade'); // Agrega clase fade
+            errorAlert.addEventListener('transitionend', function() {
+                errorAlert.remove(); // Remueve la alerta del DOM
+            });
+        }
+    }, 5000);
+
+    document.getElementById('firmaDirector').addEventListener('change', function(event) {
+        previewImage(event, 'previewFirmaDirector');
+    });
+
+    document.getElementById('firmaGerente').addEventListener('change', function(event) {
+        previewImage(event, 'previewFirmaGerente');
+    });
+
+    document.getElementById('firmaLider').addEventListener('change', function(event) {
+        previewImage(event, 'previewFirmaLider');
+    });
+
+    function previewImage(event, previewId) {
+        const reader = new FileReader();
+        const file = event.target.files[0];
+        
+        if (file) {
+            reader.onload = function(e) {
+                const preview = document.getElementById(previewId);
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
 
     function showStep(stepIndex) {
         steps.forEach((step, index) => {
@@ -154,7 +275,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.querySelectorAll('.next-step').forEach(button => {
         button.addEventListener('click', () => {
-            if (currentStep < steps.length - 1) {
+            console.log(currentStep)
+            if (currentStep < steps.length) {
+                if (currentStep == 0
+                    && (document.getElementById('areas_id').value == ''
+                    || document.getElementById('estados_id').value === ''
+                    || document.getElementById('tipoMantenimientos_id').value == ''
+                    || document.getElementById('fecha').value == '')) {
+                    alert('Debe incluir los datos obligatorios');
+                    return;
+                }
+
+                if (currentStep == 1) {
+                    const inputElement = document.querySelector(`input[name="repuestosSeleccionados[]"]`);
+        
+                    // Verificar que el elemento no sea nulo y que exista al menos un input seleccionado
+                    if (!inputElement || inputElement.length <= 0) {
+                        alert('Debe seleccionar al menos un repuesto');
+                        return;
+                    }
+                }
+
+                if (currentStep == 2) {
+                const inputElement = document.querySelector(`input[name="trabajadoresSeleccionados[]"]`);
+    
+                    // Verificar que el elemento no sea nulo y que exista al menos un input seleccionado
+                    if (!inputElement || inputElement.length <= 0) {
+                        alert('Debe seleccionar al menos un trabajador');
+                        return;
+                    }
+                    document.getElementById('formCrearSolicitudes').submit();
+                }
+
                 currentStep++;
                 showStep(currentStep);
             }
@@ -188,11 +340,20 @@ document.addEventListener('DOMContentLoaded', function () {
                             itemResultsContainer.appendChild(div);
                         } else {
                             data.forEach(item => {
+                                // Comprobar si el input oculto ya existe
+                                const existingInput = document.querySelector(`input[name="repuestosSeleccionados[]"][value="${item.idItem}"]`);
+
+                                if (existingInput) {
+                                    return;
+                                }
+
+                                // crea el elemento
                                 const div = document.createElement('div');
                                 div.textContent = item.nombre; // Ajustar al nombre del campo correcto
                                 div.classList.add('search-result');
                                 div.dataset.itemId = item.idItem; // Ajustar al nombre del campo correcto
                                 div.addEventListener('click', () => {
+                                    document.getElementById('repuestosUtilizadosId').value = item.idItem;
                                     itemInput.value = item.nombre; // Ajustar al nombre del campo correcto
                                     const hiddenInput = document.createElement('input');
                                     hiddenInput.type = 'hidden';
@@ -230,16 +391,26 @@ document.addEventListener('DOMContentLoaded', function () {
                             trabajadorResultsContainer.appendChild(div);
                         } else {
                             data.forEach(trabajador => {
+                                console.log(trabajador);
+                                // Comprobar si el input oculto ya existe
+                                const existingInput = document.querySelector(`input[name="trabajadoresSeleccionados[]"][value="${trabajador.id}"]`);
+    
+                                if (existingInput) {
+                                    return;
+                                }
+    
+                                // crea el elemento
                                 const div = document.createElement('div');
                                 div.textContent = trabajador.name; // Ajustar al nombre del campo correcto
                                 div.classList.add('search-result');
-                                div.dataset.trabajadorId = trabajador.idTrabajador; // Ajustar al nombre del campo correcto
+                                div.dataset.trabajadorId = trabajador.id; // Ajustar al nombre del campo correcto
                                 div.addEventListener('click', () => {
+                                    document.getElementById('trabajadoresUtilizadosId').value = trabajador.id;
                                     trabajadorInput.value = trabajador.name; // Ajustar al nombre del campo correcto
                                     const hiddenInput = document.createElement('input');
                                     hiddenInput.type = 'hidden';
                                     hiddenInput.name = 'trabajadores_id[]'; // Ajustar al nombre del campo correcto
-                                    hiddenInput.value = trabajador.idTrabajador; // Ajustar al nombre del campo correcto
+                                    hiddenInput.value = trabajador.id; // Ajustar al nombre del campo correcto
                                     inputGroup.appendChild(hiddenInput);
                                     trabajadorResultsContainer.innerHTML = '';
                                 });
@@ -257,25 +428,37 @@ document.addEventListener('DOMContentLoaded', function () {
     function setupAddRemoveRepuestoButtons() {
         document.querySelectorAll('.add-repuesto').forEach(button => {
             button.addEventListener('click', () => {
+                const itemId = document.getElementById('repuestosUtilizadosId').value;
+                
+                if (itemId == '')
+                    return;
+                
                 const container = button.closest('.repuesto-group');
                 const newInputGroup = container.cloneNode(true);
-                const addButton = newInputGroup.querySelector('.add-repuesto');
                 const itemInput = newInputGroup.querySelector('.repuesto-search');
 
-                itemInput.value = '';
-                newInputGroup.querySelector('.results-container').innerHTML = '';
+                // Crear un nuevo div que muestre el repuesto seleccionado
+                const repuestosContainer = document.getElementById('repuestos-container');
+                const newRepuestoDiv = document.createElement('div');
+                newRepuestoDiv.classList.add('input-group', 'mb-1', 'repuesto-group');
+                newRepuestoDiv.innerHTML = `
+                    <div class="form-control disabled">${itemInput.value}</div>
+                    <input type="text" id="repuestosSeleccionado_${itemId}" name="repuestosSeleccionados[]" value="${itemId}" hidden>
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-danger remove-repuesto"><i class="fa fa-trash"></i> Eliminar</button>
+                    </div>`;
 
-                addButton.innerHTML = '<i class="fa fa-trash"></i> Eliminar';
-                addButton.classList.replace('btn-success', 'btn-danger');
-                addButton.classList.replace('add-repuesto', 'remove-repuesto');
+                // Agregar el nuevo div al contenedor de repuestos
+                repuestosContainer.appendChild(newRepuestoDiv);
 
-                setupRepuestoSearch(newInputGroup);
-
-                container.parentNode.appendChild(newInputGroup);
-
-                addButton.addEventListener('click', () => {
-                    newInputGroup.remove();
+                // Agregar funcionalidad para eliminar el repuesto
+                const removeButton = newRepuestoDiv.querySelector('.remove-repuesto');
+                removeButton.addEventListener('click', () => {
+                    newRepuestoDiv.remove();
                 });
+                document.getElementById('repuestosUtilizadosId').value = '';
+                itemInput.value = '';
+                itemInput.text = '';
             });
         });
 
@@ -292,25 +475,37 @@ document.addEventListener('DOMContentLoaded', function () {
     function setupAddRemoveTrabajadorButtons() {
         document.querySelectorAll('.add-trabajador').forEach(button => {
             button.addEventListener('click', () => {
+                const itemId = document.getElementById('trabajadoresUtilizadosId').value;
+                
+                if (itemId == '')
+                    return;
+                
                 const container = button.closest('.trabajador-group');
                 const newInputGroup = container.cloneNode(true);
-                const addButton = newInputGroup.querySelector('.add-trabajador');
-                const trabajadorInput = newInputGroup.querySelector('.trabajador-search');
+                const itemInput = newInputGroup.querySelector('.trabajador-search');
 
-                trabajadorInput.value = '';
-                newInputGroup.querySelector('.results-container').innerHTML = '';
+                // Crear un nuevo div que muestre el trabajador seleccionado
+                const trabajadorsContainer = document.getElementById('trabajadores-container');
+                const newtrabajadorDiv = document.createElement('div');
+                newtrabajadorDiv.classList.add('input-group', 'mb-1', 'trabajador-group');
+                newtrabajadorDiv.innerHTML = `
+                    <div class="form-control disabled">${itemInput.value}</div>
+                    <input type="text" id="trabajadoresSeleccionado_${itemId}" name="trabajadoresSeleccionados[]" value="${itemId}" hidden>
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-danger remove-trabajador"><i class="fa fa-trash"></i> Eliminar</button>
+                    </div>`;
 
-                addButton.innerHTML = '<i class="fa fa-trash"></i> Eliminar';
-                addButton.classList.replace('btn-success', 'btn-danger');
-                addButton.classList.replace('add-trabajador', 'remove-trabajador');
+                // Agregar el nuevo div al contenedor de trabajadors
+                trabajadorsContainer.appendChild(newtrabajadorDiv);
 
-                setupTrabajadorSearch(newInputGroup);
-
-                container.parentNode.appendChild(newInputGroup);
-
-                addButton.addEventListener('click', () => {
-                    newInputGroup.remove();
+                // Agregar funcionalidad para eliminar el trabajador
+                const removeButton = newtrabajadorDiv.querySelector('.remove-trabajador');
+                removeButton.addEventListener('click', () => {
+                    newtrabajadorDiv.remove();
                 });
+                document.getElementById('trabajadoresUtilizadosId').value = '';
+                itemInput.value = '';
+                itemInput.text = '';
             });
         });
 

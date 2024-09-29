@@ -65,50 +65,72 @@ class SolicitudController extends Controller
 
     public function store(Request $request)
     {
-        // Validar los datos del formulario
-        $validatedData = $request->validate([
-            'fecha' => 'required|date',
-            'descripcionFalla' => 'required|string',
-            'tiempoEstimado' => 'nullable|string|max:45',
-            'tipoMantenimientos_id' => 'required|exists:Tipomantenimientos,idTipomantenimiento',
-            'fechaInicio' => 'nullable|date',
-            'fechaTermina' => 'nullable|date',
-            'mantenimientoEficiente' => 'required|boolean',
-            'totalHorasTrabajadas' => 'nullable|numeric',
-            'tiempoParada' => 'nullable|numeric',
-            'repuestosUtilizados' => 'nullable|json',
-            'trabajadoresAsignados' => 'nullable|json',
-            'observaciones' => 'nullable|string',
-            'firmaDirector' => 'nullable|string|max:255',
-            'firmaGerente' => 'nullable|string|max:255',
-            'firmaLider' => 'nullable|string|max:255',
-            'estados_id' => 'required|exists:Estados,idEstado',
-            'areas_id' => 'required|exists:Areas,idArea',
-        ]);
-    
-        // Crear la solicitud
-        $solicitud = new Solicitud();
-        $solicitud->fecha = $validatedData['fecha'];
-        $solicitud->descripcionFalla = $validatedData['descripcionFalla'];
-        $solicitud->tiempoEstimado = $validatedData['tiempoEstimado'];
-        $solicitud->tipoMantenimientos_id = $validatedData['tipoMantenimientos_id'];
-        $solicitud->fechaInicio = $validatedData['fechaInicio'];
-        $solicitud->fechaTermina = $validatedData['fechaTermina'];
-        $solicitud->mantenimientoEficiente = $validatedData['mantenimientoEficiente'];
-        $solicitud->totalHorasTrabajadas = $validatedData['totalHorasTrabajadas'];
-        $solicitud->tiempoParada = $validatedData['tiempoParada'];
-        $solicitud->repuestosUtilizados = $validatedData['repuestosUtilizados'];
-        $solicitud->trabajadoresAsignados = $validatedData['trabajadoresAsignados'];
-        $solicitud->observaciones = $validatedData['observaciones'];
-        $solicitud->firmaDirector = $validatedData['firmaDirector'];
-        $solicitud->firmaGerente = $validatedData['firmaGerente'];
-        $solicitud->firmaLider = $validatedData['firmaLider'];
-        $solicitud->estados_id = $validatedData['estados_id'];
-        $solicitud->areas_id = $validatedData['areas_id'];
-        $solicitud->save();
-    
-        // Redirigir a una página de éxito o mostrar un mensaje de éxito
-        return redirect()->route('solicitudes.index')->with('success', 'Solicitud creada exitosamente.');
+        try {
+            // Validar los datos del formulario
+            $validatedData = $request->validate([
+                'fecha' => 'required|date',
+                'tiempoEstimado' => 'nullable|string|max:45',
+                'tipoMantenimientos_id' => 'required|exists:Tipomantenimientos,idTipomantenimiento',
+                'fechaInicio' => 'nullable|date',
+                'fechaTermina' => 'nullable|date',
+                'mantenimientoEficiente' => 'required|boolean',
+                'totalHorasTrabajadas' => 'nullable|numeric',
+                'tiempoParada' => 'nullable|numeric',
+                'repuestosSeleccionados' => 'required',
+                'trabajadoresSeleccionados' => 'required',
+                'observaciones' => 'nullable|string',
+                'firmaDirector' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'firmaGerente' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'firmaLider' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'estados_id' => 'required|exists:Estados,idEstado',
+                'areas_id' => 'required|exists:Areas,idArea',
+            ]);
+
+            $rutaFirmaDirector = null;
+            $rutaFirmaGerente = null;
+            $rutaFirmaLider = null;
+
+            // Si el archivo existe, lo guardamos y obtenemos su ruta
+            if ($request->hasFile('firmaDirector')) {
+                $rutaFirmaDirector = $request->file('firmaDirector')->store('firmas', 'public');
+            }
+
+            if ($request->hasFile('firmaGerente')) {
+                $rutaFirmaGerente = $request->file('firmaGerente')->store('firmas', 'public');
+            }
+
+            if ($request->hasFile('firmaLider')) {
+                $rutaFirmaLider = $request->file('firmaLider')->store('firmas', 'public');
+            }
+        
+            // Crear la solicitud
+            $solicitud = new Solicitud();
+            $solicitud->fecha = $validatedData['fecha'];
+            $solicitud->descripcionFalla = 'N/A';
+            $solicitud->tipoMantenimientos_id = $validatedData['tipoMantenimientos_id'];
+            $solicitud->tiempoEstimado = $validatedData['tiempoEstimado'];
+            $solicitud->fechaInicio = $validatedData['fechaInicio'] ?? null;
+            $solicitud->fechaTermina = $validatedData['fechaTermina'];
+            $solicitud->mantenimientoEficiente = $validatedData['mantenimientoEficiente'];
+            $solicitud->totalHorasTrabajadas = $validatedData['totalHorasTrabajadas'];
+            $solicitud->tiempoParada = $validatedData['tiempoParada'];
+            $solicitud->repuestosUtilizados = implode(', ', $validatedData['repuestosSeleccionados']);
+            $solicitud->trabajadoresAsignados = implode(', ', $validatedData['trabajadoresSeleccionados']);
+            $solicitud->observaciones = $validatedData['observaciones'] ?? null;
+            $solicitud->firmaDirector = $rutaFirmaDirector;
+            $solicitud->firmaGerente = $rutaFirmaGerente;
+            $solicitud->firmaLider = $rutaFirmaLider;
+            $solicitud->estados_id = $validatedData['estados_id'];
+            $solicitud->areas_id = $validatedData['areas_id'];
+            $solicitud->save();
+        
+            // Redirigir a una página de éxito o mostrar un mensaje de éxito
+            return redirect()->route('solicitudes.index')->with('success', 'Solicitud creada exitosamente.');
+        } catch (\Exception $e) {
+            \Log::alert($e);
+            // Manejar el error y redirigir
+            return redirect()->back()->with('error', 'Ocurrió un error al crear el movimiento. Por favor, inténtalo de nuevo.');
+        }
     }
     
 

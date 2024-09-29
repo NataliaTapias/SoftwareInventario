@@ -57,7 +57,7 @@
             </div>
             <div class="col-md-3">
                 <label for="solicitud">Solicitud</label>
-                <input type="text" class="form-control" value="{{ $movimiento->solicitud->descripcionFalla }}" disabled>
+                <input type="text" class="form-control" value="{{ $movimiento->solicitud->descripcionFalla ?? '' }}" disabled>
             </div>
             <div class="col-md-3">
                 <label for="proveedor">Proveedor</label>
