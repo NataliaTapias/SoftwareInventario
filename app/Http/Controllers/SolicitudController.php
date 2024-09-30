@@ -7,6 +7,7 @@ use App\Models\Estado;
 use App\Models\Trabajador;
 use App\Models\SolicitudHasTrabajador;
 use App\Models\Area;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -35,6 +36,8 @@ class SolicitudController extends Controller
             })
             ->orderBy('created_at', 'desc')
             ->paginate(10);
+
+        // dd($solicitudes);
     
         $estados = Estado::all();
         $areas = Area::all();
@@ -51,6 +54,12 @@ class SolicitudController extends Controller
         }
 
         $solicitud = Solicitud::findOrFail($id);
+
+        $repuestos = Item::where('idItem', $solicitud->repuestosUtilizados)->first();
+
+        $solicitud->repuestosUtilizados = $repuestos->nombre;
+        $solicitud->totalHorasTrabajadas = str_replace('.',':',strval($solicitud->totalHorasTrabajadas));
+        $solicitud->tiempoParada = str_replace('.',':',strval($solicitud->tiempoParada)); 
         return view('solicitudes.show', compact('solicitud'));
     }
 
@@ -74,8 +83,8 @@ class SolicitudController extends Controller
                 'fechaInicio' => 'nullable|date',
                 'fechaTermina' => 'nullable|date',
                 'mantenimientoEficiente' => 'required|boolean',
-                'totalHorasTrabajadas' => 'nullable|numeric',
-                'tiempoParada' => 'nullable|numeric',
+                'totalHorasTrabajadas' => 'nullable|string',
+                'tiempoParada' => 'nullable|string',
                 'repuestosSeleccionados' => 'required',
                 'trabajadoresSeleccionados' => 'required',
                 'observaciones' => 'nullable|string',
@@ -112,8 +121,8 @@ class SolicitudController extends Controller
             $solicitud->fechaInicio = $validatedData['fechaInicio'] ?? null;
             $solicitud->fechaTermina = $validatedData['fechaTermina'];
             $solicitud->mantenimientoEficiente = $validatedData['mantenimientoEficiente'];
-            $solicitud->totalHorasTrabajadas = $validatedData['totalHorasTrabajadas'];
-            $solicitud->tiempoParada = $validatedData['tiempoParada'];
+            $solicitud->totalHorasTrabajadas = floatval(str_replace(':', '.', $validatedData['totalHorasTrabajadas']));
+            $solicitud->tiempoParada = floatval(str_replace(':', '.', $validatedData['tiempoParada']));
             $solicitud->repuestosUtilizados = implode(', ', $validatedData['repuestosSeleccionados']);
             $solicitud->trabajadoresAsignados = implode(', ', $validatedData['trabajadoresSeleccionados']);
             $solicitud->observaciones = $validatedData['observaciones'] ?? null;
@@ -143,52 +152,90 @@ class SolicitudController extends Controller
         $trabajadores = Trabajador::all();
         $solicitudHasTrabajador = SolicitudHasTrabajador::where('solicitudes_id', $id)->first();
     
+        $repuestos = Item::where('idItem', $solicitude->repuestosUtilizados)->first();
+
+        $solicitude->repuestosUtilizados = $repuestos->nombre;
+        $solicitude->totalHorasTrabajadas = str_replace('.',':',strval($solicitude->totalHorasTrabajadas));
+        $solicitude->tiempoParada = str_replace('.',':',strval($solicitude->tiempoParada)); 
+        
         return view('solicitudes.edit', compact('solicitude', 'tiposMantenimientos', 'estados', 'areas', 'trabajadores', 'solicitudHasTrabajador'));
     }
     
-    public function update(Request $request, Solicitud $solicitude)
-    {
-        $request->merge(['mantenimientoEficiente' => $request->has('mantenimientoEficiente')]);
-    
-        $request->validate([
+    public function update(Request $request, $id)
+{
+    try {
+        // Validar los datos del formulario
+        $validatedData = $request->validate([
             'fecha' => 'required|date',
-            'descripcionFalla' => 'required|string',
             'tiempoEstimado' => 'nullable|string|max:45',
-            'tipoMantenimientos_id' => 'required|exists:tipomantenimientos,idTipomantenimiento',
+            'tipoMantenimientos_id' => 'required|exists:Tipomantenimientos,idTipomantenimiento',
             'fechaInicio' => 'nullable|date',
             'fechaTermina' => 'nullable|date',
             'mantenimientoEficiente' => 'required|boolean',
-            'totalHorasTrabajadas' => 'nullable|numeric|min:0',
-            'tiempoParada' => 'nullable|numeric|min:0',
-            'repuestosUtilizados' => 'nullable|string',
+            'totalHorasTrabajadas' => 'nullable|string',
+            'tiempoParada' => 'nullable|string',
+            // 'repuestosSeleccionados' => 'required',
+            // 'trabajadoresSeleccionados' => 'required',
             'observaciones' => 'nullable|string',
-            'firmaDirector' => 'nullable|string|max:255',
-            'firmaGerente' => 'nullable|string|max:255',
-            'firmaLider' => 'nullable|string|max:255',
-            'estados_id' => 'required|exists:estados,idEstado',
-            'areas_id' => 'required|exists:areas,idArea',
-            'trabajadores_id' => 'nullable|integer|exists:trabajadores,idTrabajador'
+            'firmaDirector' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'firmaGerente' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'firmaLider' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'estados_id' => 'required|exists:Estados,idEstado',
+            'areas_id' => 'required|exists:Areas,idArea',
         ]);
 
-        try {
-            $solicitude->update($request->all());
-    
-            if ($request->filled('trabajadores_id')) {
-                SolicitudHasTrabajador::updateOrCreate(
-                    ['solicitudes_id' => $solicitude->idSolicitud],
-                    [
-                        'soli_tipoMantenimientos_id' => $request->tipoMantenimientos_id,
-                        'solicitudes_estados_id' => $request->estados_id,
-                        'trabajadores_id' => $request->trabajadores_id
-                    ]
-                );
-            }
-    
-            return redirect()->route('solicitudes.index')->with('success', 'Solicitud actualizada exitosamente.');
-        } catch (\Exception $e) {
-            return back()->withErrors('Error al actualizar la solicitud: ' . $e->getMessage())->withInput();
+        // Obtener la solicitud existente
+        $solicitud = Solicitud::findOrFail($id);
+
+        // Variables para las firmas
+        $rutaFirmaDirector = $solicitud->firmaDirector;
+        $rutaFirmaGerente = $solicitud->firmaGerente;
+        $rutaFirmaLider = $solicitud->firmaLider;
+
+        // Si se suben nuevas firmas, guardarlas y obtener sus rutas
+        if ($request->hasFile('firmaDirector')) {
+            $rutaFirmaDirector = $request->file('firmaDirector')->store('firmas', 'public');
         }
+
+        if ($request->hasFile('firmaGerente')) {
+            $rutaFirmaGerente = $request->file('firmaGerente')->store('firmas', 'public');
+        }
+
+        if ($request->hasFile('firmaLider')) {
+            $rutaFirmaLider = $request->file('firmaLider')->store('firmas', 'public');
+        }
+        
+        // Actualizar los campos de la solicitud
+        $solicitud->fecha = $validatedData['fecha'];
+        $solicitud->descripcionFalla = 'N/A'; // O dejar como estaba si es necesario
+        $solicitud->tipoMantenimientos_id = $validatedData['tipoMantenimientos_id'];
+        $solicitud->tiempoEstimado = $validatedData['tiempoEstimado'];
+        $solicitud->fechaInicio = $validatedData['fechaInicio'] ?? null;
+        $solicitud->fechaTermina = $validatedData['fechaTermina'];
+        $solicitud->mantenimientoEficiente = $validatedData['mantenimientoEficiente'];
+        $solicitud->totalHorasTrabajadas = floatval(str_replace(':', '.', $validatedData['totalHorasTrabajadas']));
+        $solicitud->tiempoParada = floatval(str_replace(':', '.', $validatedData['tiempoParada']));
+        // $solicitud->repuestosUtilizados = implode(', ', $validatedData['repuestosSeleccionados']);
+        // $solicitud->trabajadoresAsignados = implode(', ', $validatedData['trabajadoresSeleccionados']);
+        $solicitud->observaciones = $validatedData['observaciones'] ?? null;
+        $solicitud->firmaDirector = $rutaFirmaDirector;
+        $solicitud->firmaGerente = $rutaFirmaGerente;
+        $solicitud->firmaLider = $rutaFirmaLider;
+        $solicitud->estados_id = $validatedData['estados_id'];
+        $solicitud->areas_id = $validatedData['areas_id'];
+        
+        // Guardar los cambios
+        $solicitud->save();
+
+        // Redirigir a una página de éxito o mostrar un mensaje de éxito
+        return redirect()->route('solicitudes.index')->with('success', 'Solicitud actualizada exitosamente.');
+    } catch (\Exception $e) {
+        \Log::alert($e);
+        // Manejar el error y redirigir
+        return redirect()->back()->with('error', 'Ocurrió un error al actualizar la solicitud. Por favor, inténtalo de nuevo.');
     }
+}
+
 
     public function destroy(Solicitud $solicitude)
     {

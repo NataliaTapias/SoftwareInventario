@@ -110,14 +110,14 @@
             <div class="col-md-2">
                 <div class="form-group">
                     <label for="tiempoParada">Tiempo de Parada</label>
-                    <input type="number" step="0.01" class="form-control" id="tiempoParada" name="tiempoParada" min="0">
+                    <input type="time" class="form-control" id="tiempoParada" name="tiempoParada" min="0">
                 </div>
             </div>
 
             <div class="col-md-2">
                 <div class="form-group">
                     <label for="totalHorasTrabajadas">Total de Horas Trabajadas</label>
-                    <input type="number" step="0.01" class="form-control" id="totalHorasTrabajadas" name="totalHorasTrabajadas" min="0">
+                    <input type="time" class="form-control" id="totalHorasTrabajadas" name="totalHorasTrabajadas" min="0">
                 </div>
             </div>
 

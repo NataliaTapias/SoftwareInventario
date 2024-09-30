@@ -8,7 +8,7 @@
         <a href="{{ route('solicitudes.index') }}" class="icon-link" title="Atrás">
             <i class="fa-solid fa-circle-left"></i>
         </a>
-        <h1>Editar Rol</h1>
+        <h1>Detalle de solicitud</h1>
     </div>
 
     <div class="row">
@@ -78,21 +78,39 @@
     <div class="col-md-4 mb-3">
         <div class="form-group">
             <label for="firmaDirector">Firma del Director</label>
-            <input type="text" class="form-control" id="firmaDirector" name="firmaDirector" value="{{ $solicitud->firmaDirector }}" disabled>
+            @if ($solicitud->firmaDirector)
+                <div>
+                    <img src="{{ asset('storage/' . $solicitud->firmaDirector) }}" alt="Firma del Director" style="max-width: 150px; max-height: 100px; margin-bottom: 10px;">
+                </div>
+            @else
+                <input type="text" class="form-control" id="firmaDirector" name="firmaDirector" value="Firma sin cargar" disabled>
+            @endif
         </div>
     </div>
 
     <div class="col-md-4 mb-3">
         <div class="form-group">
             <label for="firmaGerente">Firma del Gerente</label>
-            <input type="text" class="form-control" id="firmaGerente" name="firmaGerente" value="{{ $solicitud->firmaGerente }}" disabled>
+            @if ($solicitud->firmaGerente)
+                <div>
+                    <img src="{{ asset('storage/' . $solicitud->firmaGerente) }}" alt="Firma del Director" style="max-width: 150px; max-height: 100px; margin-bottom: 10px;">
+                </div>
+            @else
+                <input type="text" class="form-control" id="firmaGerente" name="firmaGerente" value="Firma sin cargar" disabled>
+            @endif
         </div>
     </div>
 
     <div class="col-md-4 mb-3">
         <div class="form-group">
             <label for="firmaLider">Firma del Líder</label>
-            <input type="text" class="form-control" id="firmaLider" name="firmaLider" value="{{ $solicitud->firmaLider }}" disabled>
+            @if ($solicitud->firmaLider)
+                <div>
+                    <img src="{{ asset('storage/' . $solicitud->firmaLider) }}" alt="Firma del Director" style="max-width: 150px; max-height: 100px; margin-bottom: 10px;">
+                </div>
+            @else
+                <input type="text" class="form-control" id="firmaLider" name="firmaLider" value="Firma sin cargar" disabled>
+            @endif
         </div>
     </div>
 

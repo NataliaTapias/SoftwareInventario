@@ -10,7 +10,7 @@
         </a>
         <h1>Editar Solicitud</h1>
     </div>
-    <form method="POST" action="{{ route('solicitudes.update', $solicitude->idSolicitud) }}">
+    <form method="POST" action="{{ route('solicitudes.update', $solicitude->idSolicitud) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -25,6 +25,18 @@
             </div>
         @endif
 
+        @if(session('success'))
+            <div class="alert alert-success fade show" role="alert" id="success-alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger fade show" role="alert" id="error-alert">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
@@ -35,7 +47,7 @@
 
                     <div class="form-group">
                         <label for="tiempoEstimado">Tiempo Estimado</label>
-                        <input type="text" class="form-control" id="tiempoEstimado" name="tiempoEstimado" value="{{ $solicitude->tiempoEstimado }}">
+                        <input type="time" class="form-control" id="tiempoEstimado" name="tiempoEstimado" value="{{ $solicitude->tiempoEstimado }}">
                     </div>
 
                     <div class="form-group">
@@ -66,28 +78,44 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="totalHorasTrabajadas">Total de Horas Trabajadas</label>
-                        <input type="number" step="0.01" class="form-control" id="totalHorasTrabajadas" name="totalHorasTrabajadas" value="{{ $solicitude->totalHorasTrabajadas }}">
+                        <input type="time" class="form-control" id="totalHorasTrabajadas" name="totalHorasTrabajadas" value="{{ $solicitude->totalHorasTrabajadas }}">
                     </div>
 
                     <div class="form-group">
                         <label for="tiempoParada">Tiempo de Parada</label>
-                        <input type="number" step="0.01" class="form-control" id="tiempoParada" name="tiempoParada" value="{{ $solicitude->tiempoParada }}">
+                        <input type="time" class="form-control" id="tiempoParada" name="tiempoParada" value="{{ $solicitude->tiempoParada }}">
                     </div>
 
                     <div class="form-group">
                         <label for="firmaDirector">Firma del Director</label>
-                        <input type="text" class="form-control" id="firmaDirector" name="firmaDirector" value="{{ $solicitude->firmaDirector }}">
+                        @if ($solicitude->firmaDirector)
+                            <div>
+                                <img src="{{ asset('storage/' . $solicitude->firmaDirector) }}" alt="Firma del Director" style="max-width: 150px; max-height: 100px; margin-bottom: 10px;">
+                            </div>
+                        @endif
+                        <input type="file" class="form-control" id="firmaDirector" name="firmaDirector" accept="image/*">
                     </div>
-
+                    
                     <div class="form-group">
                         <label for="firmaGerente">Firma del Gerente</label>
-                        <input type="text" class="form-control" id="firmaGerente" name="firmaGerente" value="{{ $solicitude->firmaGerente }}">
+                        @if ($solicitude->firmaGerente)
+                            <div>
+                                <img src="{{ asset('storage/' . $solicitude->firmaGerente) }}" alt="Firma del Gerente" style="max-width: 150px; max-height: 100px; margin-bottom: 10px;">
+                            </div>
+                        @endif
+                        <input type="file" class="form-control" id="firmaGerente" name="firmaGerente" accept="image/*">
                     </div>
-
+                    
                     <div class="form-group">
                         <label for="firmaLider">Firma del Líder</label>
-                        <input type="text" class="form-control" id="firmaLider" name="firmaLider" value="{{ $solicitude->firmaLider }}">
+                        @if ($solicitude->firmaLider)
+                            <div>
+                                <img src="{{ asset('storage/' . $solicitude->firmaLider) }}" alt="Firma del Líder" style="max-width: 150px; max-height: 100px; margin-bottom: 10px;">
+                            </div>
+                        @endif
+                        <input type="file" class="form-control" id="firmaLider" name="firmaLider" accept="image/*">
                     </div>
+                    
                 </div>
 
                 <div class="col-md-4">

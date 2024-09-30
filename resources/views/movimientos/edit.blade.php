@@ -75,7 +75,7 @@
             </div>
             <div class="col-md-3">
                 <label for="solicitud-search">Solicitud</label>
-                <input type="text" id="solicitud-search" class="form-control" value="{{ $movimiento->solicitud->descripcionFalla }}" disabled>
+                <input type="text" id="solicitud-search" class="form-control" value="{{ $movimiento->solicitud->descripcionFalla ?? '' }}" disabled>
                 <input type="hidden" name="solicitudes_id" value="{{ $movimiento->solicitudes_id }}">
             </div>
             <div class="form-group mb-3">
