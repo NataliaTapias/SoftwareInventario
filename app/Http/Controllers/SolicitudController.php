@@ -19,23 +19,35 @@ class SolicitudController extends Controller
         $estadoId = $request->query('estado_id');
         $fechaInicio = $request->query('fecha_inicio');
         $fechaFin = $request->query('fecha_fin');
-    
+
+        // Dar formato a las fechas con Carbon si son proporcionadas
+        $fechaInicioFormatted = $fechaInicio ? Carbon::createFromFormat('Y-m-d', $fechaInicio)->startOfDay() : null;
+        $fechaFinFormatted = $fechaFin ? Carbon::createFromFormat('Y-m-d', $fechaFin)->endOfDay() : null;
+
         $solicitudes = Solicitud::with(['tipoMantenimiento', 'estado', 'area'])
             ->when($search, function ($query, $search) {
-                return $query->where('descripcionFalla', 'like', '%' . $search . '%')
-                    ->orWhere('observaciones', 'like', '%' . $search . '%');
+                return $query->where(function($query) use ($search) {
+                    $query->where('descripcionFalla', 'like', '%' . $search . '%')
+                        ->orWhere('observaciones', 'like', '%' . $search . '%');
+                });
             })
             ->when($estadoId, function ($query, $estadoId) {
                 return $query->where('estado_id', $estadoId);
             })
-            ->when($fechaInicio, function ($query, $fechaInicio) {
-                return $query->where('created_at', '>=', $fechaInicio);
+            ->when($fechaInicioFormatted, function ($query, $fechaInicioFormatted) {
+                return $query->where('created_at', '>=', $fechaInicioFormatted);
             })
-            ->when($fechaFin, function ($query, $fechaFin) {
-                return $query->where('created_at', '<=', $fechaFin);
+            ->when($fechaFinFormatted, function ($query, $fechaFinFormatted) {
+                return $query->where('created_at', '<=', $fechaFinFormatted);
             })
             ->orderBy('created_at', 'desc')
             ->paginate(10);
+
+        $solicitudes->getCollection()->transform(function($solicitud) {
+            $solicitud->fechaInicio = $solicitud->fechaInicio ? Carbon::parse($solicitud->fechaInicio)->format('d/m/Y') : null;
+            $solicitud->fechaTermina = $solicitud->fechaTermina ? Carbon::parse($solicitud->fechaTermina)->format('d/m/Y') : null;
+            return $solicitud;
+        });
 
         // dd($solicitudes);
     
@@ -55,9 +67,8 @@ class SolicitudController extends Controller
 
         $solicitud = Solicitud::findOrFail($id);
 
-        $repuestos = Item::where('idItem', $solicitud->repuestosUtilizados)->first();
+        // $repuestos = Item::where('idItem', $solicitud->repuestosUtilizados)->first();
 
-        $solicitud->repuestosUtilizados = $repuestos->nombre;
         $solicitud->totalHorasTrabajadas = str_replace('.',':',strval($solicitud->totalHorasTrabajadas));
         $solicitud->tiempoParada = str_replace('.',':',strval($solicitud->tiempoParada)); 
         return view('solicitudes.show', compact('solicitud'));
@@ -82,6 +93,7 @@ class SolicitudController extends Controller
                 'tipoMantenimientos_id' => 'required|exists:Tipomantenimientos,idTipomantenimiento',
                 'fechaInicio' => 'nullable|date',
                 'fechaTermina' => 'nullable|date',
+                'descripcionFalla' => 'nullable|string',
                 'mantenimientoEficiente' => 'required|boolean',
                 'totalHorasTrabajadas' => 'nullable|string',
                 'tiempoParada' => 'nullable|string',
@@ -94,6 +106,26 @@ class SolicitudController extends Controller
                 'estados_id' => 'required|exists:Estados,idEstado',
                 'areas_id' => 'required|exists:Areas,idArea',
             ]);
+
+            $jsonRepuestos = [];
+            for ($i=0; $i < count($request->repuestosSeleccionados); $i++) { 
+                $item = Item::where('idItem', $request->repuestosSeleccionados[$i])->first(); // Obtener el primer item
+                if ($item) {
+                    $jsonRepuestos[] = [
+                        'repuestoId'       => $request->repuestosSeleccionados[$i],
+                        'repuestoNombre'   => $item->nombre, // Acceder directamente al campo nombre
+                        'repuestoCantidad' => $request->cantidadRepuestos[$i]
+                    ];
+                }
+            }
+
+            $jsonTrabajadores = [];
+            for ($i=0; $i < count($request->trabajadoresSeleccionados); $i++) {
+                $jsonTrabajadores[] = [
+                    'trabajadorId'     => $request->trabajadoresSeleccionados[$i],
+                    'trabajadorNombre' => $request->trabajadores[$i]
+                ];
+            }
 
             $rutaFirmaDirector = null;
             $rutaFirmaGerente = null;
@@ -115,16 +147,16 @@ class SolicitudController extends Controller
             // Crear la solicitud
             $solicitud = new Solicitud();
             $solicitud->fecha = $validatedData['fecha'];
-            $solicitud->descripcionFalla = 'N/A';
+            $solicitud->descripcionFalla = $validatedData['descripcionFalla'] ?? '';
             $solicitud->tipoMantenimientos_id = $validatedData['tipoMantenimientos_id'];
             $solicitud->tiempoEstimado = $validatedData['tiempoEstimado'];
-            $solicitud->fechaInicio = $validatedData['fechaInicio'] ?? null;
+            $solicitud->fechaInicio = $validatedData['fechaInicio'];
             $solicitud->fechaTermina = $validatedData['fechaTermina'];
             $solicitud->mantenimientoEficiente = $validatedData['mantenimientoEficiente'];
-            $solicitud->totalHorasTrabajadas = floatval(str_replace(':', '.', $validatedData['totalHorasTrabajadas']));
-            $solicitud->tiempoParada = floatval(str_replace(':', '.', $validatedData['tiempoParada']));
-            $solicitud->repuestosUtilizados = implode(', ', $validatedData['repuestosSeleccionados']);
-            $solicitud->trabajadoresAsignados = implode(', ', $validatedData['trabajadoresSeleccionados']);
+            $solicitud->totalHorasTrabajadas = $validatedData['totalHorasTrabajadas'];
+            $solicitud->tiempoParada = $validatedData['tiempoParada'];
+            $solicitud->repuestosUtilizados = json_encode($jsonRepuestos);
+            $solicitud->trabajadoresAsignados = json_encode($jsonTrabajadores);
             $solicitud->observaciones = $validatedData['observaciones'] ?? null;
             $solicitud->firmaDirector = $rutaFirmaDirector;
             $solicitud->firmaGerente = $rutaFirmaGerente;

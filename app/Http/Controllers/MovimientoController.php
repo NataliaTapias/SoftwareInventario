@@ -86,7 +86,7 @@ class MovimientoController extends Controller
                 'fecha' => 'required|date',
                 'tipoMovimientos_id' => 'required|integer',
                 'cantidad' => 'required|integer',
-                'precio' => 'required|numeric',
+                'precio' => 'nullable|numeric',
                 'total' => 'required|numeric',
                 'items_id' => 'required|integer',
                 'usuarios_id' => 'required|integer',
@@ -106,10 +106,10 @@ class MovimientoController extends Controller
             // Ajustar la cantidad del ítem según el tipo de movimiento
             $tipoMovimiento = TipoMovimiento::findOrFail($validatedData['tipoMovimientos_id']);
 
-            if ($tipoMovimiento->nombre == 'Movimiento de Entrada' && $tipoMovimiento->Operacion == 1) { // valida el tipo de operacion 1 = suma
+            if ($tipoMovimiento->Operacion == 1) { // valida el tipo de operacion 1 = suma
                 // Sumar la cantidad al ítem
                 $item->cantidad += $validatedData['cantidad'];
-            } elseif ($tipoMovimiento->nombre == 'Movimiento de Salida' && $tipoMovimiento->Operacion == 0) { // valida el tipo de operacion 0 = resta 
+            } elseif ($tipoMovimiento->Operacion == 0) { // valida el tipo de operacion 0 = resta 
                 // Restar la cantidad del ítem
                 $item->cantidad -= $validatedData['cantidad'];
             }

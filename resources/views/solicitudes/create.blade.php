@@ -123,11 +123,23 @@
 
             <div class="col-md-2">
                 <div class="form-group">
+                    <label for="fechaInicio">Fecha de Inicio</label>
+                    <input type="date" class="form-control" id="fechaInicio" name="fechaInicio">
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
                     <label for="fechaTermina">Fecha de Término</label>
                     <input type="date" class="form-control" id="fechaTermina" name="fechaTermina">
                 </div>
             </div>
+
             <div class="col-md-3">
+                <div class="form-group">
+                    <label for="descripcionFalla">Descripcion de Falla</label>
+                    <input type="text" class="form-control" id="descripcionFalla" name="descripcionFalla">
+                </div>
             </div>
 
             <!-- Columna derecha -->
@@ -275,7 +287,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.querySelectorAll('.next-step').forEach(button => {
         button.addEventListener('click', () => {
-            console.log(currentStep)
             if (currentStep < steps.length) {
                 if (currentStep == 0
                     && (document.getElementById('areas_id').value == ''
@@ -287,12 +298,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 if (currentStep == 1) {
-                    const inputElement = document.querySelector(`input[name="repuestosSeleccionados[]"]`);
+                    const inputRepuestosSeleccionados = document.querySelectorAll(`input[name="repuestosSeleccionados[]"]`);
+                    const inputCantidadRepuestos = document.querySelectorAll(`input[name="cantidadRepuestos[]"]`);
         
                     // Verificar que el elemento no sea nulo y que exista al menos un input seleccionado
-                    if (!inputElement || inputElement.length <= 0) {
-                        alert('Debe seleccionar al menos un repuesto');
+                    if (!inputRepuestosSeleccionados || inputRepuestosSeleccionados.length <= 0) {
+                        alert('Debe seleccionar al menos un repuesto y su respectiva cantidad');
                         return;
+                    }
+
+                    // Recorrer los campos seleccionados y validar que no estén vacíos o nulos
+                    for (let i = 0; i < inputRepuestosSeleccionados.length; i++) {
+                        const cantidad = inputCantidadRepuestos[i].value;
+
+                        // Validar que la cantidad sea un número válido y mayor que cero
+                        if (!cantidad || isNaN(cantidad) || cantidad <= 0) {
+                            alert(`El campo de cantidad debe contener un número válido mayor que cero.`);
+                            return;
+                        }
                     }
                 }
 
@@ -391,7 +414,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             trabajadorResultsContainer.appendChild(div);
                         } else {
                             data.forEach(trabajador => {
-                                console.log(trabajador);
                                 // Comprobar si el input oculto ya existe
                                 const existingInput = document.querySelector(`input[name="trabajadoresSeleccionados[]"][value="${trabajador.id}"]`);
     
@@ -444,6 +466,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 newRepuestoDiv.innerHTML = `
                     <div class="form-control disabled">${itemInput.value}</div>
                     <input type="text" id="repuestosSeleccionado_${itemId}" name="repuestosSeleccionados[]" value="${itemId}" hidden>
+                    <input type="number" class="mx-2 border" id="cantidadRepuestos_${itemId}" name="cantidadRepuestos[]" placeholder="cantidad..." required>
                     <div class="input-group-append">
                         <button type="button" class="btn btn-danger remove-repuesto"><i class="fa fa-trash"></i> Eliminar</button>
                     </div>`;

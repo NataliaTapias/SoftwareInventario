@@ -12,13 +12,13 @@ class CreateSolicitudesTable extends Migration
             $table->increments('idSolicitud');
             $table->dateTime('fecha');
             $table->text('descripcionFalla');
-            $table->string('tiempoEstimado', 45)->nullable();
             $table->unsignedInteger('tipoMantenimientos_id');
+            $table->boolean('mantenimientoEficiente')->default(false);
             $table->dateTime('fechaInicio')->nullable();
             $table->dateTime('fechaTermina')->nullable();
-            $table->boolean('mantenimientoEficiente')->default(false);
-            $table->decimal('totalHorasTrabajadas', 5, 2)->nullable();
-            $table->decimal('tiempoParada', 5, 2)->nullable();
+            $table->time('tiempoEstimado')->nullable();
+            $table->time('totalHorasTrabajadas')->nullable();
+            $table->time('tiempoParada')->nullable();
             $table->json('repuestosUtilizados')->nullable(); // Cambiado a JSON
             $table->json('trabajadoresAsignados')->nullable(); // Añadido para trabajadores
             $table->text('observaciones')->nullable();

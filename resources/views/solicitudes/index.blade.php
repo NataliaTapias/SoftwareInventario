@@ -77,8 +77,8 @@
                     <td>{{ Carbon\Carbon::parse($solicitud->fecha)->format('d/m/Y H:i') }}</td>
                     <td>{{ $solicitud->descripcionFalla }}</td>
                     <td>{{ $solicitud->tiempoEstimado }}</td>
-                    <td>{{ $solicitud->fechaInicio ? Carbon\Carbon::parse($solicitud->fechaInicio)->format('d/m/Y H:i') : 'N/A' }}</td>
-                    <td>{{ $solicitud->fechaTermina ? Carbon\Carbon::parse($solicitud->fechaTermina)->format('d/m/Y H:i') : 'N/A' }}</td>
+                    <td>{{ $solicitud->fechaInicio ? $solicitud->fechaInicio : 'N/A' }}</td>
+                    <td>{{ $solicitud->fechaTermina ? $solicitud->fechaTermina : 'N/A' }}</td>
                     <td>{{ $solicitud->mantenimientoEficiente ? 'Sí' : 'No' }}</td>
                     <td>{{ $solicitud->totalHorasTrabajadas }}</td>
                     <td>{{ $solicitud->tiempoParada }}</td>

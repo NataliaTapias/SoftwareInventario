@@ -72,8 +72,8 @@
                 <div id="results-container"></div>
             </div>
             <div class="col-md-3 my-2">
-                <label for="precio">Precio <span class="required">*</span></label>
-                <input type="number" step="0.01" class="form-control" id="precio" name="precio" value="{{ old('precio') }}" required>
+                <label for="precio">Precio</label>
+                <input type="number" step="0.01" class="form-control" id="precio" name="precio" value="{{ old('precio') }}">
             </div>
             <div class="col-md-3 my-2">
                 <label for="total">Total</label>
