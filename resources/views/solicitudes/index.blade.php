@@ -95,13 +95,15 @@
                                 <a href="{{ route('solicitudes.edit', $solicitud->idSolicitud) }}" class="btn btn-warning btn-sm mr-2">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('solicitudes.destroy', $solicitud->idSolicitud) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta solicitud?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
+                                @if($solicitud->eliminable)
+                                    <form action="{{ route('solicitudes.destroy', $solicitud->idSolicitud) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta solicitud?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                @endif
                             @endif
                         </div>
                     </td>

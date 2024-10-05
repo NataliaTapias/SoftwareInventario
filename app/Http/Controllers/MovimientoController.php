@@ -162,6 +162,24 @@ class MovimientoController extends Controller
     public function destroy($idMovimiento)
     {
         $movimiento = Movimiento::findOrFail($idMovimiento);
+
+        // Obtener el ítem asociado
+        $item = Item::findOrFail($movimiento->items_id);
+            
+        // Ajustar la cantidad del ítem según el tipo de movimiento
+        $tipoMovimiento = TipoMovimiento::findOrFail($movimiento->tipoMovimientos_id);
+
+        if ($tipoMovimiento->Operacion == 1) { // valida el tipo de operacion 1 = suma
+            // Sumar la cantidad al ítem
+            $item->cantidad -= $movimiento->cantidad;
+        } elseif ($tipoMovimiento->Operacion == 0) { // valida el tipo de operacion 0 = resta 
+            // Restar la cantidad del ítem
+            $item->cantidad += $movimiento->cantidad;
+        }
+
+        // Guardar los cambios en el ítem
+        $item->save();
+        // elimina el movimiento
         $movimiento->delete();
 
         return redirect()->route('movimientos.index');

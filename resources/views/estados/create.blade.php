@@ -19,7 +19,12 @@
         </div>
         <div class="form-group">
             <label for="tipo">Tipo</label>
-            <input type="text" class="form-control" id="tipo" name="tipo" value="{{ old('tipo') }}" required>
+            <select class="form-control" id="tipo" name="tipo" required>
+                    <option value="">Seleccione un tipo</option>
+                    <option value="item">item</option>
+                    <option value="solicitud">solicitud</option>
+            </select>
+            {{-- <input type="text" class="form-control" id="tipo" name="tipo" value="" required> --}}
         </div>
         <div class="text-center">
             <button type="submit" class="btn btn-success">Guardar</button>

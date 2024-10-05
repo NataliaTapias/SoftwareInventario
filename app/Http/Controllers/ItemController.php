@@ -91,7 +91,7 @@ class ItemController extends Controller
     public function create()
     {
         $subcategorias = Subcategoria::all();
-        $estados = Estado::whereIn('nombre', ['Disponible', 'Agotado', 'Mínimo'])->get();
+        $estados = Estado::where('tipo', 'item')->get();
         return view('items.create', compact('subcategorias', 'estados'));
     }
 
@@ -121,7 +121,7 @@ class ItemController extends Controller
     public function edit(Item $item)
     {
         $subcategorias = Subcategoria::all();
-        $estados = Estado::whereIn('nombre', ['Disponible', 'Agotado', 'Mínimo'])->get();
+        $estados = Estado::where('tipo', 'item')->get();
         return view('items.edit', compact('item', 'subcategorias', 'estados'));
     }
 

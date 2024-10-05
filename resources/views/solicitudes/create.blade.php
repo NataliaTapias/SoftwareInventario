@@ -7,7 +7,11 @@
 <style>
     .required {
         color: red; /* Color rojo para el asterisco */
-    }   
+    }
+
+    .custom-file-input:lang(es) ~ .custom-file-label::after {
+        content: "Browse";
+    }
 </style>
 
     <div class="d-flex align-items-center" style="gap: 1rem;">
@@ -146,24 +150,36 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="firmaDirector">Firma del Director</label>
-                    <input type="file" class="form-control-file" id="firmaDirector" name="firmaDirector" accept="image/*">
-                    <img id="previewFirmaDirector" src="" alt="Previsualización de la firma del Director" style="max-width: 200px; display:none;">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="firmaDirector" name="firmaDirector" accept="image/*">
+                        <label class="custom-file-label" for="firmaDirector">Seleccionar archivo</label>
+                    </div>
+                    <img id="previewFirmaDirector" class="mt-2" src="" alt="Previsualización de la firma del Director" style="max-width: 200px; max-height: 200px; display:none;">
+                    <small class="form-text text-muted mt-1">Por favor, suba una imagen de la firma del Director.</small>
                 </div>
             </div>
             
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="firmaGerente">Firma del Gerente</label>
-                    <input type="file" class="form-control-file" id="firmaGerente" name="firmaGerente" accept="image/*">
-                    <img id="previewFirmaGerente" src="" alt="Previsualización de la firma del Gerente" style="max-width: 200px; display:none;">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="firmaGerente" name="firmaGerente" accept="image/*">
+                        <label class="custom-file-label" for="firmaGerente">Seleccionar archivo</label>
+                    </div>
+                    <img id="previewFirmaGerente" class="mt-2" src="" alt="Previsualización de la firma del Gerente" style="max-width: 200px; display:none;">
+                    <small class="form-text text-muted mt-1">Por favor, suba una imagen de la firma del Gerente.</small>
                 </div>
             </div> <!-- Aquí se corrigió el cierre del div -->
 
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="firmaLider">Firma del Líder</label>
-                    <input type="file" class="form-control-file" id="firmaLider" name="firmaLider" accept="image/*">
-                    <img id="previewFirmaLider" src="" alt="Previsualización de la firma del Líder" style="max-width: 200px; display:none;">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="firmaLider" name="firmaLider" accept="image/*">
+                        <label class="custom-file-label" for="firmaLider">Seleccionar archivo</label>
+                    </div>
+                    <img id="previewFirmaLider" class="mt-2" src="" alt="Previsualización de la firma del Líder" style="max-width: 200px; display:none;">
+                    <small class="form-text text-muted mt-1">Por favor, suba una imagen de la firma del Líder.</small>
                 </div>
             </div>
 

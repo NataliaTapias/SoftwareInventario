@@ -8,6 +8,7 @@ use App\Models\Trabajador;
 use App\Models\SolicitudHasTrabajador;
 use App\Models\Area;
 use App\Models\Item;
+use App\Models\Movimiento;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -44,13 +45,55 @@ class SolicitudController extends Controller
             ->paginate(10);
 
         $solicitudes->getCollection()->transform(function($solicitud) {
+            // valida que la solicitud no este relacionada a un movimiento
+            $esEliminable = Movimiento::where('solicitudes_id', $solicitud->idSolicitud)->first();
+
+            if ($esEliminable == null) {
+                $solicitud->eliminable = true;
+            } else {
+                $solicitud->eliminable = false;
+            }
+
+            // Formatear fechas
             $solicitud->fechaInicio = $solicitud->fechaInicio ? Carbon::parse($solicitud->fechaInicio)->format('d/m/Y') : null;
             $solicitud->fechaTermina = $solicitud->fechaTermina ? Carbon::parse($solicitud->fechaTermina)->format('d/m/Y') : null;
+        
+            // Verificar si el campo repuestosUtilizados tiene contenido
+            $repuestosUtilizados = "";
+            if (!empty($solicitud->repuestosUtilizados)) {
+                // Decodificar el JSON de repuestosUtilizados
+                $repuestos = json_decode($solicitud->repuestosUtilizados, true);
+        
+                // Verificar si la decodificación es exitosa y si es un array
+                if (json_last_error() === JSON_ERROR_NONE && is_array($repuestos)) {
+                    foreach ($repuestos as $value) {
+                        // Validar que los campos 'repuestoNombre' existan en el array
+                        if (isset($value['repuestoNombre'])) {
+                            $repuestosUtilizados .= $value['repuestoNombre'] . " (" . $value['repuestoCantidad'] . "), ";
+                        } else {
+                            $repuestosUtilizados .= 'Nombre no disponible ';
+                        }
+                    }
+                } else {
+                    // JSON no válido o error de decodificación
+                    $repuestosUtilizados = 'Repuestos no disponibles o malformados.';
+                }
+            } else {
+                // El campo está vacío o no contiene datos JSON
+                $repuestosUtilizados = 'No se encontraron repuestos.';
+            }
+        
+            // Eliminar la última coma y espacio si la cadena no está vacía
+            if (!empty($repuestosUtilizados)) {
+                $repuestosUtilizados = rtrim($repuestosUtilizados, ', ');
+            }
+
+            // Asignar el valor final al campo repuestosUtilizados
+            $solicitud->repuestosUtilizados = $repuestosUtilizados;
+        
             return $solicitud;
         });
 
-        // dd($solicitudes);
-    
         $estados = Estado::all();
         $areas = Area::all();
     
@@ -70,14 +113,16 @@ class SolicitudController extends Controller
         // $repuestos = Item::where('idItem', $solicitud->repuestosUtilizados)->first();
 
         $solicitud->totalHorasTrabajadas = str_replace('.',':',strval($solicitud->totalHorasTrabajadas));
-        $solicitud->tiempoParada = str_replace('.',':',strval($solicitud->tiempoParada)); 
+        $solicitud->tiempoParada = str_replace('.',':',strval($solicitud->tiempoParada));
+        
+        $solicitud->trabajadoresAsignados = json_decode($solicitud->trabajadoresAsignados, true);
         return view('solicitudes.show', compact('solicitud'));
     }
 
     public function create()
     {
         $tiposMantenimientos = TipoMantenimiento::all();
-        $estados = Estado::whereIn('nombre', ['Aprobado', 'No Aprobado'])->get();
+        $estados = Estado::where('tipo', 'solicitud')->get();
         $areas = Area::all();
     
         return view('solicitudes.create', compact('tiposMantenimientos', 'estados', 'areas'));
@@ -179,17 +224,48 @@ class SolicitudController extends Controller
     {
         $solicitude = Solicitud::findOrFail($id);
         $tiposMantenimientos = TipoMantenimiento::all();
-        $estados = Estado::whereIn('nombre', ['Aprobado', 'No Aprobado'])->get();
+        $estados = Estado::where('tipo', 'solicitud')->get();
         $areas = Area::all();
         $trabajadores = Trabajador::all();
         $solicitudHasTrabajador = SolicitudHasTrabajador::where('solicitudes_id', $id)->first();
     
-        $repuestos = Item::where('idItem', $solicitude->repuestosUtilizados)->first();
+        // $repuestos = Item::where('idItem', $solicitude->repuestosUtilizados)->first();
 
-        $solicitude->repuestosUtilizados = $repuestos->nombre;
-        $solicitude->totalHorasTrabajadas = str_replace('.',':',strval($solicitude->totalHorasTrabajadas));
-        $solicitude->tiempoParada = str_replace('.',':',strval($solicitude->tiempoParada)); 
-        
+        // Verificar si el campo repuestosUtilizados tiene contenido
+        $repuestosUtilizados = "";
+        if (!empty($solicitude->repuestosUtilizados)) {
+            // Decodificar el JSON de repuestosUtilizados
+            $repuestos = json_decode($solicitude->repuestosUtilizados, true);
+    
+            // Verificar si la decodificación es exitosa y si es un array
+            if (json_last_error() === JSON_ERROR_NONE && is_array($repuestos)) {
+                foreach ($repuestos as $value) {
+                    // Validar que los campos 'repuestoNombre' existan en el array
+                    if (isset($value['repuestoNombre'])) {
+                        $repuestosUtilizados .= $value['repuestoNombre'] . " (" . $value['repuestoCantidad'] . "), ";
+                    } else {
+                        $repuestosUtilizados .= 'Nombre no disponible ';
+                    }
+                }
+            } else {
+                // JSON no válido o error de decodificación
+                $repuestosUtilizados = 'Repuestos no disponibles o malformados.';
+            }
+        } else {
+            // El campo está vacío o no contiene datos JSON
+            $repuestosUtilizados = 'No se encontraron repuestos.';
+        }
+
+        // Eliminar la última coma y espacio si la cadena no está vacía
+        if (!empty($repuestosUtilizados)) {
+            $repuestosUtilizados = rtrim($repuestosUtilizados, ', ');
+        }
+    
+        // Asignar el valor final al campo repuestosUtilizados
+        $solicitude->repuestosUtilizados = $repuestosUtilizados;
+
+        //
+        $solicitude->trabajadorId = json_decode($solicitude->trabajadoresAsignados, true)[0]['trabajadorId'];
         return view('solicitudes.edit', compact('solicitude', 'tiposMantenimientos', 'estados', 'areas', 'trabajadores', 'solicitudHasTrabajador'));
     }
     
@@ -207,7 +283,7 @@ class SolicitudController extends Controller
             'totalHorasTrabajadas' => 'nullable|string',
             'tiempoParada' => 'nullable|string',
             // 'repuestosSeleccionados' => 'required',
-            // 'trabajadoresSeleccionados' => 'required',
+            'trabajadores_id' => 'required',
             'observaciones' => 'nullable|string',
             'firmaDirector' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'firmaGerente' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -236,6 +312,12 @@ class SolicitudController extends Controller
         if ($request->hasFile('firmaLider')) {
             $rutaFirmaLider = $request->file('firmaLider')->store('firmas', 'public');
         }
+
+        $trabajor = Trabajador::find($validatedData['trabajadores_id']);
+        $trabajadorSeleccionado = [[
+            'trabajadorId' => $trabajor->idTrabajador,
+            'trabajadorNombre' => $trabajor->nombre,
+        ]];
         
         // Actualizar los campos de la solicitud
         $solicitud->fecha = $validatedData['fecha'];
@@ -245,10 +327,10 @@ class SolicitudController extends Controller
         $solicitud->fechaInicio = $validatedData['fechaInicio'] ?? null;
         $solicitud->fechaTermina = $validatedData['fechaTermina'];
         $solicitud->mantenimientoEficiente = $validatedData['mantenimientoEficiente'];
-        $solicitud->totalHorasTrabajadas = floatval(str_replace(':', '.', $validatedData['totalHorasTrabajadas']));
-        $solicitud->tiempoParada = floatval(str_replace(':', '.', $validatedData['tiempoParada']));
+        $solicitud->totalHorasTrabajadas = $validatedData['totalHorasTrabajadas'];
+        $solicitud->tiempoParada = $validatedData['tiempoParada'];
         // $solicitud->repuestosUtilizados = implode(', ', $validatedData['repuestosSeleccionados']);
-        // $solicitud->trabajadoresAsignados = implode(', ', $validatedData['trabajadoresSeleccionados']);
+        $solicitud->trabajadoresAsignados = json_encode($trabajadorSeleccionado);
         $solicitud->observaciones = $validatedData['observaciones'] ?? null;
         $solicitud->firmaDirector = $rutaFirmaDirector;
         $solicitud->firmaGerente = $rutaFirmaGerente;
